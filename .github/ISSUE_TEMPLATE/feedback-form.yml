@@ -1,0 +1,31 @@
+name: "🙋‍♀️ Processing Library Template Feedback"
+description: "Provide feedback on your experience using the Processing library template."
+title: "Summarize your feedback"
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for trying this version of the Processing library template. Your answers will help us improve this template for you and others. Thanks in advance for your feedback!
+  - type: textarea
+    id: experience
+    attributes:
+      label: "Were you able to successfully create a library with this template? What has been your general experience with this template?"
+    validations:
+      required: true
+  - type: textarea
+    id: benefits
+    attributes:
+      label: "What are the benefits of using this template?"
+  - type: textarea
+    id: improvements
+    attributes:
+      label: "What could be improved with this template?"
+  - type: textarea
+    id: other_templates
+    attributes:
+      label: "Have you tried other Processing library templates? If so, which ones?"
+  - type: textarea
+    id: other_experience
+    attributes:
+      label: "What was your experience with the other templates?"

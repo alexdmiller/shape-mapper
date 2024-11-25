@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    env:
+      TAG_NAME: ${{ github.event.inputs.tag }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.5
+      - name: Build with Gradle
+        id: build
+        run: gradle buildReleaseArtifacts
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.txt
+            release/*.zip
+            release/*.pdex

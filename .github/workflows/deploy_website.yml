@@ -1,0 +1,34 @@
+name: deploy_website
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install mkdocs-material
+
+      - name: Build website
+        run: mkdocs build
+
+      - name: Deploy website
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: site
+          branch: gh-pages
+          clean-exclude: pr-preview
+          force: false
