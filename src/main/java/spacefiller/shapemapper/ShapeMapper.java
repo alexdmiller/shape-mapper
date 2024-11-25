@@ -17,7 +17,7 @@ import java.util.List;
 import static processing.core.PConstants.*;
 import static spacefiller.shapemapper.GeometryUtils.*;
 
-public class ModelMapper {
+public class ShapeMapper {
   private static final float UI_CIRCLE_RADIUS = 10;
 
   private enum Mode {
@@ -31,12 +31,12 @@ public class ModelMapper {
   private PApplet parent;
 
   private PGraphics3D parentGraphics;
-  private PGraphics3D modelCanvas;
+  private PGraphics3D shapeCanvas;
   private PGraphics3D projectionCanvas;
 
-  private List<Model> models;
-  private List<Model> previouslySavedModels;
-  private int currentModelIndex = -1;
+  private List<Shape> shapes;
+  private List<Shape> previouslySavedShapes;
+  private int currentShapeIndex = -1;
   private int currentMappingIndex = -1;
 
   private Mode mode;
@@ -45,7 +45,7 @@ public class ModelMapper {
 
   private PVector selectedVertex;
 
-  PShader modelRenderShader;
+  PShader shapeRenderShader;
 
   // UI images
   PImage uiModel;
@@ -56,33 +56,33 @@ public class ModelMapper {
 
   // TODO: add constructor that accepts a model
 
-  public ModelMapper(PApplet parent) {
+  public ShapeMapper(PApplet parent) {
     try {
       this.parent = parent;
       try {
         this.parentGraphics = (PGraphics3D) parent.getGraphics();
       } catch (ClassCastException e) {
-        System.out.println("ModelMapper: Must use P3D rendering mode with ModelMapper library");
-        System.out.println("ModelMapper:   size(P3D, 500, 500)");
+        System.out.println("ShapeMapper: Must use P3D rendering mode with ShapeMapper library");
+        System.out.println("ShapeMapper:   size(P3D, 500, 500)");
       }
-      this.modelCanvas = (PGraphics3D) parent.createGraphics(parent.width, parent.height, P3D);
+      this.shapeCanvas = (PGraphics3D) parent.createGraphics(parent.width, parent.height, P3D);
       this.projectionCanvas = (PGraphics3D) parent.createGraphics(parent.width, parent.height, P3D);
       this.mode = Mode.RENDER;
       this.calibrateMode = CalibrateMode.SELECT_POINT;
-      this.camera = new PeasyCam(parent, modelCanvas, 400);
+      this.camera = new PeasyCam(parent, shapeCanvas, 400);
 
       this.parent.registerMethod("draw", this);
       this.parent.registerMethod("mouseEvent", this);
       this.parent.registerMethod("keyEvent", this);
 
-      modelRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/model.frag.glsl"));
+      shapeRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/model.frag.glsl"));
       uiModel = parent.loadImage(IOUtils.extractResourceToFile("/ui-model.png"));
       uiProjection = parent.loadImage(IOUtils.extractResourceToFile("/ui-projection.png"));
       uiNoCalibration = parent.loadImage(IOUtils.extractResourceToFile("/no-calibration.png"));
       uiPressSpace = parent.loadImage(IOUtils.extractResourceToFile("/press-space.png"));
       uiPressSpaceCountdown = 1000;
 
-      this.models = new ArrayList<>();
+      this.shapes = new ArrayList<>();
       loadCalibration();
 
 //      calibrationData = CalibrationUtils.calibrate(pointMapping, parent.width, parent.height);
@@ -92,8 +92,8 @@ public class ModelMapper {
     }
   }
 
-  public Model getModel(String name) {
-    for (Model m : models) {
+  public Shape getModel(String name) {
+    for (Shape m : shapes) {
       if (m.getName().equals(name)) {
         return m;
       }
@@ -101,8 +101,8 @@ public class ModelMapper {
     return null;
   }
 
-  public Model getPreviouslySavedModel(String name) {
-    for (Model m : previouslySavedModels) {
+  public Shape getPreviouslySavedShape(String name) {
+    for (Shape m : previouslySavedShapes) {
       if (m.getName().equals(name)) {
         return m;
       }
@@ -110,14 +110,14 @@ public class ModelMapper {
     return null;
   }
 
-  public void addModel(PShape shape) {
-    addModel("default", shape);
+  public void addShape(PShape shape) {
+    addShape("default", shape);
   }
 
-  public void addModel(String name, PShape shape) {
+  public void addShape(String name, PShape shape) {
     if (getModel(name) != null) {
-      System.out.println("ModelMapper: Could not add model with name '" + name + "'.");
-      System.out.println("ModelMapper: The model already exists, and model names must be unique.");
+      System.out.println("ShapeMapper: Could not add model with name '" + name + "'.");
+      System.out.println("ShapeMapper: The model already exists, and model names must be unique.");
       return;
     }
 
@@ -125,31 +125,31 @@ public class ModelMapper {
     // update state that will impact our ability to render it. For consistent rendering,
     // make our own private copy.
     PShape shapeCopy = ShapeUtils.createShape(parent, shape);
-    Model model = new Model(name, parent, shapeCopy);
+    Shape wrappedShape = new Shape(name, parent, shapeCopy);
 
-    Model previouslySaved = getPreviouslySavedModel(name);
+    Shape previouslySaved = getPreviouslySavedShape(name);
     if (previouslySaved != null) {
-      System.out.println("ModelMapper: Found a previously saved model for " + name);
-      model.setMappingsFromModel(previouslySaved);
+      System.out.println("ShapeMapper: Found a previously saved model for " + name);
+      wrappedShape.setMappingsFromModel(previouslySaved);
     }
 
-    this.models.add(model);
+    this.shapes.add(wrappedShape);
 
-    currentModelIndex = models.size() - 1;
+    currentShapeIndex = shapes.size() - 1;
     currentMappingIndex = 0;
   }
 
-  public Model getCurrentModel() {
-    if (currentModelIndex >= 0) {
-      return this.models.get(currentModelIndex);
+  public Shape getCurrentShape() {
+    if (currentShapeIndex >= 0) {
+      return this.shapes.get(currentShapeIndex);
     } else {
       return null;
     }
   }
 
   public Mapping getCurrentMapping() {
-    if (currentModelIndex >= 0 && currentMappingIndex >= 0) {
-      return this.models.get(currentModelIndex).getMapping(currentMappingIndex);
+    if (currentShapeIndex >= 0 && currentMappingIndex >= 0) {
+      return this.shapes.get(currentShapeIndex).getMapping(currentMappingIndex);
     } else {
       return null;
     }
@@ -163,20 +163,8 @@ public class ModelMapper {
     this.mode = Mode.RENDER;
   }
 
-  private void drawModel(PShape model, PGraphics canvas) {
-    canvas.resetShader();
-
-    model.disableStyle();
-
-    canvas.fill(0);
-    canvas.stroke(255);
-    canvas.strokeWeight(2);
-    canvas.shape(model);
-    canvas.endDraw();
-  }
-
-  public Iterable<Model> getModels() {
-    return models;
+  public Iterable<Shape> getShapes() {
+    return shapes;
   }
 
   private void saveCalibration() {
@@ -185,7 +173,7 @@ public class ModelMapper {
       Files.createDirectories(Paths.get(path).getParent());
       FileOutputStream fileOutputStream = new FileOutputStream(path);
       ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-      objectOutputStream.writeObject(models);
+      objectOutputStream.writeObject(shapes);
       objectOutputStream.flush();
       objectOutputStream.close();
     } catch (IOException e) {
@@ -194,15 +182,15 @@ public class ModelMapper {
   }
 
   private void loadCalibration() {
-    previouslySavedModels = new ArrayList<>();
+    previouslySavedShapes = new ArrayList<>();
     try {
       FileInputStream fileInputStream = new FileInputStream(parent.dataPath("calibration.ser"));
       ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-      previouslySavedModels = (List<Model>) objectInputStream.readObject();
+      previouslySavedShapes = (List<Shape>) objectInputStream.readObject();
       objectInputStream.close();
     } catch (IOException | ClassNotFoundException e) {
-      System.out.println("ModelMapper: Attempted to load calibration data, but it does not exist yet.");
-      System.out.println("ModelMapper: If you have not yet calibrated your projection, this is normal!");
+      System.out.println("ShapeMapper: Attempted to load calibration data, but it does not exist yet.");
+      System.out.println("ShapeMapper: If you have not yet calibrated your projection, this is normal!");
     }
   }
 
@@ -217,7 +205,7 @@ public class ModelMapper {
     parentGraphics.fill(255);
     parentGraphics.text("Mode: " + mode + " (press SPACE to change)", 10, 20);
     parentGraphics.text("Calibrate mode: " + calibrateMode + " (press TAB to change)", 10, 40);
-    parentGraphics.text("Model: " + currentModelIndex + " (press LEFT/RIGHT to change)", 10, 60);
+    parentGraphics.text("Model: " + currentShapeIndex + " (press LEFT/RIGHT to change)", 10, 60);
     parentGraphics.text("Mapping: " + currentMappingIndex + " (press UP/DOWN to change)", 10, 80);
     parentGraphics.text("Press C to create new mapping", 10, 100);
 
@@ -228,7 +216,7 @@ public class ModelMapper {
    * Processing hooks
    */
   public void draw() {
-    Model currentModel = getCurrentModel();
+    Shape currentShape = getCurrentShape();
     Mapping currentMapping = getCurrentMapping();
 
     try {
@@ -247,26 +235,26 @@ public class ModelMapper {
           // calibrated camera.
           camera.setActive(true);
 
-          modelCanvas.beginDraw();
-          modelCanvas.clear();
-          modelCanvas.scale(1, -1, 1);
+          shapeCanvas.beginDraw();
+          shapeCanvas.clear();
+          shapeCanvas.scale(1, -1, 1);
 
-          modelCanvas.fill(25);
-          modelCanvas.stroke(255);
-          modelCanvas.strokeWeight(2);
+          shapeCanvas.fill(25);
+          shapeCanvas.stroke(255);
+          shapeCanvas.strokeWeight(2);
 
-          currentModel.draw(modelCanvas);
+          currentShape.draw(shapeCanvas);
 
-          modelCanvas.endDraw();
+          shapeCanvas.endDraw();
 
           parent.resetShader();
 
           parent.textureMode(NORMAL);
           parent.beginShape();
-          parent.texture(modelCanvas);
+          parent.texture(shapeCanvas);
 
-          modelRenderShader.set("time", parent.frameCount);
-          parent.shader(modelRenderShader);
+          shapeRenderShader.set("time", parent.frameCount);
+          parent.shader(shapeRenderShader);
 
           parent.noStroke();
           parent.vertex(0, 0, 0, 0);
@@ -275,17 +263,17 @@ public class ModelMapper {
           parent.vertex(0, parent.height, 0, 1);
           parent.endShape();
 
-          PVector closestPoint = currentModel.getClosestPointTo(mouse, modelCanvas);
+          PVector closestPoint = currentShape.getClosestPointTo(mouse, shapeCanvas);
 
           for (PVector modelPoint : currentMapping.getMappedPoints()) {
-            PVector projectedPoint = worldToScreen(modelPoint, modelCanvas);
+            PVector projectedPoint = worldToScreen(modelPoint, shapeCanvas);
             parent.noStroke();
             parent.fill(255, 200);
             parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
           }
 
           if (closestPoint != null) {
-            PVector projectedVertex = worldToScreen(closestPoint, modelCanvas);
+            PVector projectedVertex = worldToScreen(closestPoint, shapeCanvas);
             parent.stroke(255);
             parent.strokeWeight(2);
             parent.noFill();
@@ -293,7 +281,7 @@ public class ModelMapper {
           }
 
           if (selectedVertex != null) {
-            PVector projectedVertex = worldToScreen(selectedVertex, modelCanvas);
+            PVector projectedVertex = worldToScreen(selectedVertex, shapeCanvas);
             drawCrossHairs(projectedVertex.x, projectedVertex.y, parent.color(255, 0, 255));
           }
 
@@ -306,12 +294,12 @@ public class ModelMapper {
         } else if (calibrateMode == CalibrateMode.PROJECTION) {
           camera.setActive(false);
 
-          for (Model model : models) {
-            for (Mapping mapping: model.getMappings()) {
+          for (Shape shape : shapes) {
+            for (Mapping mapping: shape.getMappings()) {
               if (mapping.isReady()) {
                 mapping.begin(projectionCanvas);
 
-                if (model == currentModel && mapping == currentMapping) {
+                if (shape == currentShape && mapping == currentMapping) {
                   projectionCanvas.fill(25);
                   projectionCanvas.stroke(255);
                   projectionCanvas.strokeWeight(2);
@@ -321,7 +309,7 @@ public class ModelMapper {
                   projectionCanvas.strokeWeight(2);
                 }
 
-                model.draw(projectionCanvas);
+                shape.draw(projectionCanvas);
                 mapping.end(projectionCanvas);
               } else {
 //                parent.image(
@@ -420,7 +408,7 @@ public class ModelMapper {
   }
 
   public void mouseEvent(MouseEvent event) {
-    Model model = getCurrentModel();
+    Shape shape = getCurrentShape();
     Mapping mapping = getCurrentMapping();
 
     PVector mouse = new PVector(event.getX(), event.getY());
@@ -432,7 +420,7 @@ public class ModelMapper {
 
     if (calibrateMode == CalibrateMode.SELECT_POINT) {
       if (event.getAction() == MouseEvent.CLICK) {
-        selectedVertex = model.getClosestPointTo(mouse, modelCanvas);
+        selectedVertex = shape.getClosestPointTo(mouse, shapeCanvas);
       }
 
       getCurrentMapping().setCameraState(camera.getState());
@@ -476,27 +464,27 @@ public class ModelMapper {
             : CalibrateMode.SELECT_POINT;
         resetCamera();
       } else if (event.getKeyCode() == 37) { // left
-        currentModelIndex = (currentModelIndex + 1) % models.size();
+        currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
         currentMappingIndex = 0;
         selectedVertex = null;
         resetCamera();
       } else if (event.getKeyCode() == 39) { // right
-        currentModelIndex = ((currentModelIndex - 1) + models.size()) % models.size();
+        currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
         currentMappingIndex = 0;
         selectedVertex = null;
         resetCamera();
       } else if (event.getKeyCode() == 38) { // up
-        int totalMappings = getCurrentModel().getNumMappings();
+        int totalMappings = getCurrentShape().getNumMappings();
         currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
         selectedVertex = null;
         resetCamera();
       } else if (event.getKeyCode() == 40) { // down
-        int totalMappings = getCurrentModel().getNumMappings();
+        int totalMappings = getCurrentShape().getNumMappings();
         currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
         selectedVertex = null;
         resetCamera();
       } else if (event.getKey() == 'c') {
-        Model current = getCurrentModel();
+        Shape current = getCurrentShape();
         current.createMapping();
         currentMappingIndex = current.getNumMappings() - 1;
         selectedVertex = null;

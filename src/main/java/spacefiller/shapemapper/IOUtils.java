@@ -14,7 +14,7 @@ import java.nio.file.Files;
 public class IOUtils {
   public static String[] getFileContents(String filename) {
     try {
-      InputStream resourceAsStream = ModelMapper.class.getResourceAsStream("/model.frag.glsl");
+      InputStream resourceAsStream = ShapeMapper.class.getResourceAsStream("/model.frag.glsl");
       BufferedReader reader = new BufferedReader(new InputStreamReader(resourceAsStream));
       Stream<String> lineStream = reader.lines();
       List<String> lines = lineStream.toList();
@@ -35,7 +35,7 @@ public class IOUtils {
 
   public static String extractResourceToFile(String resourcePath) {
     try {
-      InputStream resourceAsStream = ModelMapper.class.getResourceAsStream(resourcePath);
+      InputStream resourceAsStream = ShapeMapper.class.getResourceAsStream(resourcePath);
       if (resourceAsStream == null) {
         throw new IllegalArgumentException("Resource not found: " + resourcePath);
       }

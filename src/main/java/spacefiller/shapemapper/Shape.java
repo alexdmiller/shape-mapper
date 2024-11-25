@@ -11,7 +11,7 @@ import java.util.List;
 
 import static spacefiller.shapemapper.GeometryUtils.getClosestPointOnShape;
 
-public class Model implements Serializable {
+public class Shape implements Serializable {
   private transient PApplet parent;
   private transient PGraphics3D parentGraphics;
   private transient PShape shape;
@@ -20,7 +20,7 @@ public class Model implements Serializable {
   private String name;
   private List<Mapping> mappings;
 
-  public Model(String name, PApplet parent, PShape shape) {
+  public Shape(String name, PApplet parent, PShape shape) {
     this.name = name;
     this.parent = parent;
 
@@ -45,7 +45,7 @@ public class Model implements Serializable {
     createMapping();
   }
 
-  protected void setMappingsFromModel(Model from) {
+  protected void setMappingsFromModel(Shape from) {
     mappings = new ArrayList<>();
     for (Mapping otherMapping : from.getMappings()) {
       Mapping m = new Mapping(this.parentGraphics);
