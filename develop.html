@@ -1,0 +1,705 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://processing.github.io/processing-library-template/develop.html">
+      
+      
+        <link rel="prev" href="getting-started.html">
+      
+      
+        <link rel="next" href="release.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.46">
+    
+    
+      
+        <title>Develop - Processing Library Template</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.6f8fc17f.min.css">
+      
+      
+
+
+    
+    
+      
+        <script src="https://unpkg.com/iframe-worker/shim"></script>
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-development-process" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Processing Library Template" class="md-header__button md-logo" aria-label="Processing Library Template" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Processing Library Template
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Develop
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Processing Library Template" class="md-nav__button md-logo" aria-label="Processing Library Template" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Processing Library Template
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="getting-started.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Get Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Develop
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="develop.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Develop
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#developing-the-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing the library
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolving-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resolving dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-gradle-build-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Gradle build file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-release-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the release artifacts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="release.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Release
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="troubleshooting.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#developing-the-library" class="md-nav__link">
+    <span class="md-ellipsis">
+      Developing the library
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resolving-dependencies" class="md-nav__link">
+    <span class="md-ellipsis">
+      Resolving dependencies
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-the-gradle-build-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      Configuring the Gradle build file
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating examples
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#creating-the-release-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating the release artifacts
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#additional-documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Additional Documentation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="the-development-process">The Development Process</h1>
+<p>You are now ready to develop your library. This guide will walk you through resolving dependencies, configuring the build, creating release artifacts, and testing your library in Processing.</p>
+<p><em>Note: If you haven't set up your environment yet, refer to the <a href="getting-started.html">Getting Started guide</a>.</em></p>
+<h2 id="developing-the-library">Developing the library</h2>
+<p><strong>Develop your library within <code>src/main/java/</code>.</strong> Set the <code>package</code> at the top of your file to your
+own group id and library name, all together. For instance, in the example library, the group id is
+<code>com.myDomain</code> and the library name is <code>myLibrary</code>. The package is then <code>com.myDomain.myLibrary</code>.
+These values will need to match the values input into your Gradle build file, <code>build.gradle.kts</code>.
+More on this in <a href="#configuring-the-gradle-build-file">Configuring the Gradle build file</a>.</p>
+<p>Intellij and Visual Studio Code will then direct you to move your code into nested folders, consistent
+with your package name. For instance, if the package is <code>com.myDomain.myLibrary</code>, the code will
+be in the folder structure <code>src/main/java/com/myDomain/myLibrary/</code>.</p>
+<h2 id="resolving-dependencies">Resolving dependencies</h2>
+<p>In the <code>build.gradle.kts</code> file, there are a few places you should edit, to input your own values.
+The part of the file that you are invited to edit is indicated by the comment 
+<code>USER BUILD CONFIGURATIONS</code>. We cover here how to add dependencies for your library. The relevant
+sections of the <code>build.gradle.kts</code> file are the <code>repositories</code> and <code>dependencies</code> sections.</p>
+<p><strong>The locations where dependencies will be resolved from are the <code>repositories</code>.</strong> Most
+dependencies can be resolved from Maven. You can add additional repositories here if
+your dependencies are hosted elsewhere. </p>
+<p><strong>Your dependencies should be listed within <code>dependencies</code>.</strong> For example, the example library
+uses the <code>commons-math3</code> package from <code>org.apache.commons</code> as a dependency, which is resolved
+from your listed repositories. It is listed within <code>dependencies</code> with the following structure:</p>
+<pre><code>implementation(group = &quot;org.apache.commons&quot;, name = &quot;commons-math3&quot;, version = &quot;3.6.1&quot;)
+</code></pre>
+<p>This dependency, <code>commons-math3</code>, is only needed by the example library. 
+You can delete this dependency for your own library. 
+Add your own dependencies using the same structure.</p>
+<p>NOTE: Dependencies added with <code>implementation</code> will be included in the release. Dependencies
+added with <code>compileOnly</code>, such as Processing core, are available for compilation, but won't
+be included in the release.</p>
+<p>After you add these dependencies, <strong>refresh Gradle</strong>, and then you will be able to access them
+in your code. Refresh Gradle by going to the Gradle menu (elephant) in your IDE
+and click on the refresh icon, which is two arrows pointing at each other's ends in a circle.</p>
+<h2 id="configuring-the-gradle-build-file">Configuring the Gradle build file</h2>
+<p>In the <code>build.gradle.kts</code> file, there are a few places you should edit, to input your own values.
+The section that you are invited to edit is indicated by the comment <code>USER BUILD CONFIGURATIONS</code>.
+We cover here how to configure the editable sections of the <code>build.gradle.kts</code> file, aside from
+those sections for <a href="#resolving-dependencies">resolving dependencies</a>.</p>
+<ol>
+<li><strong>Edit the variable <code>libName</code> to contain the name of your library</strong>. The name can only contain
+    lower case alphanumeric characters, and "-". 
+    This value is used by Gradle to name the built jar file, and the zip file holding
+    your release artifacts. If this name does not match the name of the library in your code, 
+    as discussed in the section <a href="#developing-the-library">Developing the library</a>,
+    Processing will not find your library.</li>
+<li><strong>Edit the variable <code>group</code> with your own domain or organization name.</strong> The group id 
+    of your library uniquely identifies your project. It's often written in reverse domain name 
+    notation. For example, if your website is "myDomain.com", your group ID would be 
+    "com.myDomain". This group id should match the group id discussed in 
+    section <a href="#developing-the-library">Developing the library</a>.</li>
+<li>
+<p><strong>Define the <code>version</code> of your library in <code>build.gradle.kts</code>.</strong> This value will also be
+    included in the release artifact <code>library.properties</code>. The version of your library usually 
+    follows semantic versioning (semver), which uses three numbers separated by dots: 
+    "MAJOR.MINOR.PATCH" (e.g., "1.0.0"). </p>
+<ul>
+<li>MAJOR: Increases when you make incompatible changes.</li>
+<li>MINOR: Increases when you add new features that are backward-compatible.</li>
+<li>PATCH: Increases when you make backward-compatible bug fixes.</li>
+</ul>
+<p>You will update these numbers as you release new versions of your library.</p>
+</li>
+<li>
+<p>The <code>sketchbookLocation</code> is determined programmatically by your operation system, and is
+    where your Processing <code>sketchbook</code> folder is. This folder contains your installed libraries.
+    It is needed if you:</p>
+<ol>
+<li>wish to copy the library to the Processing sketchbook, which installs the library locally</li>
+<li>have Processing library dependencies</li>
+</ol>
+<p>This variable is in the editable section, in case the location determined is incorrect. A 
+symptom of an incorrect <code>sketchbookLocation</code> is that your library does not show up in the
+Contribution Manager in Processing, after being installed. Please look at our 
+<a href="troubleshooting.html">troubleshooting guide</a> if you suspect this is the case.</p>
+</li>
+</ol>
+<h2 id="creating-examples">Creating examples</h2>
+<p>Examples help users understand your library’s functionality, it is recommended that you include several clear and well-commented samples sketches in the <code>examples</code> folder.</p>
+<p><em>Note: The example sketch included in this template outputs the image shown on the home page.</em></p>
+<h2 id="creating-the-release-artifacts">Creating the release artifacts</h2>
+<p>If you've already gone through the <a href="getting-started.html#first-steps">Getting started</a> guide, you will have
+already run Gradle tasks, and edited the <code>release.properties</code> file.</p>
+<ol>
+<li>Fill in the file <code>release.properties</code> with information for your library. This information will be
+    used by Gradle to create the <code>library.properties</code> file, which is one of the required release 
+    artifacts, used by the website and Contribution Manager to describe your library. In the file itself,
+    There are comments to guide you. To create just the <code>library.properties</code> file without building the
+    library, toggle <code>Tasks</code> &gt; <code>processing</code> and double click <code>writeLibraryProperties</code>. This task will
+    copy all the values in <code>release.properties</code>, and also include the <code>version</code> in your <code>build.gradle.kts</code>
+    file as <code>prettyVersion</code>.</li>
+<li><strong>To build the library and create the release artifacts, run the Gradle task <code>releaseProcessingLib</code>.</strong>
+    This task will create a <code>release</code> folder with needed artifacts. To do this, go to the Gradle menu 
+    (elephant), toggle <code>Tasks</code> &gt; <code>processing</code> and double click <code>releaseProcessingLib</code>. This task 
+    has bundled the following required tasks:<ol>
+<li><code>build</code> task: this bundles a number of build tasks, including the <code>jar</code> task which creates a
+    jar file. all build artifacts are in the folder <code>build</code>.</li>
+<li>documentation build.</li>
+<li>creation of the <code>library.properties</code> file: this file is built from the properties set in the
+   <code>release.properties</code> file, plus the version, in the task <code>writeLibraryProperties</code>.</li>
+<li>within the <code>releaseProcessingLib</code> task, the <code>release</code> folder is created, jars of the library and
+    dependencies are copied, and the <code>library.properties</code> file is copied. Also, a zip file is made.</li>
+</ol>
+</li>
+<li>When you would like to test your library in Processing, toggle <code>Tasks</code> &gt; <code>processing</code> and double click
+    <code>deployToProcessingSketchbook</code>, which will create the release artifacts, and copy them into the 
+    sketchbook folder.</li>
+</ol>
+<h2 id="additional-documentation">Additional Documentation</h2>
+<p>See the following guides for more details:</p>
+<ul>
+<li><a href="https://github.com/processing/processing4/wiki/Library-Overview">Library Overview</a>: an introduction to Processing libraries in general.</li>
+<li><a href="https://github.com/processing/processing4/wiki/Library-Basics">Library Basics</a>: a basic guide for creating a Processing library from scratch, including structuring the library, registering methods with PApplet, handling events, and preparing the library for distribution.</li>
+<li><a href="https://github.com/processing/processing4/wiki/Library-Guidelines">Library Guidelines</a>: describes the requirements for a Processing library, including naming conventions, examples, and other best practices.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="getting-started.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Get Started">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Get Started
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="release.html" class="md-footer__link md-footer__link--next" aria-label="Next: Release">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Release
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      MIT Licence.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.select", "content.code.highlight", "content.code.annotate", "navigation.top", "navigation.footer"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+    
+  </body>
+</html>
