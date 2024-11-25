@@ -1,8 +1,7 @@
 /*
-   The PeasyCam Processing library, which provides an easy-spacefiller.peasy
-   camera for 3D sketching.
-  
-   Copyright 2008 Jonathan Feinberg
+	 Portions of this code are derived from the PeasyCam Processing library,
+	 which is Copyright 2008 Jonathan Feinberg and licensed under the Apache
+	 License, Version 2.0. The original license message appears below.
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
