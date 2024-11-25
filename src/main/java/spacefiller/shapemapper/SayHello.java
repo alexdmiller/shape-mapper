@@ -1,4 +1,4 @@
-package com.myDomain.myLibrary;
+package spacefiller.shapemapper;
 
 import processing.core.PApplet;
 

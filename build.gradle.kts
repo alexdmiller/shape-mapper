@@ -27,13 +27,13 @@ java {
 // Such as:
 // <libName>.jar will be the name of your build jar
 // <libName>.zip will be the name of your release file
-val libName = "myLibrary"
+val libName = "shapemapper"
 
 // The group ID of your library, which uniquely identifies your project.
 // It's often written in reverse domain name notation.
 // For example, if your website is "myDomain.com", your group ID would be "com.myDomain".
 // Replace "com.myDomain" with your own domain or organization name.
-group = "com.myDomain"
+group = "spacefiller"
 
 // The version of your library. It usually follows semantic versioning (semver),
 // which uses three numbers separated by dots: "MAJOR.MINOR.PATCH" (e.g., "1.0.0").
@@ -56,9 +56,9 @@ var sketchbookLocation = ""
 val userHome = System.getProperty("user.home")
 val currentOS = OperatingSystem.current()
 if(currentOS.isMacOsX) {
-    sketchbookLocation = "$userHome/Documents/Processing/sketchbook"
+    sketchbookLocation = "$userHome/Documents/Processing"
 } else if(currentOS.isWindows) {
-    sketchbookLocation = "$userHome/My Documents/Processing/sketchbook"
+    sketchbookLocation = "$userHome/My Documents/Processing"
 } else {
     sketchbookLocation = "$userHome/sketchbook"
 }

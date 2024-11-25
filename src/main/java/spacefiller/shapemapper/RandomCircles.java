@@ -1,4 +1,4 @@
-package com.myDomain.myLibrary;
+package spacefiller.shapemapper;
 
 import processing.core.*;
 import org.apache.commons.math3.random.*;
