@@ -8,6 +8,14 @@ import org.gradle.internal.os.OperatingSystem
 
 plugins {
     id("java")
+    id("org.bytedeco.gradle-javacpp-platform") version "1.5.10"
+}
+
+project.extra.apply {
+    set(
+        "javacppPlatform",
+        "linux-x86_64,macosx-x86_64,macosx-arm64,windows-x86_64,linux-armhf,linux-arm64"
+    )
 }
 
 // Sets the Java version to use for compiling your library.
@@ -67,6 +75,9 @@ if(currentOS.isMacOsX) {
 // sketchbookLocation = "$userHome/sketchbook"
 
 
+var javaCvVersion = "1.5.10"
+
+
 // Repositories where dependencies will be fetched from.
 // You can add additional repositories here if your dependencies are hosted elsewhere.
 repositories {
@@ -92,6 +103,10 @@ dependencies {
     // To add a dependency on a Processing library that is installed locally,
     // uncomment the line below, and replace <library folder> with the location of that library
     // compileOnly(fileTree("$sketchbookLocation/libraries/<library folder>/library"))
+
+    // opencv
+    implementation(group = "org.bytedeco", name = "opencv-platform", version = "4.9.0-$javaCvVersion")
+    implementation(group = "org.bytedeco", name = "openblas-platform", version = "0.3.26-$javaCvVersion")
 
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
@@ -160,7 +175,7 @@ tasks.javadoc.get().mustRunAfter("build")
 
 tasks.register("buildReleaseArtifacts") {
     group = "processing"
-    dependsOn("clean","build","javadoc", "writeLibraryProperties")
+    dependsOn("clean","build","writeLibraryProperties")
     finalizedBy("packageRelease", "duplicateZipToPdex")
 
     doFirst {

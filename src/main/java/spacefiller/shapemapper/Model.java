@@ -1,0 +1,92 @@
+package spacefiller.shapemapper;
+
+import processing.core.PApplet;
+import processing.core.PShape;
+import processing.core.PVector;
+import processing.opengl.PGraphics3D;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import static spacefiller.shapemapper.GeometryUtils.getClosestPointOnShape;
+
+public class Model implements Serializable {
+  private transient PApplet parent;
+  private transient PGraphics3D parentGraphics;
+  private transient PShape shape;
+  private transient PShape internalCopy;
+
+  private String name;
+  private List<Mapping> mappings;
+
+  public Model(String name, PApplet parent, PShape shape) {
+    this.name = name;
+    this.parent = parent;
+
+    try {
+      this.parentGraphics = (PGraphics3D) parent.getGraphics();
+    } catch (ClassCastException e) {
+      System.out.println("ModelMapper: Must use P3D rendering mode with ModelMapper library. Example:");
+      System.out.println("ModelMapper:   size(500, 500, P3D)");
+    }
+
+    // Make a clean copy of the shape so that client modifications don't trickle down
+    // into this shape.
+    this.shape = ShapeUtils.createShape(parent, shape);
+
+    // For some reason, drawing `this.shape` changes its state such that the user can no
+    // longer call shape(...) on it. We draw a debug copy instead to keep it isolated.
+    this.internalCopy = ShapeUtils.createShape(parent, shape);
+
+    this.mappings = new ArrayList<>();
+
+    // Each model starts with one mapping
+    createMapping();
+  }
+
+  protected void setMappingsFromModel(Model from) {
+    mappings = new ArrayList<>();
+    for (Mapping otherMapping : from.getMappings()) {
+      Mapping m = new Mapping(this.parentGraphics);
+      m.setFromOtherMapping(otherMapping);
+      mappings.add(m);
+    }
+  }
+
+  public void createMapping() {
+    Mapping m = new Mapping(this.parentGraphics);
+    mappings.add(m);
+  }
+
+  public Iterable<Mapping> getMappings() {
+    return mappings;
+  }
+
+  public Mapping getMapping(int index) {
+    return mappings.get(index);
+  }
+
+  public int getNumMappings() {
+    return mappings.size();
+  }
+
+  public PShape getShape() {
+    return shape;
+  }
+
+  public void draw(PGraphics3D canvas) {
+    canvas.resetShader();
+    this.internalCopy.disableStyle();
+    canvas.shape(this.internalCopy);
+  }
+
+
+  public PVector getClosestPointTo(PVector mouse, PGraphics3D modelCanvas) {
+    return getClosestPointOnShape(mouse, shape, modelCanvas);
+  }
+
+  public String getName() {
+    return name;
+  }
+}
