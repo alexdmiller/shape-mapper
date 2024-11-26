@@ -47,11 +47,6 @@ public class ShapeMapper {
 
   PShader shapeRenderShader;
 
-  // UI images
-  PImage uiModel;
-  PImage uiProjection;
-  PImage uiNoCalibration;
-  PImage uiPressSpace;
   private int uiPressSpaceCountdown;
 
   // TODO: add constructor that accepts a model
@@ -76,11 +71,6 @@ public class ShapeMapper {
       this.parent.registerMethod("keyEvent", this);
 
       shapeRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/model.frag.glsl"));
-      uiModel = parent.loadImage(IOUtils.extractResourceToFile("/ui-model.png"));
-      uiProjection = parent.loadImage(IOUtils.extractResourceToFile("/ui-projection.png"));
-      uiNoCalibration = parent.loadImage(IOUtils.extractResourceToFile("/no-calibration.png"));
-      uiPressSpace = parent.loadImage(IOUtils.extractResourceToFile("/press-space.png"));
-      uiPressSpaceCountdown = 1000;
 
       this.shapes = new ArrayList<>();
       loadCalibration();
@@ -284,13 +274,6 @@ public class ShapeMapper {
             PVector projectedVertex = worldToScreen(selectedVertex, shapeCanvas);
             drawCrossHairs(projectedVertex.x, projectedVertex.y, parent.color(255, 0, 255));
           }
-
-          parent.image(
-              uiModel,
-              20,
-              parent.height - uiModel.height / 2f - 20,
-              uiModel.width / 2f,
-              uiModel.height / 2f);
         } else if (calibrateMode == CalibrateMode.PROJECTION) {
           camera.setActive(false);
 
@@ -349,13 +332,6 @@ public class ShapeMapper {
             parent.noFill();
             parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS + 5, UI_CIRCLE_RADIUS + 5);
           }
-
-          parent.image(
-            uiProjection,
-            20,
-            parent.height - uiProjection.height / 2f - 20,
-            uiProjection.width / 2f,
-            uiProjection.height / 2f);
         }
 
         // Draw mouse cross-hairs
@@ -363,27 +339,6 @@ public class ShapeMapper {
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
         parent.cursor();
-
-        // Show UI hint for switching to calibration mode on a countdown timer; hide it
-        // after `uiPressSpaceCountdown` frames have passed. `uiPressSpaceCountdown` is
-        // set when the sketch is initialized and whenever the user switches from
-        // calibration mode to render mode.
-        if (uiPressSpaceCountdown > 0) {
-          parent.hint(DISABLE_DEPTH_TEST);
-          parent.rectMode(CENTER);
-          if (uiPressSpaceCountdown < 100){
-            parent.tint(255, uiPressSpaceCountdown / 100f * 255);
-          }
-          parent.image(
-              uiPressSpace,
-              20,
-              parent.height - uiPressSpace.height / 2f - 20,
-              uiPressSpace.width / 2f,
-              uiPressSpace.height / 2f);
-          parent.hint(ENABLE_DEPTH_TEST);
-          parent.tint(255, 255);
-          uiPressSpaceCountdown--;
-        }
       }
     } catch (Exception e) {
       e.printStackTrace();
