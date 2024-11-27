@@ -11,7 +11,7 @@ import java.util.List;
 
 import static spacefiller.shapemapper.GeometryUtils.getClosestPointOnShape;
 
-public class Shape implements Serializable {
+public class MappedShape implements Serializable {
   private transient PApplet parent;
   private transient PGraphics3D parentGraphics;
   private transient PShape shape;
@@ -20,7 +20,7 @@ public class Shape implements Serializable {
   private String name;
   private List<Mapping> mappings;
 
-  public Shape(String name, PApplet parent, PShape shape) {
+  public MappedShape(String name, PApplet parent, PShape shape) {
     this.name = name;
     this.parent = parent;
 
@@ -45,7 +45,7 @@ public class Shape implements Serializable {
     createMapping();
   }
 
-  protected void setMappingsFromModel(Shape from) {
+  protected void setMappingsFromModel(MappedShape from) {
     mappings = new ArrayList<>();
     for (Mapping otherMapping : from.getMappings()) {
       Mapping m = new Mapping(parent, parentGraphics, internalCopy);
@@ -87,5 +87,21 @@ public class Shape implements Serializable {
 
   public String getName() {
     return name;
+  }
+
+  public void beginMapping() {
+    if (mappings.size() != 1) {
+      System.out.println("ShapeMapper: Cannot call beginMapping() on shape that has more than one mapping.");
+      System.out.println("ShapeMapper: You need to loop over all mappings and draw them separately.");
+      throw new RuntimeException();
+    }
+    mappings.get(0).beginMapping();
+  }
+
+  public void endMapping() {
+    if (mappings.size() != 1) {
+      return;
+    }
+    mappings.get(0).endMapping();
   }
 }

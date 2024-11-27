@@ -1,8 +1,6 @@
 package spacefiller.shapemapper;
 
 import processing.core.*;
-import processing.opengl.PGL;
-import processing.opengl.PJOGL;
 import spacefiller.peasy.CameraState;
 import spacefiller.peasy.PeasyCam;
 import processing.event.KeyEvent;
@@ -36,8 +34,8 @@ public class ShapeMapper {
   private PGraphics3D shapeCanvas;
   private PGraphics3D projectionCanvas;
 
-  private List<Shape> shapes;
-  private List<Shape> previouslySavedShapes;
+  private List<MappedShape> shapes;
+  private List<MappedShape> previouslySavedShapes;
   private int currentShapeIndex = -1;
   private int currentMappingIndex = -1;
 
@@ -54,6 +52,10 @@ public class ShapeMapper {
   // TODO: add constructor that accepts a model
 
   public ShapeMapper(PApplet parent) {
+    this(parent, null);
+  }
+
+  public ShapeMapper(PApplet parent, PShape shape) {
     try {
       this.parent = parent;
       try {
@@ -82,10 +84,14 @@ public class ShapeMapper {
       e.printStackTrace();
       throw e;
     }
+
+    if (shape != null) {
+      addShape(shape);
+    }
   }
 
-  public Shape getModel(String name) {
-    for (Shape m : shapes) {
+  public MappedShape getModel(String name) {
+    for (MappedShape m : shapes) {
       if (m.getName().equals(name)) {
         return m;
       }
@@ -93,8 +99,8 @@ public class ShapeMapper {
     return null;
   }
 
-  public Shape getPreviouslySavedShape(String name) {
-    for (Shape m : previouslySavedShapes) {
+  public MappedShape getPreviouslySavedShape(String name) {
+    for (MappedShape m : previouslySavedShapes) {
       if (m.getName().equals(name)) {
         return m;
       }
@@ -102,24 +108,24 @@ public class ShapeMapper {
     return null;
   }
 
-  public void addShape(PShape shape) {
-    addShape("default", shape);
+  public MappedShape addShape(PShape shape) {
+    return addShape("default", shape);
   }
 
-  public void addShape(String name, PShape shape) {
+  public MappedShape addShape(String name, PShape shape) {
     if (getModel(name) != null) {
       System.out.println("ShapeMapper: Could not add model with name '" + name + "'.");
       System.out.println("ShapeMapper: The model already exists, and model names must be unique.");
-      return;
+      throw new RuntimeException();
     }
 
     // If we share the model with the client, then when the client renders it, they can
     // update state that will impact our ability to render it. For consistent rendering,
     // make our own private copy.
     PShape shapeCopy = ShapeUtils.createShape(parent, shape);
-    Shape wrappedShape = new Shape(name, parent, shapeCopy);
+    MappedShape wrappedShape = new MappedShape(name, parent, shapeCopy);
 
-    Shape previouslySaved = getPreviouslySavedShape(name);
+    MappedShape previouslySaved = getPreviouslySavedShape(name);
     if (previouslySaved != null) {
       System.out.println("ShapeMapper: Found a previously saved model for " + name);
       wrappedShape.setMappingsFromModel(previouslySaved);
@@ -129,9 +135,10 @@ public class ShapeMapper {
 
     currentShapeIndex = shapes.size() - 1;
     currentMappingIndex = 0;
+    return wrappedShape;
   }
 
-  public Shape getCurrentShape() {
+  private MappedShape getCurrentShape() {
     if (currentShapeIndex >= 0) {
       return this.shapes.get(currentShapeIndex);
     } else {
@@ -139,7 +146,7 @@ public class ShapeMapper {
     }
   }
 
-  public Mapping getCurrentMapping() {
+  private Mapping getCurrentMapping() {
     if (currentShapeIndex >= 0 && currentMappingIndex >= 0) {
       return this.shapes.get(currentShapeIndex).getMapping(currentMappingIndex);
     } else {
@@ -155,7 +162,7 @@ public class ShapeMapper {
     this.mode = Mode.RENDER;
   }
 
-  public Iterable<Shape> getShapes() {
+  public Iterable<MappedShape> getShapes() {
     return shapes;
   }
 
@@ -178,7 +185,7 @@ public class ShapeMapper {
     try {
       FileInputStream fileInputStream = new FileInputStream(parent.dataPath("calibration.ser"));
       ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
-      previouslySavedShapes = (List<Shape>) objectInputStream.readObject();
+      previouslySavedShapes = (List<MappedShape>) objectInputStream.readObject();
       objectInputStream.close();
     } catch (IOException | ClassNotFoundException e) {
       System.out.println("ShapeMapper: Attempted to load calibration data, but it does not exist yet.");
@@ -208,7 +215,7 @@ public class ShapeMapper {
    * Processing hooks
    */
   public void draw() {
-    Shape currentShape = getCurrentShape();
+    MappedShape currentShape = getCurrentShape();
     Mapping currentMapping = getCurrentMapping();
 
     try {
@@ -282,10 +289,10 @@ public class ShapeMapper {
 
           camera.setActive(false);
 
-          for (Shape shape : shapes) {
+          for (MappedShape shape : shapes) {
             for (Mapping mapping: shape.getMappings()) {
               if (mapping.isReady()) {
-                mapping.begin(projectionCanvas);
+                mapping.beginMapping(projectionCanvas);
 
                 if (shape == currentShape && mapping == currentMapping) {
                   projectionCanvas.fill(25);
@@ -298,7 +305,7 @@ public class ShapeMapper {
                 }
 
                 shape.draw(projectionCanvas);
-                mapping.end(projectionCanvas, false);
+                mapping.endMapping(projectionCanvas, false);
               }
             }
           }
@@ -340,10 +347,10 @@ public class ShapeMapper {
         parent.noCursor();
         parent.background(0);
 
-        for (Shape shape : shapes) {
+        for (MappedShape shape : shapes) {
           for (Mapping mapping: shape.getMappings()) {
             if (mapping.isReady()) {
-              mapping.begin(projectionCanvas);
+              mapping.beginMapping(projectionCanvas);
 
               if (shape == currentShape && mapping == currentMapping) {
                 mapping.drawFaceMask(projectionCanvas);
@@ -368,7 +375,7 @@ public class ShapeMapper {
                 shape.draw(projectionCanvas);
               }
 
-              mapping.end(projectionCanvas, false);
+              mapping.endMapping(projectionCanvas, false);
             }
           }
         }
@@ -398,7 +405,7 @@ public class ShapeMapper {
   }
 
   public void mouseEvent(MouseEvent event) {
-    Shape shape = getCurrentShape();
+    MappedShape shape = getCurrentShape();
     Mapping mapping = getCurrentMapping();
 
     PVector mouse = new PVector(event.getX(), event.getY());
@@ -482,12 +489,28 @@ public class ShapeMapper {
         selectedVertex = null;
         resetCamera();
       } else if (event.getKey() == 'c') {
-        Shape current = getCurrentShape();
+        MappedShape current = getCurrentShape();
         current.createMapping();
         currentMappingIndex = current.getNumMappings() - 1;
         selectedVertex = null;
         resetCamera();
       }
     }
+  }
+
+  public void beginMapping() {
+    if (shapes.size() != 1) {
+      System.out.println("ShapeMapper: Cannot call ShapeMapper.beginMapping() when you have more than one shape.");
+      System.out.println("ShapeMapper: You need to call mappedShape.beginMapping() on each shape separately.");
+      throw new RuntimeException();
+    }
+    shapes.get(0).beginMapping();
+  }
+
+  public void endMapping() {
+    if (shapes.size() != 1) {
+      return;
+    }
+    shapes.get(0).endMapping();
   }
 }

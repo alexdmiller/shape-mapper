@@ -69,15 +69,15 @@ public class Mapping implements Serializable {
     return transform.isReady();
   }
 
-  public void begin() {
-    begin(parentGraphics);
+  public void beginMapping() {
+    beginMapping(parentGraphics);
   }
 
-  public void end() {
-    end(parentGraphics);
+  public void endMapping() {
+    endMapping(parentGraphics);
   }
 
-  public void begin(PGraphics3D graphics) {
+  public void beginMapping(PGraphics3D graphics) {
     if (isReady()) {
       graphics.pushMatrix();
       graphics.pushProjection();
@@ -89,11 +89,11 @@ public class Mapping implements Serializable {
     }
   }
 
-  public void end(PGraphics3D graphics) {
-    end(graphics, true);
+  public void endMapping(PGraphics3D graphics) {
+    endMapping(graphics, true);
   }
 
-  public void end(PGraphics3D graphics, boolean drawFaceMask) {
+  public void endMapping(PGraphics3D graphics, boolean drawFaceMask) {
     if (isReady()) {
       if (drawFaceMask) {
         for (Integer shapeIndex : faceMask.keySet()) {
