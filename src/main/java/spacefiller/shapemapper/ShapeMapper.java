@@ -1,6 +1,8 @@
 package spacefiller.shapemapper;
 
 import processing.core.*;
+import processing.opengl.PGL;
+import processing.opengl.PJOGL;
 import spacefiller.peasy.CameraState;
 import spacefiller.peasy.PeasyCam;
 import processing.event.KeyEvent;
@@ -21,7 +23,7 @@ public class ShapeMapper {
   private static final float UI_CIRCLE_RADIUS = 10;
 
   private enum Mode {
-    CALIBRATE, RENDER
+    CALIBRATE, RENDER, MASK_FACES
   }
 
   private enum CalibrateMode {
@@ -47,7 +49,7 @@ public class ShapeMapper {
 
   PShader shapeRenderShader;
 
-  private int uiPressSpaceCountdown;
+  private int recentlyHoveredSubshapeIndex;
 
   // TODO: add constructor that accepts a model
 
@@ -275,6 +277,9 @@ public class ShapeMapper {
             drawCrossHairs(projectedVertex.x, projectedVertex.y, parent.color(255, 0, 255));
           }
         } else if (calibrateMode == CalibrateMode.PROJECTION) {
+          parent.noCursor();
+          parent.background(0);
+
           camera.setActive(false);
 
           for (Shape shape : shapes) {
@@ -293,18 +298,10 @@ public class ShapeMapper {
                 }
 
                 shape.draw(projectionCanvas);
-                mapping.end(projectionCanvas);
-              } else {
-//                parent.image(
-//                    uiNoCalibration,
-//                    parent.width / 2f - uiNoCalibration.width / 4f,
-//                    parent.height / 2f - uiNoCalibration.height / 4f,
-//                    uiNoCalibration.width / 2f,
-//                    uiNoCalibration.height / 2f);
+                mapping.end(projectionCanvas, false);
               }
             }
           }
-
 
           parent.image(projectionCanvas, 0, 0);
 
@@ -339,6 +336,44 @@ public class ShapeMapper {
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
         parent.cursor();
+      } else if (mode == Mode.MASK_FACES) {
+        parent.noCursor();
+        parent.background(0);
+
+        for (Shape shape : shapes) {
+          for (Mapping mapping: shape.getMappings()) {
+            if (mapping.isReady()) {
+              mapping.begin(projectionCanvas);
+
+              if (shape == currentShape && mapping == currentMapping) {
+                mapping.drawFaceMask(projectionCanvas);
+
+                int shapeIndex = GeometryUtils.pickFace(
+                    shape.getShape(),
+                    new PVector(parent.mouseX, parent.mouseY),
+                    projectionCanvas);
+
+                recentlyHoveredSubshapeIndex = shapeIndex;
+                if (shapeIndex >= 0) {
+                  int c = (int) ((Math.sin(parent.frameCount / 10f) + 1) / 2 * 255);
+                  projectionCanvas.stroke(c);
+                  projectionCanvas.fill(c);
+                  projectionCanvas.strokeWeight(2);
+                  shape.getShape().getChild(shapeIndex).draw(projectionCanvas);
+                }
+              } else {
+                projectionCanvas.fill(0);
+                projectionCanvas.stroke(50);
+                projectionCanvas.strokeWeight(2);
+                shape.draw(projectionCanvas);
+              }
+
+              mapping.end(projectionCanvas, false);
+            }
+          }
+        }
+        parent.image(projectionCanvas, 0, 0);
+        drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -368,32 +403,38 @@ public class ShapeMapper {
 
     PVector mouse = new PVector(event.getX(), event.getY());
 
-    if (mode != Mode.CALIBRATE) {
-      // Library only responds to mouse input when in calibrate mode
-      return;
-    }
+    if (mode == Mode.CALIBRATE) {
+      if (calibrateMode == CalibrateMode.SELECT_POINT) {
+        if (event.getAction() == MouseEvent.CLICK) {
+          selectedVertex = shape.getClosestPointTo(mouse, shapeCanvas);
+        }
 
-    if (calibrateMode == CalibrateMode.SELECT_POINT) {
-      if (event.getAction() == MouseEvent.CLICK) {
-        selectedVertex = shape.getClosestPointTo(mouse, shapeCanvas);
+        getCurrentMapping().setCameraState(camera.getState());
+      } else if (calibrateMode == CalibrateMode.PROJECTION) {
+        switch (event.getAction()) {
+          case MouseEvent.PRESS:
+            PVector newSelection = mapping.getClosestMappedPointTo(mouse);
+            if (newSelection != null) {
+              selectedVertex = newSelection;
+            }
+            break;
+          case MouseEvent.DRAG:
+          case MouseEvent.CLICK:
+            if (selectedVertex != null) {
+              mapping.put(selectedVertex, mouse);
+              saveCalibration();
+            }
+            break;
+        }
       }
-
-      getCurrentMapping().setCameraState(camera.getState());
-    } else if (calibrateMode == CalibrateMode.PROJECTION) {
-      switch (event.getAction()) {
-        case MouseEvent.PRESS:
-          PVector newSelection = mapping.getClosestMappedPointTo(mouse);
-          if (newSelection != null) {
-            selectedVertex = newSelection;
-          }
-          break;
-        case MouseEvent.DRAG:
-        case MouseEvent.CLICK:
-          if (selectedVertex != null) {
-            mapping.put(selectedVertex, mouse);
-            saveCalibration();
-          }
-          break;
+    } else if (mode == Mode.MASK_FACES) {
+      if (event.getAction() == MouseEvent.CLICK) {
+        if (recentlyHoveredSubshapeIndex >= 0) {
+          mapping.setFaceMask(
+              recentlyHoveredSubshapeIndex,
+              !mapping.getFaceMask(recentlyHoveredSubshapeIndex));
+          saveCalibration();
+        }
       }
     }
   }
@@ -410,13 +451,15 @@ public class ShapeMapper {
   public void keyEvent(KeyEvent event) {
     if (event.getAction() == KeyEvent.PRESS) {
       if (event.getKeyCode() == 32) { // space
-        uiPressSpaceCountdown = 300;
         mode = (mode == Mode.CALIBRATE) ? Mode.RENDER : Mode.CALIBRATE;
         resetCamera();
       } else if (event.getKeyCode() == 9) { // tab
         calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT)
             ? CalibrateMode.PROJECTION
             : CalibrateMode.SELECT_POINT;
+        resetCamera();
+      } else if (event.getKey() == 'm') {
+        mode = (mode == Mode.MASK_FACES) ? Mode.RENDER : Mode.MASK_FACES;
         resetCamera();
       } else if (event.getKeyCode() == 37) { // left
         currentShapeIndex = (currentShapeIndex + 1) % shapes.size();

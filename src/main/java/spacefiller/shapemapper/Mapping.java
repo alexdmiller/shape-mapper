@@ -1,5 +1,8 @@
 package spacefiller.shapemapper;
 
+import processing.core.PApplet;
+import processing.core.PGraphics;
+import processing.core.PShape;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 import spacefiller.peasy.CameraState;
@@ -13,15 +16,25 @@ import static spacefiller.shapemapper.GeometryUtils.getClosestPointByMappedPoint
 
 public class Mapping implements Serializable {
   private transient PGraphics3D parentGraphics;
+  private transient PApplet parent;
   private transient GraphicsTransform transform;
   private transient CameraState cameraState;
+  private transient PShape shape;
 
   private Map<PVector, PVector> points;
+  private Map<Integer, Boolean> faceMask;
 
-  public Mapping(PGraphics3D parentGraphics) {
+  public Mapping(PApplet parent, PGraphics3D parentGraphics, PShape shape) {
+    this.parent = parent;
     this.parentGraphics = parentGraphics;
     this.points = new HashMap<>();
     this.transform = new GraphicsTransform();
+    this.faceMask = new HashMap<>();
+    this.shape = shape;
+
+    for (int i = 0; i < shape.getChildCount(); i++) {
+      faceMask.put(i, false);
+    }
   }
 
   public void put(PVector from, PVector to) {
@@ -52,11 +65,9 @@ public class Mapping implements Serializable {
     return getClosestPointByMappedPoint(query, points);
   }
 
-
   public boolean isReady() {
     return transform.isReady();
   }
-
 
   public void begin() {
     begin(parentGraphics);
@@ -79,7 +90,27 @@ public class Mapping implements Serializable {
   }
 
   public void end(PGraphics3D graphics) {
+    end(graphics, true);
+  }
+
+  public void end(PGraphics3D graphics, boolean drawFaceMask) {
     if (isReady()) {
+      if (drawFaceMask) {
+        for (Integer shapeIndex : faceMask.keySet()) {
+          PShape subshape = shape.getChild(shapeIndex);
+          graphics.resetShader();
+          graphics.noStroke();
+          subshape.disableStyle();
+          if (faceMask.get(shapeIndex)) {
+            graphics.fill(0);
+            graphics.stroke(0);
+            graphics.strokeWeight(2);
+            graphics.shape(subshape);
+          }
+          graphics.noStroke();
+        }
+      }
+
       graphics.popMatrix();
       graphics.popProjection();
     }
@@ -88,6 +119,7 @@ public class Mapping implements Serializable {
   public void setFromOtherMapping(Mapping otherMapping) {
     // TODO: need to copy points?
     this.points = otherMapping.points;
+    this.faceMask = otherMapping.faceMask;
     computeTransform();
   }
 
@@ -97,5 +129,29 @@ public class Mapping implements Serializable {
 
   public CameraState getCameraState() {
     return this.cameraState;
+  }
+
+  public void setFaceMask(int faceIndex, boolean value) {
+    faceMask.put(faceIndex, value);
+  }
+
+  public boolean getFaceMask(int faceIndex) {
+    return faceMask.get(faceIndex);
+  }
+
+  public void drawFaceMask(PGraphics canvas) {
+    for (Integer shapeIndex : faceMask.keySet()) {
+      PShape subshape = shape.getChild(shapeIndex);
+      canvas.resetShader();
+      canvas.stroke(255);
+      canvas.strokeWeight(2);
+      subshape.disableStyle();
+      if (faceMask.get(shapeIndex)) {
+        canvas.fill(100);
+      } else {
+        canvas.fill(0);
+      }
+      canvas.shape(subshape);
+    }
   }
 }

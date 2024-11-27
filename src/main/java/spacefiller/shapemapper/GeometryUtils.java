@@ -61,4 +61,76 @@ public class GeometryUtils {
     }
     return null;
   }
+
+  public static int pickFace(PShape shape, PVector mouseClick, PGraphics3D graphics) {
+    float closestZ = Float.POSITIVE_INFINITY;
+    int closestFaceIndex = -1;
+
+    // For each face in the shape
+    for (int i = 0; i < shape.getChildCount(); i++) {
+      PShape face = shape.getChild(i);
+
+      // Get vertices of the face (assuming triangulated faces)
+      PVector[] worldSpaceVertices = new PVector[3];
+      for (int v = 0; v < 3; v++) {
+        float x = face.getVertexX(v);
+        float y = face.getVertexY(v);
+        float z = face.getVertexZ(v);
+
+        // Transform vertex to screen space
+        PVector vertex = new PVector(x, y, z);
+        vertex = worldToScreen(vertex, graphics);
+        worldSpaceVertices[v] = vertex;
+      }
+
+      // Check if mouse click is inside the triangle
+      if (pointInTriangle(mouseClick,
+          worldSpaceVertices[0],
+          worldSpaceVertices[1],
+          worldSpaceVertices[2])) {
+
+        // Calculate the z-depth at the clicked point using interpolation
+        float z = interpolateZ(mouseClick,
+            worldSpaceVertices[0],
+            worldSpaceVertices[1],
+            worldSpaceVertices[2]);
+
+        // Update closest face if this one is closer
+        if (z < closestZ) {
+          closestZ = z;
+          closestFaceIndex = i;
+        }
+      }
+    }
+
+    return closestFaceIndex;
+  }
+
+  public static boolean pointInTriangle(PVector p, PVector a, PVector b, PVector c) {
+    float areaABC = Math.abs((b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y));
+    float areaPBC = Math.abs((b.x - p.x) * (c.y - p.y) - (c.x - p.x) * (b.y - p.y));
+    float areaPCA = Math.abs((c.x - p.x) * (a.y - p.y) - (a.x - p.x) * (c.y - p.y));
+    float areaPAB = Math.abs((a.x - p.x) * (b.y - p.y) - (b.x - p.x) * (a.y - p.y));
+
+    float alpha = areaPBC / areaABC;
+    float beta = areaPCA / areaABC;
+    float gamma = areaPAB / areaABC;
+
+    return Math.abs(1 - (alpha + beta + gamma)) < 0.0001; // Account for floating point error
+  }
+
+  // Helper method to interpolate Z value at a point within a triangle
+  private static float interpolateZ(PVector p, PVector a, PVector b, PVector c) {
+    float areaABC = Math.abs((b.x - a.x) * (c.y - a.y) - (c.x - a.x) * (b.y - a.y));
+    float areaPBC = Math.abs((b.x - p.x) * (c.y - p.y) - (c.x - p.x) * (b.y - p.y));
+    float areaPCA = Math.abs((c.x - p.x) * (a.y - p.y) - (a.x - p.x) * (c.y - p.y));
+
+    // Calculate barycentric coordinates
+    float alpha = areaPBC / areaABC;
+    float beta = areaPCA / areaABC;
+    float gamma = 1 - alpha - beta;
+
+    // Interpolate z using barycentric coordinates
+    return alpha * a.z + beta * b.z + gamma * c.z;
+  }
 }

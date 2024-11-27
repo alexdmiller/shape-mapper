@@ -48,14 +48,14 @@ public class Shape implements Serializable {
   protected void setMappingsFromModel(Shape from) {
     mappings = new ArrayList<>();
     for (Mapping otherMapping : from.getMappings()) {
-      Mapping m = new Mapping(this.parentGraphics);
+      Mapping m = new Mapping(parent, parentGraphics, internalCopy);
       m.setFromOtherMapping(otherMapping);
       mappings.add(m);
     }
   }
 
   public void createMapping() {
-    Mapping m = new Mapping(this.parentGraphics);
+    Mapping m = new Mapping(parent, parentGraphics, internalCopy);
     mappings.add(m);
   }
 
@@ -80,7 +80,6 @@ public class Shape implements Serializable {
     this.internalCopy.disableStyle();
     canvas.shape(this.internalCopy);
   }
-
 
   public PVector getClosestPointTo(PVector mouse, PGraphics3D modelCanvas) {
     return getClosestPointOnShape(mouse, shape, modelCanvas);
