@@ -76,7 +76,6 @@ public class MappedShape implements Serializable {
   }
 
   public void draw(PGraphics3D canvas) {
-    canvas.resetShader();
     this.internalCopy.disableStyle();
     canvas.shape(this.internalCopy);
   }

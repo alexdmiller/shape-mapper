@@ -46,6 +46,7 @@ public class ShapeMapper {
   private PVector selectedVertex;
 
   PShader shapeRenderShader;
+  PShader normalShader;
 
   private int recentlyHoveredSubshapeIndex;
 
@@ -75,6 +76,9 @@ public class ShapeMapper {
       this.parent.registerMethod("keyEvent", this);
 
       shapeRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/model.frag.glsl"));
+      normalShader = parent.loadShader(
+          IOUtils.extractResourceToFile("/normal_shading.frag.glsl"),
+          IOUtils.extractResourceToFile("/normal_shading.vert.glsl"));
 
       this.shapes = new ArrayList<>();
       loadCalibration();
@@ -207,13 +211,36 @@ public class ShapeMapper {
     parentGraphics.text("Model: " + currentShapeIndex + " (press LEFT/RIGHT to change)", 10, 60);
     parentGraphics.text("Mapping: " + currentMappingIndex + " (press UP/DOWN to change)", 10, 80);
     parentGraphics.text("Press C to create new mapping", 10, 100);
+    parentGraphics.text("Press M to switch to face masking mode", 10, 120);
 
     parentGraphics.hint(ENABLE_DEPTH_TEST);
   }
 
-  /**
-   * Processing hooks
-   */
+  public void beginMapping() {
+    if (shapes.size() != 1) {
+      System.out.println("ShapeMapper: Cannot call ShapeMapper.beginMapping() when you have more than one shape.");
+      System.out.println("ShapeMapper: You need to call mappedShape.beginMapping() on each shape separately.");
+      throw new RuntimeException();
+    }
+    shapes.get(0).beginMapping();
+  }
+
+  public void endMapping() {
+    if (shapes.size() != 1) {
+      return;
+    }
+    shapes.get(0).endMapping();
+  }
+
+  private void resetCamera() {
+    CameraState state = getCurrentMapping().getCameraState();
+    if (state != null) {
+      camera.setState(state);
+    } else {
+      camera.reset();
+    }
+  }
+
   public void draw() {
     MappedShape currentShape = getCurrentShape();
     Mapping currentMapping = getCurrentMapping();
@@ -238,12 +265,17 @@ public class ShapeMapper {
           shapeCanvas.clear();
           shapeCanvas.scale(1, -1, 1);
 
-          shapeCanvas.fill(25);
+          shapeCanvas.fill(0, 0, 255);
           shapeCanvas.stroke(255);
           shapeCanvas.strokeWeight(2);
 
+          shapeCanvas.lights();
+          normalShader.set("normalColorStrength", 0.5f);
+          shapeCanvas.shader(normalShader);
+
           currentShape.draw(shapeCanvas);
 
+          shapeCanvas.resetShader();
           shapeCanvas.endDraw();
 
           parent.resetShader();
@@ -295,16 +327,19 @@ public class ShapeMapper {
                 mapping.beginMapping(projectionCanvas);
 
                 if (shape == currentShape && mapping == currentMapping) {
-                  projectionCanvas.fill(25);
                   projectionCanvas.stroke(255);
                   projectionCanvas.strokeWeight(2);
+                  normalShader.set("normalColorStrength", 0.5f);
                 } else {
-                  projectionCanvas.fill(0);
                   projectionCanvas.stroke(50);
                   projectionCanvas.strokeWeight(2);
+                  normalShader.set("normalColorStrength", 0.25f);
                 }
 
+                projectionCanvas.lights();
+                projectionCanvas.shader(normalShader);
                 shape.draw(projectionCanvas);
+                projectionCanvas.resetShader();
                 mapping.endMapping(projectionCanvas, false);
               }
             }
@@ -352,6 +387,9 @@ public class ShapeMapper {
             if (mapping.isReady()) {
               mapping.beginMapping(projectionCanvas);
 
+              // TODO: throw error if you try to turn on masking without subshapes
+              // TODO: use normal shader for masking
+              // TODO: potentially refactor so that masking is a "tool" inside of projection mode?
               if (shape == currentShape && mapping == currentMapping) {
                 mapping.drawFaceMask(projectionCanvas);
 
@@ -446,15 +484,6 @@ public class ShapeMapper {
     }
   }
 
-  private void resetCamera() {
-    CameraState state = getCurrentMapping().getCameraState();
-    if (state != null) {
-      camera.setState(state);
-    } else {
-      camera.reset();
-    }
-  }
-
   public void keyEvent(KeyEvent event) {
     if (event.getAction() == KeyEvent.PRESS) {
       if (event.getKeyCode() == 32) { // space
@@ -496,21 +525,5 @@ public class ShapeMapper {
         resetCamera();
       }
     }
-  }
-
-  public void beginMapping() {
-    if (shapes.size() != 1) {
-      System.out.println("ShapeMapper: Cannot call ShapeMapper.beginMapping() when you have more than one shape.");
-      System.out.println("ShapeMapper: You need to call mappedShape.beginMapping() on each shape separately.");
-      throw new RuntimeException();
-    }
-    shapes.get(0).beginMapping();
-  }
-
-  public void endMapping() {
-    if (shapes.size() != 1) {
-      return;
-    }
-    shapes.get(0).endMapping();
   }
 }
