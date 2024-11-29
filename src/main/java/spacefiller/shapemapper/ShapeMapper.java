@@ -382,6 +382,7 @@ public class ShapeMapper {
         parent.noCursor();
         parent.background(0);
 
+        projectionCanvas.beginDraw();
         for (MappedShape shape : shapes) {
           for (Mapping mapping: shape.getMappings()) {
             if (mapping.isReady()) {
@@ -391,6 +392,21 @@ public class ShapeMapper {
               // TODO: use normal shader for masking
               // TODO: potentially refactor so that masking is a "tool" inside of projection mode?
               if (shape == currentShape && mapping == currentMapping) {
+                projectionCanvas.lights();
+                projectionCanvas.fill(255);
+                projectionCanvas.stroke(255);
+                projectionCanvas.strokeWeight(2);
+                normalShader.set("normalColorStrength", 0.5f);
+                projectionCanvas.shader(normalShader);
+                shape.draw(projectionCanvas);
+                projectionCanvas.resetShader();
+                projectionCanvas.noLights();
+
+                projectionCanvas.hint(DISABLE_DEPTH_TEST);
+                projectionCanvas.hint(DISABLE_DEPTH_MASK);
+                projectionCanvas.hint(DISABLE_DEPTH_SORT);
+
+                projectionCanvas.fill(0, 200);
                 mapping.drawFaceMask(projectionCanvas);
 
                 int shapeIndex = GeometryUtils.pickFace(
@@ -400,12 +416,16 @@ public class ShapeMapper {
 
                 recentlyHoveredSubshapeIndex = shapeIndex;
                 if (shapeIndex >= 0) {
-                  int c = (int) ((Math.sin(parent.frameCount / 10f) + 1) / 2 * 255);
-                  projectionCanvas.stroke(c);
-                  projectionCanvas.fill(c);
-                  projectionCanvas.strokeWeight(2);
+                  System.out.println("hovering over " + shapeIndex);
+                  projectionCanvas.noFill();
+                  projectionCanvas.stroke(255);
+                  projectionCanvas.strokeWeight(6);
+                  shape.getShape().getChild(shapeIndex).disableStyle();
                   shape.getShape().getChild(shapeIndex).draw(projectionCanvas);
                 }
+                projectionCanvas.hint(ENABLE_DEPTH_TEST);
+                projectionCanvas.hint(ENABLE_DEPTH_MASK);
+                projectionCanvas.hint(ENABLE_DEPTH_SORT);
               } else {
                 projectionCanvas.fill(0);
                 projectionCanvas.stroke(50);
@@ -417,6 +437,7 @@ public class ShapeMapper {
             }
           }
         }
+        projectionCanvas.endDraw();
         parent.image(projectionCanvas, 0, 0);
         drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
       }

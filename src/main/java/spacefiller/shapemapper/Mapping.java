@@ -96,21 +96,10 @@ public class Mapping implements Serializable {
   public void endMapping(PGraphics3D graphics, boolean drawFaceMask) {
     if (isReady()) {
       if (drawFaceMask) {
-        for (Integer shapeIndex : faceMask.keySet()) {
-          PShape subshape = shape.getChild(shapeIndex);
-          graphics.resetShader();
-          graphics.noStroke();
-          subshape.disableStyle();
-          if (faceMask.get(shapeIndex)) {
-            graphics.fill(0);
-            graphics.stroke(0);
-            graphics.strokeWeight(2);
-            graphics.shape(subshape);
-          }
-          graphics.noStroke();
-        }
+        graphics.fill(0);
+        graphics.stroke(0);
+        drawFaceMask(graphics);
       }
-
       graphics.popMatrix();
       graphics.popProjection();
     }
@@ -132,6 +121,7 @@ public class Mapping implements Serializable {
   }
 
   public void setFaceMask(int faceIndex, boolean value) {
+    System.out.println("Setting " + faceIndex + " to " + value);
     faceMask.put(faceIndex, value);
   }
 
@@ -142,16 +132,10 @@ public class Mapping implements Serializable {
   public void drawFaceMask(PGraphics canvas) {
     for (Integer shapeIndex : faceMask.keySet()) {
       PShape subshape = shape.getChild(shapeIndex);
-      canvas.resetShader();
-      canvas.stroke(255);
-      canvas.strokeWeight(2);
       subshape.disableStyle();
       if (faceMask.get(shapeIndex)) {
-        canvas.fill(100);
-      } else {
-        canvas.fill(0);
+        canvas.shape(subshape);
       }
-      canvas.shape(subshape);
     }
   }
 }
