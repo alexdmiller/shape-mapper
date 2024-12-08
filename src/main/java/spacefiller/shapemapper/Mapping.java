@@ -21,19 +21,18 @@ public class Mapping implements Serializable {
   private transient CameraState cameraState;
   private transient PShape shape;
 
+  private Projector projector;
   private Map<PVector, PVector> points;
   private Map<Integer, Boolean> faceMask;
 
-  // TODO: this class should also include a projection bounds
-  // when calibrating and drawing, all points should be relative to the projection bounds
-
-  public Mapping(PApplet parent, PGraphics3D parentGraphics, PShape shape) {
+  public Mapping(PApplet parent, Projector projector, PGraphics3D parentGraphics, PShape shape) {
     this.parent = parent;
     this.parentGraphics = parentGraphics;
     this.points = new HashMap<>();
     this.transform = new GraphicsTransform();
     this.faceMask = new HashMap<>();
     this.shape = shape;
+    this.projector = projector;
 
     for (int i = 0; i < shape.getChildCount(); i++) {
       faceMask.put(i, false);
@@ -47,13 +46,13 @@ public class Mapping implements Serializable {
 
   public void computeTransform() {
     transform = CalibrationUtils.calibrate(
-        this.points, parentGraphics.width, parentGraphics.height);
+        this.points, projector.getWidth(), projector.getHeight());
   }
 
   public void remove(PVector from) {
     this.points.remove(from);
     transform = CalibrationUtils.calibrate(
-        this.points, parentGraphics.width, parentGraphics.height);
+        this.points, projector.getWidth(), projector.getHeight());
   }
 
   public Set<PVector> getMappedPoints() {
@@ -139,5 +138,9 @@ public class Mapping implements Serializable {
         canvas.shape(subshape);
       }
     }
+  }
+
+  public Projector getProjector() {
+    return projector;
   }
 }

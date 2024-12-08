@@ -552,12 +552,6 @@ public class ShapeMapper {
         currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
         //selectedVertex = null;
         resetCamera();
-      } else if (event.getKey() == 'c') {
-        MappedShape current = getCurrentShape();
-        current.createMapping();
-        currentMappingIndex = current.getNumMappings() - 1;
-        selectedVertex = null;
-        resetCamera();
       }
     }
   }

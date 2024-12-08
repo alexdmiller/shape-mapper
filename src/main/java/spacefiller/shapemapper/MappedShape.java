@@ -40,22 +40,19 @@ public class MappedShape implements Serializable {
     this.internalCopy = ShapeUtils.createShape(parent, shape);
 
     this.mappings = new ArrayList<>();
-
-    // Each model starts with one mapping
-    createMapping();
   }
 
   protected void setMappingsFromModel(MappedShape from) {
     mappings = new ArrayList<>();
     for (Mapping otherMapping : from.getMappings()) {
-      Mapping m = new Mapping(parent, parentGraphics, internalCopy);
+      Mapping m = new Mapping(parent, otherMapping.getProjector(), parentGraphics, internalCopy);
       m.setFromOtherMapping(otherMapping);
       mappings.add(m);
     }
   }
 
-  public void createMapping() {
-    Mapping m = new Mapping(parent, parentGraphics, internalCopy);
+  public void createMapping(Projector projector) {
+    Mapping m = new Mapping(parent, projector, parentGraphics, internalCopy);
     mappings.add(m);
   }
 
