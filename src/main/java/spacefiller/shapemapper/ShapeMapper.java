@@ -21,11 +21,11 @@ public class ShapeMapper {
   private static final float UI_CIRCLE_RADIUS = 10;
 
   private enum Mode {
-    CALIBRATE, RENDER, MASK_FACES
+    CALIBRATE, RENDER
   }
 
   private enum CalibrateMode {
-    SELECT_POINT, PROJECTION
+    SELECT_POINT, PROJECTION, MASK_FACES
   }
 
   private PApplet parent;
@@ -75,7 +75,7 @@ public class ShapeMapper {
       this.parent.registerMethod("mouseEvent", this);
       this.parent.registerMethod("keyEvent", this);
 
-      shapeRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/model.frag.glsl"));
+      shapeRenderShader = parent.loadShader(IOUtils.extractResourceToFile("/checkers.frag.glsl"));
       normalShader = parent.loadShader(
           IOUtils.extractResourceToFile("/normal_shading.frag.glsl"),
           IOUtils.extractResourceToFile("/normal_shading.vert.glsl"));
@@ -321,11 +321,13 @@ public class ShapeMapper {
 
           camera.setActive(false);
 
+          projectionCanvas.beginDraw();
+          projectionCanvas.background(0);
           for (MappedShape shape : shapes) {
             for (Mapping mapping: shape.getMappings()) {
               if (mapping.isReady()) {
                 mapping.beginMapping(projectionCanvas);
-
+                projectionCanvas.fill(255);
                 if (shape == currentShape && mapping == currentMapping) {
                   projectionCanvas.stroke(255);
                   projectionCanvas.strokeWeight(2);
@@ -345,6 +347,7 @@ public class ShapeMapper {
             }
           }
 
+          projectionCanvas.endDraw();
           parent.image(projectionCanvas, 0, 0);
 
           for (PVector modelPoint : currentMapping.getMappedPoints()) {
@@ -362,7 +365,6 @@ public class ShapeMapper {
             }
           }
 
-
           PVector closestPoint = currentMapping.getClosestMappedPointTo(mouse);
           if (closestPoint != null) {
             PVector projectedPoint = currentMapping.get(closestPoint);
@@ -371,6 +373,77 @@ public class ShapeMapper {
             parent.noFill();
             parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS + 5, UI_CIRCLE_RADIUS + 5);
           }
+        } else if (calibrateMode == CalibrateMode.MASK_FACES) {
+          parent.noCursor();
+          parent.background(0);
+
+          projectionCanvas.beginDraw();
+          projectionCanvas.background(0);
+          for (MappedShape shape : shapes) {
+            for (Mapping mapping: shape.getMappings()) {
+              if (mapping.isReady()) {
+                mapping.beginMapping(projectionCanvas);
+
+                // TODO: throw error if you try to turn on masking without subshapes
+                // TODO: potentially refactor so that masking is a "tool" inside of projection mode?
+                if (shape == currentShape && mapping == currentMapping) {
+                  projectionCanvas.lights();
+                  projectionCanvas.fill(255);
+                  projectionCanvas.stroke(255);
+                  projectionCanvas.strokeWeight(2);
+                  normalShader.set("normalColorStrength", 0.5f);
+                  projectionCanvas.shader(normalShader);
+                  shape.draw(projectionCanvas);
+                  projectionCanvas.resetShader();
+                  projectionCanvas.noLights();
+
+                  projectionCanvas.hint(DISABLE_DEPTH_TEST);
+                  projectionCanvas.hint(DISABLE_DEPTH_MASK);
+                  projectionCanvas.hint(DISABLE_DEPTH_SORT);
+
+                  projectionCanvas.fill(0, 200);
+                  mapping.drawFaceMask(projectionCanvas);
+
+                  int shapeIndex = GeometryUtils.pickFace(
+                      shape.getShape(),
+                      new PVector(parent.mouseX, parent.mouseY),
+                      projectionCanvas);
+
+                  recentlyHoveredSubshapeIndex = shapeIndex;
+                  if (shapeIndex >= 0) {
+                    projectionCanvas.noFill();
+                    PShape subshape = shape.getShape().getChild(shapeIndex);
+
+                    // Draw shape manually to avoid weird state bug with rendering
+                    projectionCanvas.beginShape();
+                    projectionCanvas.stroke(255);
+                    projectionCanvas.strokeWeight(6);
+                    for (int i = 0; i < subshape.getVertexCount(); i++) {
+                      projectionCanvas.vertex(
+                          subshape.getVertexX(i),
+                          subshape.getVertexY(i),
+                          subshape.getVertexZ(i));
+                    }
+                    projectionCanvas.endShape(CLOSE);
+                  }
+
+                  projectionCanvas.hint(ENABLE_DEPTH_TEST);
+                  projectionCanvas.hint(ENABLE_DEPTH_MASK);
+                  projectionCanvas.hint(ENABLE_DEPTH_SORT);
+                } else {
+                  projectionCanvas.fill(0);
+                  projectionCanvas.stroke(50);
+                  projectionCanvas.strokeWeight(2);
+                  shape.draw(projectionCanvas);
+                }
+
+                mapping.endMapping(projectionCanvas, false);
+              }
+            }
+          }
+          projectionCanvas.endDraw();
+          parent.image(projectionCanvas, 0, 0);
+          drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
         }
 
         // Draw mouse cross-hairs
@@ -378,68 +451,6 @@ public class ShapeMapper {
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
         parent.cursor();
-      } else if (mode == Mode.MASK_FACES) {
-        parent.noCursor();
-        parent.background(0);
-
-        projectionCanvas.beginDraw();
-        for (MappedShape shape : shapes) {
-          for (Mapping mapping: shape.getMappings()) {
-            if (mapping.isReady()) {
-              mapping.beginMapping(projectionCanvas);
-
-              // TODO: throw error if you try to turn on masking without subshapes
-              // TODO: use normal shader for masking
-              // TODO: potentially refactor so that masking is a "tool" inside of projection mode?
-              if (shape == currentShape && mapping == currentMapping) {
-                projectionCanvas.lights();
-                projectionCanvas.fill(255);
-                projectionCanvas.stroke(255);
-                projectionCanvas.strokeWeight(2);
-                normalShader.set("normalColorStrength", 0.5f);
-                projectionCanvas.shader(normalShader);
-                shape.draw(projectionCanvas);
-                projectionCanvas.resetShader();
-                projectionCanvas.noLights();
-
-                projectionCanvas.hint(DISABLE_DEPTH_TEST);
-                projectionCanvas.hint(DISABLE_DEPTH_MASK);
-                projectionCanvas.hint(DISABLE_DEPTH_SORT);
-
-                projectionCanvas.fill(0, 200);
-                mapping.drawFaceMask(projectionCanvas);
-
-                int shapeIndex = GeometryUtils.pickFace(
-                    shape.getShape(),
-                    new PVector(parent.mouseX, parent.mouseY),
-                    projectionCanvas);
-
-                recentlyHoveredSubshapeIndex = shapeIndex;
-                if (shapeIndex >= 0) {
-                  System.out.println("hovering over " + shapeIndex);
-                  projectionCanvas.noFill();
-                  projectionCanvas.stroke(255);
-                  projectionCanvas.strokeWeight(6);
-                  shape.getShape().getChild(shapeIndex).disableStyle();
-                  shape.getShape().getChild(shapeIndex).draw(projectionCanvas);
-                }
-                projectionCanvas.hint(ENABLE_DEPTH_TEST);
-                projectionCanvas.hint(ENABLE_DEPTH_MASK);
-                projectionCanvas.hint(ENABLE_DEPTH_SORT);
-              } else {
-                projectionCanvas.fill(0);
-                projectionCanvas.stroke(50);
-                projectionCanvas.strokeWeight(2);
-                shape.draw(projectionCanvas);
-              }
-
-              mapping.endMapping(projectionCanvas, false);
-            }
-          }
-        }
-        projectionCanvas.endDraw();
-        parent.image(projectionCanvas, 0, 0);
-        drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
       }
     } catch (Exception e) {
       e.printStackTrace();
@@ -448,7 +459,7 @@ public class ShapeMapper {
 
     parentGraphics.push();
     parentGraphics.translate(20, 20);
-    drawDebugInfo();
+//    drawDebugInfo();
     parentGraphics.pop();
   }
 
@@ -492,14 +503,14 @@ public class ShapeMapper {
             }
             break;
         }
-      }
-    } else if (mode == Mode.MASK_FACES) {
-      if (event.getAction() == MouseEvent.CLICK) {
-        if (recentlyHoveredSubshapeIndex >= 0) {
-          mapping.setFaceMask(
-              recentlyHoveredSubshapeIndex,
-              !mapping.getFaceMask(recentlyHoveredSubshapeIndex));
-          saveCalibration();
+      } else if (calibrateMode == CalibrateMode.MASK_FACES) {
+        if (event.getAction() == MouseEvent.CLICK) {
+          if (recentlyHoveredSubshapeIndex >= 0) {
+            mapping.setFaceMask(
+                recentlyHoveredSubshapeIndex,
+                !mapping.getFaceMask(recentlyHoveredSubshapeIndex));
+            saveCalibration();
+          }
         }
       }
     }
@@ -516,7 +527,7 @@ public class ShapeMapper {
             : CalibrateMode.SELECT_POINT;
         resetCamera();
       } else if (event.getKey() == 'm') {
-        mode = (mode == Mode.MASK_FACES) ? Mode.RENDER : Mode.MASK_FACES;
+        calibrateMode = (calibrateMode == CalibrateMode.PROJECTION) ? CalibrateMode.MASK_FACES : CalibrateMode.PROJECTION;
         resetCamera();
       } else if (event.getKeyCode() == 37) { // left
         currentShapeIndex = (currentShapeIndex + 1) % shapes.size();

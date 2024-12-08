@@ -121,7 +121,6 @@ public class Mapping implements Serializable {
   }
 
   public void setFaceMask(int faceIndex, boolean value) {
-    System.out.println("Setting " + faceIndex + " to " + value);
     faceMask.put(faceIndex, value);
   }
 
