@@ -50,8 +50,6 @@ public class ShapeMapper {
 
   private int recentlyHoveredSubshapeIndex;
 
-  // TODO: add constructor that accepts a model
-
   public ShapeMapper(PApplet parent) {
     this(parent, null);
   }
@@ -260,15 +258,14 @@ public class ShapeMapper {
           // Only turn peasycam on when in calibrate mode and in model space; otherwise use
           // calibrated camera.
           camera.setActive(true);
+          camera.setSuppressRollRotationMode();
 
           shapeCanvas.beginDraw();
           shapeCanvas.clear();
           shapeCanvas.scale(1, -1, 1);
 
-          shapeCanvas.fill(0, 0, 255);
-          shapeCanvas.stroke(255);
-          shapeCanvas.strokeWeight(2);
-
+          shapeCanvas.fill(255);
+          shapeCanvas.noStroke();
           shapeCanvas.lights();
           normalShader.set("normalColorStrength", 0.5f);
           shapeCanvas.shader(normalShader);
@@ -299,8 +296,10 @@ public class ShapeMapper {
           for (PVector modelPoint : currentMapping.getMappedPoints()) {
             PVector projectedPoint = worldToScreen(modelPoint, shapeCanvas);
             parent.noStroke();
-            parent.fill(255, 200);
+            parent.blendMode(EXCLUSION);
+            parent.fill(255);
             parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+            parent.blendMode(BLEND);
           }
 
           if (closestPoint != null) {
@@ -313,7 +312,7 @@ public class ShapeMapper {
 
           if (selectedVertex != null) {
             PVector projectedVertex = worldToScreen(selectedVertex, shapeCanvas);
-            drawCrossHairs(projectedVertex.x, projectedVertex.y, parent.color(255, 0, 255));
+            drawCrossHairs(projectedVertex.x, projectedVertex.y, parent.color(255));
           }
         } else if (calibrateMode == CalibrateMode.PROJECTION) {
           parent.noCursor();
@@ -361,7 +360,7 @@ public class ShapeMapper {
             parent.ellipse(projectedPoint.x, projectedPoint.y, 2, 2);
 
             if (selectedVertex != null && selectedVertex.equals(modelPoint)) {
-              drawCrossHairs(projectedPoint.x, projectedPoint.y, parent.color(0, 255, 255));
+              drawCrossHairs(projectedPoint.x, projectedPoint.y, parent.color(255));
             }
           }
 
@@ -389,8 +388,8 @@ public class ShapeMapper {
                 if (shape == currentShape && mapping == currentMapping) {
                   projectionCanvas.lights();
                   projectionCanvas.fill(255);
-                  projectionCanvas.stroke(255);
-                  projectionCanvas.strokeWeight(2);
+                  projectionCanvas.stroke(255, 100);
+                  projectionCanvas.strokeWeight(1);
                   normalShader.set("normalColorStrength", 0.5f);
                   projectionCanvas.shader(normalShader);
                   shape.draw(projectionCanvas);
@@ -443,11 +442,13 @@ public class ShapeMapper {
           }
           projectionCanvas.endDraw();
           parent.image(projectionCanvas, 0, 0);
-          drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
         }
 
         // Draw mouse cross-hairs
+        parent.blendMode(EXCLUSION);
         drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
+        parent.blendMode(BLEND);
+        drawDebugInfo();
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
         parent.cursor();
@@ -459,19 +460,21 @@ public class ShapeMapper {
 
     parentGraphics.push();
     parentGraphics.translate(20, 20);
-//    drawDebugInfo();
     parentGraphics.pop();
   }
 
   private void drawCrossHairs(float x, float y, int color) {
-    parent.stroke(color, 150);
+    parent.stroke(color, 255);
     parent.strokeWeight(2);
-    parent.line(0, y, parent.width, y);
-    parent.line(x, 0, x, parent.height);
-    parent.noStroke();
-    parent.fill(color);
+    parent.push();
+    parent.translate(x, y);
+    float size = 40;
+    parent.line(-size, 0, size, 0);
+    parent.line(0, -size, 0, size);
+    parent.noFill();
     parent.ellipseMode(CENTER);
-    parent.ellipse(x, y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+    parent.ellipse(0, 0, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+    parent.pop();
   }
 
   public void mouseEvent(MouseEvent event) {
@@ -542,12 +545,12 @@ public class ShapeMapper {
       } else if (event.getKeyCode() == 38) { // up
         int totalMappings = getCurrentShape().getNumMappings();
         currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
-        selectedVertex = null;
+        //selectedVertex = null;
         resetCamera();
       } else if (event.getKeyCode() == 40) { // down
         int totalMappings = getCurrentShape().getNumMappings();
         currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
-        selectedVertex = null;
+        //selectedVertex = null;
         resetCamera();
       } else if (event.getKey() == 'c') {
         MappedShape current = getCurrentShape();

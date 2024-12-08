@@ -24,6 +24,9 @@ public class Mapping implements Serializable {
   private Map<PVector, PVector> points;
   private Map<Integer, Boolean> faceMask;
 
+  // TODO: this class should also include a projection bounds
+  // when calibrating and drawing, all points should be relative to the projection bounds
+
   public Mapping(PApplet parent, PGraphics3D parentGraphics, PShape shape) {
     this.parent = parent;
     this.parentGraphics = parentGraphics;
