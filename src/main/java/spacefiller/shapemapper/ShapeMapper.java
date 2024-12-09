@@ -31,7 +31,7 @@ public class ShapeMapper {
   private PApplet parent;
 
   private PGraphics3D parentGraphics;
-  private PGraphics3D shapeCanvas;
+  public PGraphics3D shapeCanvas;
   private PGraphics3D projectionCanvas;
 
   private List<MappedShape> shapes;

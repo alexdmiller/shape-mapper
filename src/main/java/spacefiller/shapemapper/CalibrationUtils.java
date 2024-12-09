@@ -94,14 +94,19 @@ public class CalibrationUtils {
     ArrayList<Mat> imagePointViews = new ArrayList<>();
     imagePointViews.add(imagePoints);
 
-    int flags = Calib3d.CALIB_FIX_ASPECT_RATIO
+    int flags = Calib3d.CALIB_USE_INTRINSIC_GUESS
         | Calib3d.CALIB_FIX_K1
         | Calib3d.CALIB_FIX_K2
         | Calib3d.CALIB_FIX_K3
         | Calib3d.CALIB_ZERO_TANGENT_DIST
-        | Calib3d.CALIB_USE_INTRINSIC_GUESS;
+        | Calib3d.CALIB_FIX_ASPECT_RATIO;
 
-    // `calibrateCamera` writes its output into the `rvecs` and `tvecs` matrices
+    // The default algorithm does not converge to a low error solution for certain common
+    // projector setups. This parameter was empirically determined to be sufficient.
+    TermCriteria criteria = new TermCriteria();
+    criteria.type = TermCriteria.COUNT;
+    criteria.maxCount = 100;
+
     Calib3d.calibrateCamera(
         objectPointViews,
         imagePointViews,
@@ -110,7 +115,8 @@ public class CalibrationUtils {
         distCoeffs,
         rvecs,
         tvecs,
-        flags);
+        flags,
+        criteria);
 
     translation = tvecs.get(0);
     rotation = rvecs.get(0);
