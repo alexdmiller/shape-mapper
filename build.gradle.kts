@@ -92,7 +92,7 @@ repositories {
 // The provided example uses Apache Commons Math. Replace or add as needed.
 dependencies {
     // resolve Processing core
-    compileOnly(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
+    implementation(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
     // We are currently resolving from an unofficial, jitpack-enabled, processing4 repository.
     // Eventually, this will change to an official source.
 
@@ -277,4 +277,15 @@ tasks.register("deployToProcessingSketchbook") {
         )
         into(installDirectory)
     }
+}
+
+tasks.register<JavaExec>("runApp") {
+    group = "application"
+    description = "Runs the main application"
+
+    // Specify the main class to run
+    mainClass.set("spacefiller.shapemapper.examples.Test")
+
+    // Include the main source set's runtime classpath
+    classpath = sourceSets.main.get().runtimeClasspath + configurations.runtimeClasspath.get()
 }
