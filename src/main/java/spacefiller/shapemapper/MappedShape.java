@@ -59,7 +59,7 @@ public class MappedShape implements Serializable {
     mappings.add(m);
   }
 
-  public Iterable<Mapping> getMappings() {
+  public List<Mapping> getMappings() {
     return mappings;
   }
 

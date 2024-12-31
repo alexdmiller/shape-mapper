@@ -14,6 +14,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static processing.core.PConstants.*;
 import static spacefiller.shapemapper.GeometryUtils.*;
@@ -196,21 +199,122 @@ public class ShapeMapper {
     }
   }
 
-  public void drawDebugInfo() {
-    parentGraphics.hint(DISABLE_DEPTH_TEST);
+  int GUI_WIDTH = 400;
+  int GUI_ROW_HEIGHT = 50;
+  int PADDING = 20;
+  int SELECTION_PADDING = 5;
+  int FONT_SIZE = 18;
+  int BACKGROUND = 0x0;
+  int BORDER = 0xff333333;
+  int HIGHLIGHT = 0xff333333;
+  int FONT_COLOR = 0xffffffff;
+  int SECONDARY_FONT_COLOR = 0xff999999;
 
-    parentGraphics.fill(0);
-    parentGraphics.stroke(255);
-    parentGraphics.rectMode(CORNER);
-    parentGraphics.rect(0, 0, 300, 120);
+  private void drawGuiRow() {
+    PGraphics3D g = parentGraphics;
+    g.fill(BACKGROUND);
+    g.stroke(BORDER);
+    g.strokeWeight(2);
+    g.rectMode(CORNER);
+    g.rect(0, 0, GUI_WIDTH, GUI_ROW_HEIGHT);
+  }
 
-    parentGraphics.fill(255);
-    parentGraphics.text("Mode: " + mode + " (press SPACE to change)", 10, 20);
-    parentGraphics.text("Calibrate mode: " + calibrateMode + " (press TAB to change)", 10, 40);
-    parentGraphics.text("Model: " + currentShapeIndex + " (press LEFT/RIGHT to change)", 10, 60);
-    parentGraphics.text("Mapping: " + currentMappingIndex + " (press UP/DOWN to change)", 10, 80);
-    parentGraphics.text("Press C to create new mapping", 10, 100);
-    parentGraphics.text("Press M to switch to face masking mode", 10, 120);
+  private void drawTextOptions(String[] options, int selected) {
+    PGraphics3D g = parentGraphics;
+
+    g.fill(255);
+    g.textSize(FONT_SIZE);
+    g.textAlign(LEFT, CENTER);
+
+    g.push();
+    for (int i = 0; i < options.length; i++) {
+      float textWidth = g.textWidth(options[i]);
+
+      if (i == selected) {
+        g.noStroke();
+        g.fill(HIGHLIGHT);
+        g.rect(
+            PADDING - SELECTION_PADDING,
+            GUI_ROW_HEIGHT / 2 - FONT_SIZE / 2 - SELECTION_PADDING,
+            textWidth + SELECTION_PADDING * 2,
+            FONT_SIZE + SELECTION_PADDING * 2);
+      }
+
+      g.fill(FONT_COLOR);
+      g.text(options[i], PADDING, GUI_ROW_HEIGHT / 2);
+      g.translate(textWidth + PADDING, 0);
+    }
+
+    g.pop();
+  }
+
+  private void drawKeyHint(String hint) {
+    PGraphics3D g = parentGraphics;
+
+    g.fill(SECONDARY_FONT_COLOR);
+    g.textAlign(RIGHT, CENTER);
+    g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
+  }
+
+
+  public void drawGUI() {
+    PGraphics3D g = parentGraphics;
+
+    g.resetShader();
+
+    g.hint(DISABLE_DEPTH_TEST);
+
+    g.push();
+    g.translate(50, 50);
+
+    drawGuiRow();
+    drawTextOptions(new String[]{"Toggle GUI"}, -1);
+    drawKeyHint("T");
+
+    g.translate(0, GUI_ROW_HEIGHT);
+    drawGuiRow();
+    drawTextOptions(new String[]{"Render", "Calibrate"}, mode == Mode.RENDER ? 0 : 1);
+    drawKeyHint("Space");
+
+    g.translate(0, PADDING);
+
+    if (mode == Mode.CALIBRATE) {
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      drawTextOptions(new String[]{"Choose point", "Map point"}, calibrateMode == CalibrateMode.SELECT_POINT ? 0 : calibrateMode == CalibrateMode.PROJECTION ? 1 : -1);
+      drawKeyHint("Tab");
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      drawTextOptions(new String[]{"Mask faces"}, calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1);
+      drawKeyHint("M");
+
+      // TODO: only show shapes + mappings UI when it makes sense
+      // TODO: dont create mappings via UI any more (just code)
+      // TODO: add GUI hints for navigating 3D space
+      // TOOD: fix 'M' masking interaction
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      String[] modelNames = Stream.concat(
+          Stream.of("Shapes:"),
+          shapes.stream().map(MappedShape::getName)
+      ).toArray(String[]::new);
+      drawTextOptions(modelNames, currentShapeIndex + 1);
+      drawKeyHint("← →");
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      String[] indices = Stream.concat(
+          Stream.of("Mappings:"),
+          IntStream.range(1, 1 + getCurrentShape().getNumMappings())
+              .mapToObj(String::valueOf)
+      ).toArray(String[]::new);
+      drawTextOptions(indices, currentMappingIndex + 1);
+      drawKeyHint("↓  ↑");
+    }
+
+    g.pop();
 
     parentGraphics.hint(ENABLE_DEPTH_TEST);
   }
@@ -267,15 +371,17 @@ public class ShapeMapper {
       norm.mult(1);
 
       canvas.fill(255);
+      canvas.noLights();
       canvas.push();
       canvas.translate(avg.x, avg.y, avg.z);
       canvas.translate(norm.x, norm.y, norm.z);
       GeometryUtils.rotateToVector(norm, canvas);
-      canvas.translate(0, 0, 10);
+//      canvas.translate(0, 0, 10);
       canvas.rotate(PI / 2, 1, 0, 0);
-      canvas.textAlign(CENTER);
+      canvas.textAlign(CENTER, CENTER);
       canvas.scale(0.25f);
-      canvas.blendMode(EXCLUSION);
+//      canvas.blendMode(EXCLUSION);
+      canvas.resetShader();
       canvas.textSize(30);
       canvas.text(j, 0, 0);
       canvas.blendMode(BLEND);
@@ -479,7 +585,6 @@ public class ShapeMapper {
         parent.blendMode(EXCLUSION);
         drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
         parent.blendMode(BLEND);
-        drawDebugInfo();
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
         parent.cursor();
@@ -489,9 +594,7 @@ public class ShapeMapper {
       throw e;
     }
 
-    parentGraphics.push();
-    parentGraphics.translate(20, 20);
-    parentGraphics.pop();
+    drawGUI();
   }
 
   private void drawCrossHairs(float x, float y, int color) {
