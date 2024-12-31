@@ -13,12 +13,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static processing.core.PConstants.*;
 import static spacefiller.shapemapper.GeometryUtils.*;
 
 public class ShapeMapper {
-  private static final float UI_CIRCLE_RADIUS = 10;
+  private static final float UI_CIRCLE_RADIUS = 20;
 
   private enum Mode {
     CALIBRATE, RENDER
@@ -239,6 +240,61 @@ public class ShapeMapper {
     }
   }
 
+  // TODO: don't draw selected vertices within this function, factor out
+  // for point selection, use 3D point maybe
+  // but for calibration, should use 2D because that makes sense
+  private void drawShape(PShape shape, PGraphics3D canvas, boolean highlight) {
+    canvas.fill(255, 0, 0);
+    canvas.noStroke();
+    canvas.lights();
+    normalShader.set("normalColorStrength", highlight ? 0.5f : 0.25f);
+    canvas.shader(normalShader);
+    shape.disableStyle();
+    shape.draw(canvas);
+
+    for (int j = 0; j < shape.getChildCount(); j++) {
+      PShape child = shape.getChild(j);
+      PVector avg = new PVector();
+      PVector norm = new PVector();
+      for (int i = 0; i < child.getVertexCount(); i++) {
+        avg.add(child.getVertex(i));
+        norm.add(child.getNormal(i));
+      }
+      avg.div(child.getVertexCount());
+      norm.div(child.getVertexCount());
+
+      norm.normalize();
+      norm.mult(1);
+
+      canvas.fill(255);
+      canvas.push();
+      canvas.translate(avg.x, avg.y, avg.z);
+      canvas.translate(norm.x, norm.y, norm.z);
+      GeometryUtils.rotateToVector(norm, canvas);
+      canvas.translate(0, 0, 10);
+      canvas.rotate(PI / 2, 1, 0, 0);
+      canvas.textAlign(CENTER);
+      canvas.scale(0.25f);
+      canvas.blendMode(EXCLUSION);
+      canvas.textSize(30);
+      canvas.text(j, 0, 0);
+      canvas.blendMode(BLEND);
+      canvas.pop();
+    }
+  }
+
+  // TODO: break down into smaller utility functions that don't assume so much (i.e. "draw points")
+  private void drawVerticesOnShape(PGraphics3D projectionCanvas, PGraphics3D canvas, Set<PVector> vertices) {
+    for (PVector modelPoint : vertices) {
+      PVector projectedPoint = worldToScreen(modelPoint, projectionCanvas);
+      canvas.noStroke();
+      canvas.blendMode(EXCLUSION);
+      canvas.fill(255);
+      canvas.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+      canvas.blendMode(BLEND);
+    }
+  }
+
   public void draw() {
     MappedShape currentShape = getCurrentShape();
     Mapping currentMapping = getCurrentMapping();
@@ -263,16 +319,7 @@ public class ShapeMapper {
           shapeCanvas.beginDraw();
           shapeCanvas.clear();
           shapeCanvas.scale(1, -1, 1);
-
-          shapeCanvas.fill(255);
-          shapeCanvas.noStroke();
-          shapeCanvas.lights();
-          normalShader.set("normalColorStrength", 0.5f);
-          shapeCanvas.shader(normalShader);
-
-          currentShape.draw(shapeCanvas);
-
-          shapeCanvas.resetShader();
+          drawShape(currentShape.getShape(), shapeCanvas, true);
           shapeCanvas.endDraw();
 
           parent.resetShader();
@@ -293,14 +340,7 @@ public class ShapeMapper {
 
           PVector closestPoint = currentShape.getClosestPointTo(mouse, shapeCanvas);
 
-          for (PVector modelPoint : currentMapping.getMappedPoints()) {
-            PVector projectedPoint = worldToScreen(modelPoint, shapeCanvas);
-            parent.noStroke();
-            parent.blendMode(EXCLUSION);
-            parent.fill(255);
-            parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-            parent.blendMode(BLEND);
-          }
+          drawVerticesOnShape(shapeCanvas, (PGraphics3D) parent.getGraphics(), currentMapping.getMappedPoints());
 
           if (closestPoint != null) {
             PVector projectedVertex = worldToScreen(closestPoint, shapeCanvas);
@@ -326,22 +366,13 @@ public class ShapeMapper {
             for (Mapping mapping: shape.getMappings()) {
               if (mapping.isReady()) {
                 mapping.beginMapping(projectionCanvas);
-                projectionCanvas.fill(255);
-                if (shape == currentShape && mapping == currentMapping) {
-                  projectionCanvas.stroke(255);
-                  projectionCanvas.strokeWeight(2);
-                  normalShader.set("normalColorStrength", 0.5f);
-                } else {
-                  projectionCanvas.stroke(50);
-                  projectionCanvas.strokeWeight(2);
-                  normalShader.set("normalColorStrength", 0.25f);
-                }
-
-                projectionCanvas.lights();
-                projectionCanvas.shader(normalShader);
-                shape.draw(projectionCanvas);
-                projectionCanvas.resetShader();
+                drawShape(
+                    shape.getShape(),
+                    projectionCanvas,
+                    shape == currentShape && mapping == currentMapping);
                 mapping.endMapping(projectionCanvas, false);
+
+//                drawVerticesOnShape(shapeCanvas, mapping.getMappedPoints());
               }
             }
           }
@@ -349,20 +380,20 @@ public class ShapeMapper {
           projectionCanvas.endDraw();
           parent.image(projectionCanvas, 0, 0);
 
-          for (PVector modelPoint : currentMapping.getMappedPoints()) {
-            PVector projectedPoint = currentMapping.get(modelPoint);
-            parent.strokeWeight(5);
-
-            parent.noStroke();
-            parent.fill(255, 200);
-            parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-            parent.fill(255);
-            parent.ellipse(projectedPoint.x, projectedPoint.y, 2, 2);
-
-            if (selectedVertex != null && selectedVertex.equals(modelPoint)) {
-              drawCrossHairs(projectedPoint.x, projectedPoint.y, parent.color(255));
-            }
-          }
+//          for (PVector modelPoint : currentMapping.getMappedPoints()) {
+//            PVector projectedPoint = currentMapping.get(modelPoint);
+//            parent.strokeWeight(5);
+//
+//            parent.noStroke();
+//            parent.fill(255, 200);
+//            parent.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+//            parent.fill(255);
+//            parent.ellipse(projectedPoint.x, projectedPoint.y, 2, 2);
+//
+//            if (selectedVertex != null && selectedVertex.equals(modelPoint)) {
+//              drawCrossHairs(projectedPoint.x, projectedPoint.y, parent.color(255));
+//            }
+//          }
 
           PVector closestPoint = currentMapping.getClosestMappedPointTo(mouse);
           if (closestPoint != null) {

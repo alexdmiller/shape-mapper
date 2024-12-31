@@ -133,4 +133,18 @@ public class GeometryUtils {
     // Interpolate z using barycentric coordinates
     return alpha * a.z + beta * b.z + gamma * c.z;
   }
+
+  public static void rotateToVector(PVector vec, PGraphics3D canvas) {
+    // Default "up" vector
+    PVector up = new PVector(0, 1, 0);
+
+    // Calculate rotation axis (cross product of up and target vector)
+    PVector rotAxis = up.cross(vec);
+
+    // Calculate angle between vectors
+    float angle = PVector.angleBetween(up, vec);
+
+    // Rotate around the calculated axis
+    canvas.rotate(angle, rotAxis.x, rotAxis.y, rotAxis.z);
+  }
 }

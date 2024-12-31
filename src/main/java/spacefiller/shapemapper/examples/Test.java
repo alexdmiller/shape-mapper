@@ -11,6 +11,7 @@ import spacefiller.shapemapper.ShapeMapper;
 
 public class Test extends PApplet {
   MappedShape mappedShape;
+  MappedShape mappedRect;
   ShapeMapper mapper;
   PShape shape;
 
@@ -27,30 +28,38 @@ public class Test extends PApplet {
   public void setup() {
     shape = loadShape("models/icosahedron.obj");
     mapper = new ShapeMapper(this);
-
     mappedShape = mapper.addShape(shape);
-//    mappedShape.getMapping(0).getMappedPoints();
+
+    PShape daddy = new PShape();
+    daddy.addChild(createShape(RECT, 0, 0, 500, 500));
+    daddy.addChild(createShape(RECT, 0, 500, 500, 500));
+    daddy.addChild(createShape(RECT, 500, 0, 500, 500));
+    daddy.addChild(createShape(RECT, 500, 500, 500, 500));
+
+    mappedRect = mapper.addShape("rect", daddy);
   }
 
+
+  float t = 0;
   @Override
   public void draw() {
     background(0);
 
-    for (Mapping mapping : mappedShape.getMappings()) {
-      mapping.beginMapping();
-      noStroke();
-      fill(255);
-      shape.disableStyle();
-      pointLight(
-          0,
-          255,
-          255,
-          sin(frameCount / 10f) * 500,
-          cos(frameCount / 10f) * 500,
-          sin(frameCount / 10f) * 500);
-      shape(shape);
-      mapping.endMapping();
-    }
+    t += 0.1f + 0.25f * (sin(frameCount / 100f) + 1) / 2f;
+
+    mappedShape.beginMapping();
+    noStroke();
+    fill(0, 0, 255 * sin(t));
+    shape.disableStyle();
+    shape(shape);
+    mappedShape.endMapping();
+
+    mappedRect.beginMapping();
+    noLights();
+    noStroke();
+    fill(255 * sin(t + PI), 0, 0);
+    rect(0, 0, 1000, 1000);
+    mappedRect.endMapping();
   }
 
   public void keyPressed() {

@@ -35,7 +35,9 @@ public class ShapeUtils {
 
     for (int i = 0; i < src.getVertexCount(); i++) {
       PVector vert = src.getVertex(i);
+      PVector normal = src.getNormal(i);
       PVector uv = new PVector(src.getTextureU(i), src.getTextureV(i));
+      dest.normal(normal.x, normal.y, normal.z);
       dest.vertex(vert.x, vert.y, vert.z, uv.x, uv.y);
     }
 
