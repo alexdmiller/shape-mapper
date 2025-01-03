@@ -14,7 +14,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -43,6 +42,7 @@ public class ShapeMapper {
   private int currentShapeIndex = -1;
   private int currentMappingIndex = -1;
 
+  private boolean showGui = true;
   private Mode mode;
   private CalibrateMode calibrateMode;
   private PeasyCam camera;
@@ -119,6 +119,11 @@ public class ShapeMapper {
   }
 
   public MappedShape addShape(String name, PShape shape) {
+    // By default, each model starts with one mapping
+    return addShape(name, shape, 1);
+  }
+
+  public MappedShape addShape(String name, PShape shape, int mappings) {
     if (getModel(name) != null) {
       System.out.println("ShapeMapper: Could not add model with name '" + name + "'.");
       System.out.println("ShapeMapper: The model already exists, and model names must be unique.");
@@ -135,6 +140,10 @@ public class ShapeMapper {
     if (previouslySaved != null) {
       System.out.println("ShapeMapper: Found a previously saved model for " + name);
       wrappedShape.setMappingsFromModel(previouslySaved);
+    } else {
+      for (int i = 0; i < mappings; i++) {
+        wrappedShape.createMapping();
+      }
     }
 
     this.shapes.add(wrappedShape);
@@ -256,8 +265,19 @@ public class ShapeMapper {
     g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
   }
 
+  public void hideGui() {
+    showGui = false;
+  }
+
+  public void showGui() {
+    showGui = true;
+  }
 
   public void drawGUI() {
+    if (!showGui) {
+      return;
+    }
+
     PGraphics3D g = parentGraphics;
 
     g.resetShader();
@@ -288,11 +308,6 @@ public class ShapeMapper {
       drawGuiRow();
       drawTextOptions(new String[]{"Mask faces"}, calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1);
       drawKeyHint("M");
-
-      // TODO: only show shapes + mappings UI when it makes sense
-      // TODO: dont create mappings via UI any more (just code)
-      // TODO: add GUI hints for navigating 3D space
-      // TOOD: fix 'M' masking interaction
 
       g.translate(0, GUI_ROW_HEIGHT);
       drawGuiRow();
@@ -655,43 +670,41 @@ public class ShapeMapper {
 
   public void keyEvent(KeyEvent event) {
     if (event.getAction() == KeyEvent.PRESS) {
-      if (event.getKeyCode() == 32) { // space
+      if (event.getKey() == 't') {
+        showGui = !showGui;
+      } else if (event.getKeyCode() == 32) { // space
         mode = (mode == Mode.CALIBRATE) ? Mode.RENDER : Mode.CALIBRATE;
         resetCamera();
-      } else if (event.getKeyCode() == 9) { // tab
-        calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT)
-            ? CalibrateMode.PROJECTION
-            : CalibrateMode.SELECT_POINT;
-        resetCamera();
-      } else if (event.getKey() == 'm') {
-        calibrateMode = (calibrateMode == CalibrateMode.PROJECTION) ? CalibrateMode.MASK_FACES : CalibrateMode.PROJECTION;
-        resetCamera();
-      } else if (event.getKeyCode() == 37) { // left
-        currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
-        currentMappingIndex = 0;
-        selectedVertex = null;
-        resetCamera();
-      } else if (event.getKeyCode() == 39) { // right
-        currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
-        currentMappingIndex = 0;
-        selectedVertex = null;
-        resetCamera();
-      } else if (event.getKeyCode() == 38) { // up
-        int totalMappings = getCurrentShape().getNumMappings();
-        currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
-        //selectedVertex = null;
-        resetCamera();
-      } else if (event.getKeyCode() == 40) { // down
-        int totalMappings = getCurrentShape().getNumMappings();
-        currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
-        //selectedVertex = null;
-        resetCamera();
-      } else if (event.getKey() == 'c') {
-        MappedShape current = getCurrentShape();
-        current.createMapping();
-        currentMappingIndex = current.getNumMappings() - 1;
-        selectedVertex = null;
-        resetCamera();
+      }
+
+      if (mode == Mode.CALIBRATE) {
+        if (event.getKeyCode() == 9) { // tab
+          calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT) ? CalibrateMode.PROJECTION : CalibrateMode.SELECT_POINT;
+          resetCamera();
+        } else if (event.getKey() == 'm') {
+          calibrateMode = CalibrateMode.MASK_FACES;
+          resetCamera();
+        } else if (event.getKeyCode() == 37) { // left
+          currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
+          currentMappingIndex = 0;
+          selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 39) { // right
+          currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
+          currentMappingIndex = 0;
+          selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 38) { // up
+          int totalMappings = getCurrentShape().getNumMappings();
+          currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
+          //selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 40) { // down
+          int totalMappings = getCurrentShape().getNumMappings();
+          currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
+          //selectedVertex = null;
+          resetCamera();
+        }
       }
     }
   }

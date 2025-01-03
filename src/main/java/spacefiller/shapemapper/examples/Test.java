@@ -36,11 +36,11 @@ public class Test extends PApplet {
     daddy.addChild(createShape(RECT, 500, 0, 500, 500));
     daddy.addChild(createShape(RECT, 500, 500, 500, 500));
 
-    mappedRect = mapper.addShape("rect", daddy);
+    mappedRect = mapper.addShape("rect", daddy, 2);
   }
 
-
   float t = 0;
+
   @Override
   public void draw() {
     background(0);
@@ -54,12 +54,14 @@ public class Test extends PApplet {
     shape(shape);
     mappedShape.endMapping();
 
-    mappedRect.beginMapping();
-    noLights();
-    noStroke();
-    fill(255 * sin(t + PI), 0, 0);
-    rect(0, 0, 1000, 1000);
-    mappedRect.endMapping();
+    for (Mapping m : mappedRect.getMappings()) {
+      m.beginMapping();
+      noLights();
+      noStroke();
+      fill(255 * sin(t + PI), 0, 0);
+      rect(0, 0, 1000, 1000);
+      m.endMapping();
+    }
   }
 
   public void keyPressed() {

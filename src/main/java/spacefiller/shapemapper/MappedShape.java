@@ -40,9 +40,6 @@ public class MappedShape implements Serializable {
     this.internalCopy = ShapeUtils.createShape(parent, shape);
 
     this.mappings = new ArrayList<>();
-
-    // Each model starts with one mapping
-    createMapping();
   }
 
   protected void setMappingsFromModel(MappedShape from) {
@@ -91,6 +88,7 @@ public class MappedShape implements Serializable {
   public void beginMapping() {
     if (mappings.size() != 1) {
       System.out.println("ShapeMapper: Cannot call beginMapping() on shape that has more than one mapping.");
+      System.out.println("ShapeMapper: Shape '" + name + "' has " + mappings.size() + " mappings");
       System.out.println("ShapeMapper: You need to loop over all mappings and draw them separately.");
       throw new RuntimeException();
     }
