@@ -427,6 +427,21 @@ public class ShapeMapper {
     }
   }
 
+  private void drawCrossHairs(float x, float y) {
+    parent.blendMode(EXCLUSION);
+    parent.stroke(255);
+    parent.strokeWeight(2);
+    parent.push();
+    parent.translate(x, y);
+    float size = 40;
+    parent.line(-size, 0, size, 0);
+    parent.line(0, -size, 0, size);
+    parent.noFill();
+    parent.ellipseMode(CENTER);
+    parent.ellipse(0, 0, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+    parent.pop();
+  }
+
   private void drawHighlightedPoint(PGraphics3D canvas, PVector point) {
     canvas.stroke(255);
     canvas.strokeWeight(2);
@@ -618,8 +633,7 @@ public class ShapeMapper {
         }
 
         // Draw mouse cross-hairs
-        parent.blendMode(EXCLUSION);
-        drawCrossHairs(parent.mouseX, parent.mouseY, parent.color(255));
+        drawCrossHairs(parent.mouseX, parent.mouseY);
         parent.blendMode(BLEND);
       } else if (mode == Mode.RENDER) {
         camera.setActive(false);
@@ -631,20 +645,6 @@ public class ShapeMapper {
     }
 
     drawGUI();
-  }
-
-  private void drawCrossHairs(float x, float y, int color) {
-    parent.stroke(color, 255);
-    parent.strokeWeight(2);
-    parent.push();
-    parent.translate(x, y);
-    float size = 40;
-    parent.line(-size, 0, size, 0);
-    parent.line(0, -size, 0, size);
-    parent.noFill();
-    parent.ellipseMode(CENTER);
-    parent.ellipse(0, 0, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-    parent.pop();
   }
 
   public void mouseEvent(MouseEvent event) {
