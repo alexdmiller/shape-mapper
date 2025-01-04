@@ -140,4 +140,8 @@ public class Mapping implements Serializable {
       }
     }
   }
+
+  public void clear() {
+    points.clear();
+  }
 }

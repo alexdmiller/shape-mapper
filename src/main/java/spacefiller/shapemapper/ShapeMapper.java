@@ -152,6 +152,18 @@ public class ShapeMapper {
     return wrappedShape;
   }
 
+  public void clearCalibrations() {
+    for (MappedShape ms : shapes) {
+      for (Mapping m : ms.getMappings()) {
+        m.clear();
+        m.computeTransform();
+      }
+    }
+
+
+    saveCalibration();
+  }
+
   private MappedShape getCurrentShape() {
     if (currentShapeIndex >= 0) {
       return this.shapes.get(currentShapeIndex);
@@ -725,6 +737,8 @@ public class ShapeMapper {
           currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
           //selectedVertex = null;
           resetCamera();
+        } else if (event.getKey() == 'c') {
+          clearCalibrations();
         }
       }
     }
