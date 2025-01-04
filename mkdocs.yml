@@ -1,7 +1,6 @@
 site_name: Processing Library Template
 site_url: "https://alexdmiller.github.io/shape-mapper/"
 
-
 copyright: MIT Licence.
 
 plugins:
@@ -15,6 +14,13 @@ nav:
   - Troubleshooting: troubleshooting.md
 
 theme:
+  name: material
+  features:
+    - content.code.copy
+    - content.code.select
+    - content.code.highlight
+    - content.code.annotate
+    - navigation.footer
   palette:
     # Palette toggle for automatic mode
     - media: "(prefers-color-scheme)"
