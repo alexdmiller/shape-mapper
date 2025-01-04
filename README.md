@@ -4,6 +4,9 @@ Shape Mapper is a [Processing](processing.org/) library for projection mapping.
 
 ![output](https://github.com/user-attachments/assets/af2e75f6-b4d0-4e52-bb8e-f2c5d644a5bc)
 
+<img width="700" alt="getting-started-2" src="https://github.com/user-attachments/assets/0595fd10-d813-4704-8645-975ee4f563a4" />
+
+
 ## Example code
 
 Here is a minimal example showing what the library interface looks like:
@@ -29,6 +32,8 @@ void draw() {
   mapper.endMapping();
 }
 ```
+
+Find more examples [in the repository](examples/), packaged within the library, or on the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
 ## Use cases
 
