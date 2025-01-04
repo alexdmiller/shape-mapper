@@ -32,6 +32,11 @@ public class SimpleBox extends PApplet {
         sin(frameCount / 10f) * 400,
         cos(frameCount / 10f) * 400,
         sin(frameCount / 10f) * 400);
+    pointLight(
+        0, 0, 255,
+        cos(frameCount / 10f) * 400,
+        sin(frameCount / 10f) * 400,
+        sin(frameCount / 10f) * 400);
     shape(shape);
     mapper.endMapping();
   }
