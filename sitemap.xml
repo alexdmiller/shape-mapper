@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://processing.github.io/processing-library-template/index.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/index.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://processing.github.io/processing-library-template/develop.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/develop.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://processing.github.io/processing-library-template/getting-started.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/getting-started.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://processing.github.io/processing-library-template/release.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/release.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://processing.github.io/processing-library-template/troubleshooting.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/troubleshooting.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
 </urlset>
