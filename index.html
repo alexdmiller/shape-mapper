@@ -173,6 +173,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="index.html" class="md-nav__link md-nav__link--active">
         
   
@@ -182,6 +193,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-features
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -214,7 +271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="develop.html" class="md-nav__link">
+      <a href="develop.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -234,7 +291,7 @@
   
   
     <li class="md-nav__item">
-      <a href="release.html" class="md-nav__link">
+      <a href="release.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -254,7 +311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="troubleshooting.html" class="md-nav__link">
+      <a href="troubleshooting.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -287,6 +344,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#use-cases" class="md-nav__link">
+    <span class="md-ellipsis">
+      Use cases
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#non-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-features
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -301,8 +393,30 @@
 
 
 <h1 id="shape-mapper">Shape Mapper</h1>
-<p>Shape Mapper is a Processing library for projection mapping.</p>
+<p>Shape Mapper is a <a href="processing.org/">Processing</a> library for projection mapping.</p>
 <p><img alt="output" src="https://github.com/user-attachments/assets/af2e75f6-b4d0-4e52-bb8e-f2c5d644a5bc" /></p>
+<h2 id="use-cases">Use cases</h2>
+<p><a href="https://en.wikipedia.org/wiki/Projection_mapping">Projection mapping</a> is the process of calibrating a digital projection to align with a three dimensional surface. The Shape Mapper library is useful if you have a 3D model of the object you want to projection map. Some example workflows:</p>
+<ul>
+<li>Create a model using 3D software such as <a href="https://www.blender.org/">Blender</a>, fabricate it with a 3D printer, and projection map it using Shape Mapper.</li>
+<li>Take precise measurements of an object and reconstruct it using 3D software such as Blender, then projection map it using Shape Mapper.</li>
+<li>Use Processing code to model a physical object, then projection map it using Shape Mapper (works well for simple primitives such as cubes).</li>
+</ul>
+<p>If you do not have a 3D model of the object you are trying to projection map, or you are not able to create a model in code, this library will probably not be useful to you. It is still very much possible to projection map your object, though! Check out the <a href="https://github.com/davidbouchard/keystone">Keystone</a> library for Processing, or software such as MadMapper, Resolume or TouchDesigner for alternative projection mapping solutions.</p>
+<h2 id="features">Features</h2>
+<ul>
+<li>Calibrate your projection by manually aligning at least 6 points; the mapping for the rest of the object will be automatically estimated.</li>
+<li>Supports mapping multiple shapes (i.e. if you have two or more separate objects).</li>
+<li>Supports multiple mappings per shape (i.e. if you have two or more projectors).</li>
+<li>Calibrations are saved to disk.</li>
+<li>Supports face masking, which allows you to avoid projecting twice onto the same face if using more than one projector.</li>
+</ul>
+<h2 id="non-features">Non-features</h2>
+<p>Shape Mapper does not (yet) support:</p>
+<ul>
+<li>Blending between projectors</li>
+<li>Built in projection mapping effects (all effects must be drawn by the user with code)</li>
+</ul>
 
 
 

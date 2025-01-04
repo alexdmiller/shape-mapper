@@ -8,10 +8,8 @@
       
       
       
-        <link rel="canonical" href="https://alexdmiller.github.io/shape-mapper/troubleshooting.html">
+        <link rel="canonical" href="https://alexdmiller.github.io/shape-mapper/how-to-map-multiple.html">
       
-      
-        <link rel="prev" href="release.html">
       
       
       
@@ -20,7 +18,7 @@
     
     
       
-        <title>Troubleshooting - Shape Mapper</title>
+        <title>How to map multiple - Shape Mapper</title>
       
     
     
@@ -71,11 +69,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#troubleshooting" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -108,7 +101,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Troubleshooting
+              How to map multiple
             
           </span>
         </div>
@@ -204,7 +197,7 @@
   
   
     <li class="md-nav__item">
-      <a href="develop.html" class="md-nav__link">
+      <a href="develop.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -224,7 +217,7 @@
   
   
     <li class="md-nav__item">
-      <a href="release.html" class="md-nav__link">
+      <a href="release.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -241,30 +234,10 @@
       
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    Troubleshooting
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="troubleshooting.html" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="troubleshooting.md" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -273,44 +246,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#library-does-not-appear-in-the-contribution-manager" class="md-nav__link">
-    <span class="md-ellipsis">
-      Library does not appear in the Contribution Manager
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-is-not-accessible-in-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependency is not accessible in code
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -332,34 +267,6 @@
   
   
   
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#library-does-not-appear-in-the-contribution-manager" class="md-nav__link">
-    <span class="md-ellipsis">
-      Library does not appear in the Contribution Manager
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#dependency-is-not-accessible-in-code" class="md-nav__link">
-    <span class="md-ellipsis">
-      Dependency is not accessible in code
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
   
 </nav>
                   </div>
@@ -374,24 +281,9 @@
                   
 
 
-<h1 id="troubleshooting">Troubleshooting</h1>
-<h2 id="library-does-not-appear-in-the-contribution-manager">Library does not appear in the Contribution Manager</h2>
-<ol>
-<li>Please check that the value you have for your library name in the code is the same as the <code>libName</code> in
-   the <code>build.gradle.kts</code> file. </li>
-<li>One possible issue is the location of your <code>sketchbook</code> folder. Processing stores installed libraries in 
-   the <code>sketchbook</code> folder. Where your <code>sketchbook</code> folder is located depends on your operating system. You 
-   can see where Gradle thinks your sketchbook folder is in the task run output. Check that the folder exists, 
-   and contains the subfolder <code>libraries</code>. If not, you can check the sketchbook location in your Processing 
-   application preferences.  Click on <code>File</code> &gt; <code>Preferences</code>, and note the sketchbook folder location. If this 
-   location is different from what's in the Gradle build file, you will need to input the value manually. Also, 
-   please submit an issue to this repository.</li>
-</ol>
-<h2 id="dependency-is-not-accessible-in-code">Dependency is not accessible in code</h2>
-<ol>
-<li>If a dependency is not accessible in your code, check for errors in the build window in 
-   Intellij (hammer icon), or run <code>Tasks</code> &gt; <code>build</code> &gt; <code>build</code>, and look for an error message.</li>
-</ol>
+  <h1>How to map multiple</h1>
+
+
 
 
 
@@ -416,28 +308,6 @@
       
         <footer class="md-footer">
   
-    
-      
-      <nav class="md-footer__inner md-grid" aria-label="Footer" >
-        
-          
-          <a href="release.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Release">
-            <div class="md-footer__button md-icon">
-              
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
-            </div>
-            <div class="md-footer__title">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              <div class="md-ellipsis">
-                Release
-              </div>
-            </div>
-          </a>
-        
-        
-      </nav>
     
   
   <div class="md-footer-meta md-typeset">
