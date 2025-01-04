@@ -88,21 +88,8 @@ repositories {
     maven { url = uri("https://jogamp.org/deployment/maven/") }
 }
 
-// Add any external dependencies your library requires here.
-// The provided example uses Apache Commons Math. Replace or add as needed.
 dependencies {
-    // resolve Processing core
-    implementation(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
-    // We are currently resolving from an unofficial, jitpack-enabled, processing4 repository.
-    // Eventually, this will change to an official source.
-
-    // insert your external dependencies
-    implementation(group = "org.apache.commons", name = "commons-math3", version = "3.6.1")
-    // The provided example uses commons-math3. Replace or add as needed.
-
-    // To add a dependency on a Processing library that is installed locally,
-    // uncomment the line below, and replace <library folder> with the location of that library
-    // compileOnly(fileTree("$sketchbookLocation/libraries/<library folder>/library"))
+    compileOnly(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
 
     // opencv
     implementation(group = "org.bytedeco", name = "opencv-platform", version = "4.9.0-$javaCvVersion")
