@@ -24,21 +24,21 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
 1.  In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].
 1.  Create a new Processing sketch and import the Shape Mapper library, as well as the Processing [PShape](https://processing.org/tutorials/pshape) class:
 
-    ```java
+    ```
     import spacefiller.shapemapper.ShapeMapper;
     import processing.core.PShape;
     ```
 
 1.  Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:
 
-    ```java
+    ```
     ShapeMapper mapper;
     PShape shape;
     ```
 
 1.  Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use [`fullScreen()`](https://processing.org/reference/fullScreen_.html). It is required to use the [`P3D` render mode](https://processing.org/tutorials/p3d); Shape Mapper will not work without it.
 
-    ```java
+    ``` java
     void setup() {
         fullScreen(P3D);
 
@@ -52,7 +52,7 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
 
 1.  Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
-    ```java
+    ``` java
     void draw() {
         background(0);
         
@@ -73,7 +73,7 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
 
 1.  Putting it all together, our sketch should look like this:
 
-    ```java
+    ``` java
     import spacefiller.shapemapper.ShapeMapper;
     import processing.core.PShape;
 
@@ -103,6 +103,37 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
         mapper.endMapping();
     }
     ```
+
+``` java
+import spacefiller.shapemapper.ShapeMapper;
+import processing.core.PShape;
+
+ShapeMapper mapper;
+PShape shape;
+
+void setup() {
+    fullScreen(P3D);
+    shape = createShape(BOX, 100, 200, 300);
+    mapper = new ShapeMapper(this, shape);
+}
+
+void draw() {
+    background(0);
+    
+    mapper.beginMapping();
+    
+    // Disable the default shape style so that we can choose fill and stroke
+    // manually in the code
+    shape.disableStyle();
+    
+    // Draw the shape
+    fill(0);
+    stroke(255);
+    shape(shape);
+    
+    mapper.endMapping();
+}
+```
 
 ## Creating animations
 
