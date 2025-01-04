@@ -263,9 +263,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-an-object" class="md-nav__link">
+  <a href="#code" class="md-nav__link">
     <span class="md-ellipsis">
-      Mapping an object
+      Code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips &amp; tricks
     </span>
   </a>
   
@@ -408,9 +426,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#mapping-an-object" class="md-nav__link">
+  <a href="#code" class="md-nav__link">
     <span class="md-ellipsis">
-      Mapping an object
+      Code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tips-tricks" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tips &amp; tricks
     </span>
   </a>
   
@@ -451,7 +487,7 @@
 </ol>
 <h3 id="install-via-contributions-manager">Install via Contributions Manager</h3>
 <p>Installing via the Contributions Manager is not yet currently available.</p>
-<h2 id="mapping-an-object">Mapping an object</h2>
+<h2 id="code">Code</h2>
 <p>In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like <a href="https://www.blender.org/">Blender</a>).</p>
 <p>To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.</p>
 <p>[picture of box]</p>
@@ -535,42 +571,71 @@
 </span></code></pre></div>
 </li>
 </ol>
-<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.ShapeMapper</span><span class="p">;</span>
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">processing.core.PShape</span><span class="p">;</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="n">ShapeMapper</span><span class="w"> </span><span class="n">mapper</span><span class="p">;</span>
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">PShape</span><span class="w"> </span><span class="n">shape</span><span class="p">;</span>
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">    </span><span class="n">fullScreen</span><span class="p">(</span><span class="n">P3D</span><span class="p">);</span>
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createShape</span><span class="p">(</span><span class="n">BOX</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">);</span>
-</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="p">);</span>
-</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="p">}</span>
-</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
-</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">    </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
-</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">    </span><span class="n">mapper</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
-</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
-</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="c1">// Disable the default shape style so that we can choose fill and stroke</span>
-</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="w">    </span><span class="c1">// manually in the code</span>
-</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">    </span><span class="n">shape</span><span class="p">.</span><span class="na">disableStyle</span><span class="p">();</span>
-</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>
-</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="c1">// Draw the shape</span>
-</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="n">fill</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
-</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">    </span><span class="n">stroke</span><span class="p">(</span><span class="mi">255</span><span class="p">);</span>
-</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">    </span><span class="n">shape</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span>
-</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>
-</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">    </span><span class="n">mapper</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
-</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="p">}</span>
-</span></code></pre></div>
-<h2 id="creating-animations">Creating animations</h2>
-<p>TODO</p>
+<h2 id="calibration">Calibration</h2>
+<p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
 <ol>
-<li>Loop over faces</li>
-<li>Simple lights</li>
-<li>Stroke</li>
+<li>Connect your computer to a projector and point the projector at the object you're mapping.</li>
+<li>
+<p>Run the sketch you wrote above. By default, the Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting <code>T</code>, or in the code using <code>mapper.hideGui()</code>.)</p>
+<p><img alt="Screen shot of the initial Shape Mapper GUI" src="images/getting-started-1.png" /></p>
+</li>
+<li>
+<p>Hit <code>Space</code> to switch from <code>Render</code> mode to <code>Calibrate</code> mode. This will reveal the calibration GUI.</p>
+<p><img alt="Screen shot of the initial Shape Mapper GUI" src="images/getting-started-2.png" /></p>
+</li>
+<li>
+<p>Your 3D model will appear in the center of the screen. We must now select a point to calibrate from this 3D model. You can navigate the model with the following controls:</p>
+<ol>
+<li>Click + drag to orbit</li>
+<li>Command + click + drag to pan</li>
+<li>Scroll to zoom in and out</li>
 </ol>
+</li>
+<li>Click a point on your model to select it. We will now map this point to the corresponding point on the physical object.</li>
+<li>Hit <code>Tab</code> to switch to mapping mode.</li>
+<li>
+<p>Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.</p>
+<p>TODO: image</p>
+</li>
+<li>
+<p>Hit <code>Tab</code> to switch back to point selection. Choose another point and repeat the process.</p>
+</li>
+<li>
+<p>After mapping 6 points, a full calibration will be automatically estimated. Press <code>Space</code> so switch back to <code>Render</code> mode. In physical space, your object should now be successfully mapped.</p>
+<p>TODO: image</p>
+</li>
+</ol>
+<h2 id="tips-tricks">Tips &amp; tricks</h2>
+<ul>
+<li>If your model does not accurately represent your physical object, then the mapping will be misaligned.</li>
+<li>You can adjust mapped points after placing them to tune your calibration.</li>
+<li>You can add more than 6 points to refine your mapping.</li>
+<li>To remove a point, click to select it and press <code>Delete</code>.</li>
+<li>To completely clear all calibrations, press <code>Ctrl + Delete</code>.</li>
+</ul>
+<h2 id="creating-animations">Creating animations</h2>
+<p>Shape Mapper does not offer any animation or visual effect functionality; that is up for you to create with Processing code! One quick way to animate your mapped object is to use <a href="https://processing.org/reference/pointLight_.html"><code>pointLight(...)</code></a>:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">mapper</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="c1">// Add two rotating point lights to color the faces</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="n">pointLight</span><span class="p">(</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="mi">255</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">        </span><span class="n">cos</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">        </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">);</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="n">pointLight</span><span class="p">(</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">255</span><span class="p">,</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="n">cos</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">        </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">,</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">        </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">400</span><span class="p">);</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">    </span><span class="n">shape</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="w">    </span><span class="n">mapper</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>TODO: image</p>
 
 
 
