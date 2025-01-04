@@ -15,9 +15,9 @@ nav:
 
 theme:
   name: material
-  scheme: slate
   palette:
     primary: black
+    scheme: slate
   features:
     - content.code.copy
     - content.code.select
