@@ -31,9 +31,11 @@ Shape Mapper does not (yet) support:
 
 ## Documentation
 
-TODO
+Go to the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
-## Acknowledgements
+## Credits & Acknowledgements
+
+Shape Mapper is by [Alex Miller](https://alexmiller.cv/).
 
 Shape Mapper is heavily inspired by and based on the [mapamok](https://github.com/YCAMInterlab/mapamok) library for [openFrameworks](https://openframeworks.cc/), originally developed by [Kyle McDonald](https://kylemcdonald.net/) as part of ProCamToolkit, co-developed by [YCAM Interlab](https://www.ycam.jp/en/aboutus/interlab/). It expands on the feature set of mapamok with multi-shape and multi-projection support.
 
