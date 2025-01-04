@@ -219,6 +219,14 @@ public class ShapeMapper {
     }
   }
 
+  public void hideGui() {
+    showGui = false;
+  }
+
+  public void showGui() {
+    showGui = true;
+  }
+
 
   // Make these constants and move to top
   int GUI_WIDTH = 400;
@@ -231,121 +239,6 @@ public class ShapeMapper {
   int HIGHLIGHT = 0xff333333;
   int FONT_COLOR = 0xffffffff;
   int SECONDARY_FONT_COLOR = 0xff999999;
-
-  private void drawGuiRow() {
-    PGraphics3D g = parentGraphics;
-    g.fill(BACKGROUND);
-    g.stroke(BORDER);
-    g.strokeWeight(2);
-    g.rectMode(CORNER);
-    g.rect(0, 0, GUI_WIDTH, GUI_ROW_HEIGHT);
-  }
-
-  private void drawTextOptions(String[] options, int selected) {
-    PGraphics3D g = parentGraphics;
-
-    g.fill(255);
-    g.textSize(FONT_SIZE);
-    g.textAlign(LEFT, CENTER);
-
-    g.push();
-    for (int i = 0; i < options.length; i++) {
-      float textWidth = g.textWidth(options[i]);
-
-      if (i == selected) {
-        g.noStroke();
-        g.fill(HIGHLIGHT);
-        g.rect(
-            PADDING - SELECTION_PADDING,
-            GUI_ROW_HEIGHT / 2 - FONT_SIZE / 2 - SELECTION_PADDING,
-            textWidth + SELECTION_PADDING * 2,
-            FONT_SIZE + SELECTION_PADDING * 2);
-      }
-
-      g.fill(FONT_COLOR);
-      g.text(options[i], PADDING, GUI_ROW_HEIGHT / 2);
-      g.translate(textWidth + PADDING, 0);
-    }
-
-    g.pop();
-  }
-
-  private void drawKeyHint(String hint) {
-    PGraphics3D g = parentGraphics;
-
-    g.fill(SECONDARY_FONT_COLOR);
-    g.textAlign(RIGHT, CENTER);
-    g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
-  }
-
-  public void hideGui() {
-    showGui = false;
-  }
-
-  public void showGui() {
-    showGui = true;
-  }
-
-  public void drawGUI() {
-    if (!showGui) {
-      return;
-    }
-
-    PGraphics3D g = parentGraphics;
-
-    g.resetShader();
-
-    g.hint(DISABLE_DEPTH_TEST);
-
-    g.push();
-    g.translate(50, 50);
-
-    drawGuiRow();
-    drawTextOptions(new String[]{"Toggle GUI"}, -1);
-    drawKeyHint("T");
-
-    g.translate(0, GUI_ROW_HEIGHT);
-    drawGuiRow();
-    drawTextOptions(new String[]{"Render", "Calibrate"}, mode == Mode.RENDER ? 0 : 1);
-    drawKeyHint("Space");
-
-    g.translate(0, PADDING);
-
-    if (mode == Mode.CALIBRATE) {
-      g.translate(0, GUI_ROW_HEIGHT);
-      drawGuiRow();
-      drawTextOptions(new String[]{"Choose point", "Map point"}, calibrateMode == CalibrateMode.SELECT_POINT ? 0 : calibrateMode == CalibrateMode.MAP_POINT ? 1 : -1);
-      drawKeyHint("Tab");
-
-      g.translate(0, GUI_ROW_HEIGHT);
-      drawGuiRow();
-      drawTextOptions(new String[]{"Mask faces"}, calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1);
-      drawKeyHint("M");
-
-      g.translate(0, GUI_ROW_HEIGHT);
-      drawGuiRow();
-      String[] modelNames = Stream.concat(
-          Stream.of("Shapes:"),
-          shapes.stream().map(MappedShape::getName)
-      ).toArray(String[]::new);
-      drawTextOptions(modelNames, currentShapeIndex + 1);
-      drawKeyHint("← →");
-
-      g.translate(0, GUI_ROW_HEIGHT);
-      drawGuiRow();
-      String[] indices = Stream.concat(
-          Stream.of("Mappings:"),
-          IntStream.range(1, 1 + getCurrentShape().getNumMappings())
-              .mapToObj(String::valueOf)
-      ).toArray(String[]::new);
-      drawTextOptions(indices, currentMappingIndex + 1);
-      drawKeyHint("↓  ↑");
-    }
-
-    g.pop();
-
-    parentGraphics.hint(ENABLE_DEPTH_TEST);
-  }
 
   public void beginMapping() {
     if (shapes.size() != 1) {
@@ -372,100 +265,90 @@ public class ShapeMapper {
     }
   }
 
-  // TODO: don't draw selected vertices within this function, factor out
-  // for point selection, use 3D point maybe
-  // but for calibration, should use 2D because that makes sense
-  private void drawShape(PShape shape, PGraphics3D canvas, boolean highlight) {
-    canvas.fill(255, 0, 0);
-    canvas.noStroke();
-    canvas.lights();
-    normalShader.set("normalColorStrength", highlight ? 0.5f : 0.25f);
-    canvas.shader(normalShader);
-    shape.disableStyle();
-    shape.draw(canvas);
 
-    for (int j = 0; j < shape.getChildCount(); j++) {
-      PShape child = shape.getChild(j);
-      PVector avg = new PVector();
-      PVector norm = new PVector();
-      for (int i = 0; i < child.getVertexCount(); i++) {
-        avg.add(child.getVertex(i));
-        norm.add(child.getNormal(i));
+  public void mouseEvent(MouseEvent event) {
+    MappedShape shape = getCurrentShape();
+    Mapping mapping = getCurrentMapping();
+
+    PVector mouse = new PVector(event.getX(), event.getY());
+
+    if (mode == Mode.CALIBRATE) {
+      if (calibrateMode == CalibrateMode.SELECT_POINT) {
+        if (event.getAction() == MouseEvent.CLICK) {
+          selectedVertex = shape.getClosestPointTo(mouse, shapeCanvas);
+        }
+
+        getCurrentMapping().setCameraState(camera.getState());
+      } else if (calibrateMode == CalibrateMode.MAP_POINT) {
+        switch (event.getAction()) {
+          case MouseEvent.PRESS:
+            PVector newSelection = mapping.getClosestMappedPointTo(mouse);
+            if (newSelection != null) {
+              selectedVertex = newSelection;
+            }
+            break;
+          case MouseEvent.DRAG:
+          case MouseEvent.CLICK:
+            if (selectedVertex != null) {
+              mapping.put(selectedVertex, mouse);
+              saveCalibration();
+            }
+            break;
+        }
+      } else if (calibrateMode == CalibrateMode.MASK_FACES) {
+        if (event.getAction() == MouseEvent.CLICK) {
+          if (recentlyHoveredSubshapeIndex >= 0) {
+            mapping.setFaceMask(
+                recentlyHoveredSubshapeIndex,
+                !mapping.getFaceMask(recentlyHoveredSubshapeIndex));
+            saveCalibration();
+          }
+        }
       }
-      avg.div(child.getVertexCount());
-      norm.div(child.getVertexCount());
-
-      norm.normalize();
-      norm.mult(1);
-
-      canvas.fill(255);
-      canvas.noLights();
-      canvas.push();
-      canvas.translate(avg.x, avg.y, avg.z);
-      canvas.translate(norm.x, norm.y, norm.z);
-      GeometryUtils.rotateToVector(norm, canvas);
-//      canvas.translate(0, 0, 10);
-      canvas.rotate(PI / 2, 1, 0, 0);
-      canvas.textAlign(CENTER, CENTER);
-      canvas.scale(0.25f);
-//      canvas.blendMode(EXCLUSION);
-      canvas.resetShader();
-      canvas.textSize(30);
-      canvas.text(j, 0, 0);
-      canvas.blendMode(BLEND);
-      canvas.pop();
     }
   }
 
-  // TODO: break down into smaller utility functions that don't assume so much (i.e. "draw points")
-//  private void drawVerticesOnShape(PGraphics3D projectionCanvas, PGraphics3D canvas, Set<PVector> vertices) {
-//    for (PVector modelPoint : vertices) {
-//      PVector projectedPoint = worldToScreen(modelPoint, projectionCanvas);
-//      canvas.noStroke();
-//      canvas.blendMode(EXCLUSION);
-//      canvas.fill(255);
-//      canvas.ellipse(projectedPoint.x, projectedPoint.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-//      canvas.blendMode(BLEND);
-//    }
-//  }
+  public void keyEvent(KeyEvent event) {
+    if (event.getAction() == KeyEvent.PRESS) {
+      if (event.getKey() == 't') {
+        showGui = !showGui;
+      } else if (event.getKeyCode() == 32) { // space
+        mode = (mode == Mode.CALIBRATE) ? Mode.RENDER : Mode.CALIBRATE;
+        resetCamera();
+      }
 
-  private void drawPoints(PGraphics3D canvas, Iterable<PVector> points) {
-    for (PVector p : points) {
-      canvas.noStroke();
-      canvas.blendMode(EXCLUSION);
-      canvas.fill(255);
-      canvas.ellipse(p.x, p.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-      canvas.blendMode(BLEND);
+      if (mode == Mode.CALIBRATE) {
+        if (event.getKeyCode() == 9) { // tab
+          calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT) ? CalibrateMode.MAP_POINT : CalibrateMode.SELECT_POINT;
+          resetCamera();
+        } else if (event.getKey() == 'm') {
+          calibrateMode = CalibrateMode.MASK_FACES;
+          resetCamera();
+        } else if (event.getKeyCode() == 37) { // left
+          currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
+          currentMappingIndex = 0;
+          selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 39) { // right
+          currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
+          currentMappingIndex = 0;
+          selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 38) { // up
+          int totalMappings = getCurrentShape().getNumMappings();
+          currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
+          //selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 40) { // down
+          int totalMappings = getCurrentShape().getNumMappings();
+          currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
+          //selectedVertex = null;
+          resetCamera();
+        } else if (event.getKey() == 'c') {
+          clearCalibrations();
+        }
+      }
     }
-  }
-
-  private void drawCrossHairs(float x, float y) {
-    parent.blendMode(EXCLUSION);
-    parent.stroke(255);
-    parent.strokeWeight(2);
-    parent.push();
-    parent.translate(x, y);
-    float size = 40;
-    parent.line(-size, 0, size, 0);
-    parent.line(0, -size, 0, size);
-    parent.noFill();
-    parent.ellipseMode(CENTER);
-    parent.ellipse(0, 0, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
-    parent.pop();
-  }
-
-  private void drawHighlightedPoint(PGraphics3D canvas, PVector point) {
-    canvas.stroke(255);
-    canvas.strokeWeight(2);
-    canvas.noFill();
-    canvas.ellipse(point.x, point.y, UI_CIRCLE_RADIUS + 10, UI_CIRCLE_RADIUS + 10);
-  }
-
-  private void drawSelectedPoint(PGraphics3D canvas, PVector point) {
-    canvas.stroke(255);
-    canvas.strokeWeight(4);
-    canvas.noFill();
-    canvas.ellipse(point.x, point.y, UI_CIRCLE_RADIUS + 10, UI_CIRCLE_RADIUS + 10);
   }
 
   public void draw() {
@@ -659,88 +542,191 @@ public class ShapeMapper {
     drawGUI();
   }
 
-  public void mouseEvent(MouseEvent event) {
-    MappedShape shape = getCurrentShape();
-    Mapping mapping = getCurrentMapping();
+  private void drawShape(PShape shape, PGraphics3D canvas, boolean highlight) {
+    canvas.fill(255, 0, 0);
+    canvas.noStroke();
+    canvas.lights();
+    normalShader.set("normalColorStrength", highlight ? 0.5f : 0.25f);
+    canvas.shader(normalShader);
+    shape.disableStyle();
+    shape.draw(canvas);
 
-    PVector mouse = new PVector(event.getX(), event.getY());
-
-    if (mode == Mode.CALIBRATE) {
-      if (calibrateMode == CalibrateMode.SELECT_POINT) {
-        if (event.getAction() == MouseEvent.CLICK) {
-          selectedVertex = shape.getClosestPointTo(mouse, shapeCanvas);
-        }
-
-        getCurrentMapping().setCameraState(camera.getState());
-      } else if (calibrateMode == CalibrateMode.MAP_POINT) {
-        switch (event.getAction()) {
-          case MouseEvent.PRESS:
-            PVector newSelection = mapping.getClosestMappedPointTo(mouse);
-            if (newSelection != null) {
-              selectedVertex = newSelection;
-            }
-            break;
-          case MouseEvent.DRAG:
-          case MouseEvent.CLICK:
-            if (selectedVertex != null) {
-              mapping.put(selectedVertex, mouse);
-              saveCalibration();
-            }
-            break;
-        }
-      } else if (calibrateMode == CalibrateMode.MASK_FACES) {
-        if (event.getAction() == MouseEvent.CLICK) {
-          if (recentlyHoveredSubshapeIndex >= 0) {
-            mapping.setFaceMask(
-                recentlyHoveredSubshapeIndex,
-                !mapping.getFaceMask(recentlyHoveredSubshapeIndex));
-            saveCalibration();
-          }
-        }
+    for (int j = 0; j < shape.getChildCount(); j++) {
+      PShape child = shape.getChild(j);
+      PVector avg = new PVector();
+      PVector norm = new PVector();
+      for (int i = 0; i < child.getVertexCount(); i++) {
+        avg.add(child.getVertex(i));
+        norm.add(child.getNormal(i));
       }
+      avg.div(child.getVertexCount());
+      norm.div(child.getVertexCount());
+
+      norm.normalize();
+      norm.mult(1);
+
+      canvas.fill(255);
+      canvas.noLights();
+      canvas.push();
+      canvas.translate(avg.x, avg.y, avg.z);
+      canvas.translate(norm.x, norm.y, norm.z);
+      GeometryUtils.rotateToVector(norm, canvas);
+      canvas.rotate(PI / 2, 1, 0, 0);
+      canvas.textAlign(CENTER, CENTER);
+      canvas.scale(0.25f);
+      canvas.resetShader();
+      canvas.textSize(30);
+      canvas.text(j, 0, 0);
+      canvas.blendMode(BLEND);
+      canvas.pop();
     }
   }
 
-  public void keyEvent(KeyEvent event) {
-    if (event.getAction() == KeyEvent.PRESS) {
-      if (event.getKey() == 't') {
-        showGui = !showGui;
-      } else if (event.getKeyCode() == 32) { // space
-        mode = (mode == Mode.CALIBRATE) ? Mode.RENDER : Mode.CALIBRATE;
-        resetCamera();
+  private void drawPoints(PGraphics3D canvas, Iterable<PVector> points) {
+    for (PVector p : points) {
+      canvas.noStroke();
+      canvas.blendMode(EXCLUSION);
+      canvas.fill(255);
+      canvas.ellipse(p.x, p.y, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+      canvas.blendMode(BLEND);
+    }
+  }
+
+  private void drawCrossHairs(float x, float y) {
+    parent.blendMode(EXCLUSION);
+    parent.stroke(255);
+    parent.strokeWeight(2);
+    parent.push();
+    parent.translate(x, y);
+    float size = 40;
+    parent.line(-size, 0, size, 0);
+    parent.line(0, -size, 0, size);
+    parent.noFill();
+    parent.ellipseMode(CENTER);
+    parent.ellipse(0, 0, UI_CIRCLE_RADIUS, UI_CIRCLE_RADIUS);
+    parent.pop();
+  }
+
+  private void drawHighlightedPoint(PGraphics3D canvas, PVector point) {
+    canvas.stroke(255);
+    canvas.strokeWeight(2);
+    canvas.noFill();
+    canvas.ellipse(point.x, point.y, UI_CIRCLE_RADIUS + 10, UI_CIRCLE_RADIUS + 10);
+  }
+
+  private void drawSelectedPoint(PGraphics3D canvas, PVector point) {
+    canvas.stroke(255);
+    canvas.strokeWeight(4);
+    canvas.noFill();
+    canvas.ellipse(point.x, point.y, UI_CIRCLE_RADIUS + 10, UI_CIRCLE_RADIUS + 10);
+  }
+
+  private void drawGuiRow() {
+    PGraphics3D g = parentGraphics;
+    g.fill(BACKGROUND);
+    g.stroke(BORDER);
+    g.strokeWeight(2);
+    g.rectMode(CORNER);
+    g.rect(0, 0, GUI_WIDTH, GUI_ROW_HEIGHT);
+  }
+
+  private void drawTextOptions(String[] options, int selected) {
+    PGraphics3D g = parentGraphics;
+
+    g.fill(255);
+    g.textSize(FONT_SIZE);
+    g.textAlign(LEFT, CENTER);
+
+    g.push();
+    for (int i = 0; i < options.length; i++) {
+      float textWidth = g.textWidth(options[i]);
+
+      if (i == selected) {
+        g.noStroke();
+        g.fill(HIGHLIGHT);
+        g.rect(
+            PADDING - SELECTION_PADDING,
+            GUI_ROW_HEIGHT / 2 - FONT_SIZE / 2 - SELECTION_PADDING,
+            textWidth + SELECTION_PADDING * 2,
+            FONT_SIZE + SELECTION_PADDING * 2);
       }
 
-      if (mode == Mode.CALIBRATE) {
-        if (event.getKeyCode() == 9) { // tab
-          calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT) ? CalibrateMode.MAP_POINT : CalibrateMode.SELECT_POINT;
-          resetCamera();
-        } else if (event.getKey() == 'm') {
-          calibrateMode = CalibrateMode.MASK_FACES;
-          resetCamera();
-        } else if (event.getKeyCode() == 37) { // left
-          currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
-          currentMappingIndex = 0;
-          selectedVertex = null;
-          resetCamera();
-        } else if (event.getKeyCode() == 39) { // right
-          currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
-          currentMappingIndex = 0;
-          selectedVertex = null;
-          resetCamera();
-        } else if (event.getKeyCode() == 38) { // up
-          int totalMappings = getCurrentShape().getNumMappings();
-          currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
-          //selectedVertex = null;
-          resetCamera();
-        } else if (event.getKeyCode() == 40) { // down
-          int totalMappings = getCurrentShape().getNumMappings();
-          currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
-          //selectedVertex = null;
-          resetCamera();
-        } else if (event.getKey() == 'c') {
-          clearCalibrations();
-        }
-      }
+      g.fill(FONT_COLOR);
+      g.text(options[i], PADDING, GUI_ROW_HEIGHT / 2);
+      g.translate(textWidth + PADDING, 0);
     }
+
+    g.pop();
+  }
+
+  private void drawKeyHint(String hint) {
+    PGraphics3D g = parentGraphics;
+
+    g.fill(SECONDARY_FONT_COLOR);
+    g.textAlign(RIGHT, CENTER);
+    g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
+  }
+
+
+
+  public void drawGUI() {
+    if (!showGui) {
+      return;
+    }
+
+    PGraphics3D g = parentGraphics;
+
+    g.resetShader();
+
+    g.hint(DISABLE_DEPTH_TEST);
+
+    g.push();
+    g.translate(50, 50);
+
+    drawGuiRow();
+    drawTextOptions(new String[]{"Toggle GUI"}, -1);
+    drawKeyHint("T");
+
+    g.translate(0, GUI_ROW_HEIGHT);
+    drawGuiRow();
+    drawTextOptions(new String[]{"Render", "Calibrate"}, mode == Mode.RENDER ? 0 : 1);
+    drawKeyHint("Space");
+
+    g.translate(0, PADDING);
+
+    if (mode == Mode.CALIBRATE) {
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      drawTextOptions(new String[]{"Choose point", "Map point"}, calibrateMode == CalibrateMode.SELECT_POINT ? 0 : calibrateMode == CalibrateMode.MAP_POINT ? 1 : -1);
+      drawKeyHint("Tab");
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      drawTextOptions(new String[]{"Mask faces"}, calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1);
+      drawKeyHint("M");
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      String[] modelNames = Stream.concat(
+          Stream.of("Shapes:"),
+          shapes.stream().map(MappedShape::getName)
+      ).toArray(String[]::new);
+      drawTextOptions(modelNames, currentShapeIndex + 1);
+      drawKeyHint("← →");
+
+      g.translate(0, GUI_ROW_HEIGHT);
+      drawGuiRow();
+      String[] indices = Stream.concat(
+          Stream.of("Mappings:"),
+          IntStream.range(1, 1 + getCurrentShape().getNumMappings())
+              .mapToObj(String::valueOf)
+      ).toArray(String[]::new);
+      drawTextOptions(indices, currentMappingIndex + 1);
+      drawKeyHint("↓  ↑");
+    }
+
+    g.pop();
+
+    parentGraphics.hint(ENABLE_DEPTH_TEST);
   }
 }
