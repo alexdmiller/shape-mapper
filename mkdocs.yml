@@ -1,15 +1,6 @@
 site_name: Processing Library Template
 site_url: "https://alexdmiller.github.io/shape-mapper/"
 
-theme:
-  name: material
-  features:
-    - content.code.copy
-    - content.code.select
-    - content.code.highlight
-    - content.code.annotate
-    - navigation.footer
-
 
 copyright: MIT Licence.
 
