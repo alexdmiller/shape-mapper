@@ -9,9 +9,9 @@ plugins:
 nav:
   - Home: index.md
   - Get Started: getting-started.md
-  - Develop: develop.md
-  - Release: release.md
-  - Troubleshooting: troubleshooting.md
+  - 'Tutorial: How to map a paper-folded object': how-to-paper-folding.md
+  - 'How-to: Map multiple objects': how-to-multiple-objects.md
+  - 'How-to: Use multiple projectors': how-to-multiple-projectors.md
 
 markdown_extensions:
   - pymdownx.highlight:
