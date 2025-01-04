@@ -4,6 +4,32 @@ Shape Mapper is a [Processing](processing.org/) library for projection mapping.
 
 ![output](https://github.com/user-attachments/assets/af2e75f6-b4d0-4e52-bb8e-f2c5d644a5bc)
 
+## Example code
+
+Here is a minimal example showing what the library interface looks like:
+
+``` java
+import spacefiller.shapemapper.ShapeMapper;
+import processing.core.PShape;
+
+ShapeMapper mapper;
+PShape shape;
+
+void setup() {
+  fullScreen(P3D);
+  shape = createShape(BOX, 100, 200, 300);
+  mapper = new ShapeMapper(this, shape);
+}
+
+void draw() {
+  background(0);
+
+  mapper.beginMapping();
+  shape(shape);
+  mapper.endMapping();
+}
+```
+
 ## Use cases
 
 [Projection mapping](https://en.wikipedia.org/wiki/Projection_mapping) is the process of calibrating a digital projection to align with a three dimensional surface. The Shape Mapper library is useful if you have a 3D model of the object you want to projection map. Some example workflows:
