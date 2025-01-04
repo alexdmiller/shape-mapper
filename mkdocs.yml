@@ -8,8 +8,8 @@ plugins:
 
 nav:
   - Home: index.md
-  - Get Started: getting-started.md
-  - 'Tutorial: How to map a paper-folded object': how-to-paper-folding.md
+  - 'Tutorial: Getting started': tutorial-getting-started.md
+  - 'Tutorial: Map a paper-folded object': tutorial-paper-folding.md
   - 'How-to: Map multiple objects': how-to-multiple-objects.md
   - 'How-to: Use multiple projectors': how-to-multiple-projectors.md
 

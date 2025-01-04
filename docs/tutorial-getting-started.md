@@ -1,4 +1,4 @@
-# Getting started
+# Tutorial: Getting started
 
 ## Installation
 
@@ -13,7 +13,7 @@
 
 Installing via the Contributions Manager is not yet currently available.
 
-## Code
+## Find an object
 
 In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like [Blender](https://www.blender.org/)).
 
@@ -21,7 +21,12 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
 
 [picture of box]
 
-1.  In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].
+In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].
+
+[picture of measuring]
+
+## Write code
+
 1.  Create a new Processing sketch and import the Shape Mapper library, as well as the Processing [PShape](https://processing.org/tutorials/pshape) class:
 
     ```
@@ -29,14 +34,14 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
     import processing.core.PShape;
     ```
 
-1.  Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:
+2.  Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:
 
     ```
     ShapeMapper mapper;
     PShape shape;
     ```
 
-1.  Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use [`fullScreen()`](https://processing.org/reference/fullScreen_.html). It is required to use the [`P3D` render mode](https://processing.org/tutorials/p3d); Shape Mapper will not work without it.
+3.  Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use [`fullScreen()`](https://processing.org/reference/fullScreen_.html). It is required to use the [`P3D` render mode](https://processing.org/tutorials/p3d); Shape Mapper will not work without it.
 
     ``` java
     void setup() {
@@ -50,7 +55,7 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
     }
     ```
 
-1.  Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
+4.  Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
     ``` java
     void draw() {
@@ -71,7 +76,7 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
     }
     ```
 
-1.  Putting it all together, our sketch should look like this:
+5.  Putting it all together, our sketch should look like this:
 
     ``` java
     import spacefiller.shapemapper.ShapeMapper;
@@ -104,7 +109,7 @@ To get started quickly, we can use a box-shaped object. In this example, we'll b
     }
     ```
 
-## Calibration
+## Map object
 
 Now that we have the code for the sketch set up, we can calibrate our mapping.
 
