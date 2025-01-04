@@ -8,13 +8,13 @@
       
       
       
-        <link rel="canonical" href="https://alexdmiller.github.io/shape-mapper/getting-started.html">
+        <link rel="canonical" href="https://alexdmiller.github.io/shape-mapper/tutorial-getting-started.html">
       
       
         <link rel="prev" href="index.html">
       
       
-        <link rel="next" href="how-to-paper-folding.html">
+        <link rel="next" href="tutorial-paper-folding.html">
       
       
       <link rel="icon" href="assets/images/favicon.png">
@@ -22,7 +22,7 @@
     
     
       
-        <title>Get Started - Shape Mapper</title>
+        <title>Tutorial: Getting started - Shape Mapper</title>
       
     
     
@@ -74,7 +74,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#getting-started" class="md-skip">
+        <a href="#tutorial-getting-started" class="md-skip">
           Skip to content
         </a>
       
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Get Started
+              Tutorial: Getting started
             
           </span>
         </div>
@@ -199,18 +199,18 @@
           
   
   <span class="md-ellipsis">
-    Get Started
+    Tutorial: Getting started
   </span>
   
 
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <a href="getting-started.html" class="md-nav__link md-nav__link--active">
+      <a href="tutorial-getting-started.html" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
-    Get Started
+    Tutorial: Getting started
   </span>
   
 
@@ -265,18 +265,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code" class="md-nav__link">
+  <a href="#find-an-object" class="md-nav__link">
     <span class="md-ellipsis">
-      Code
+      Find an object
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#calibration" class="md-nav__link">
+  <a href="#write-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Calibration
+      Write code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Map object
     </span>
   </a>
   
@@ -315,11 +324,11 @@
   
   
     <li class="md-nav__item">
-      <a href="how-to-paper-folding.html" class="md-nav__link">
+      <a href="tutorial-paper-folding.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Tutorial: How to map a paper-folded object
+    Tutorial: Map a paper-folded object
   </span>
   
 
@@ -428,18 +437,27 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#code" class="md-nav__link">
+  <a href="#find-an-object" class="md-nav__link">
     <span class="md-ellipsis">
-      Code
+      Find an object
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#calibration" class="md-nav__link">
+  <a href="#write-code" class="md-nav__link">
     <span class="md-ellipsis">
-      Calibration
+      Write code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#map-object" class="md-nav__link">
+    <span class="md-ellipsis">
+      Map object
     </span>
   </a>
   
@@ -478,7 +496,7 @@
                   
 
 
-<h1 id="getting-started">Getting started</h1>
+<h1 id="tutorial-getting-started">Tutorial: Getting started</h1>
 <h2 id="installation">Installation</h2>
 <h3 id="manual-installation">Manual installation</h3>
 <ol>
@@ -489,12 +507,14 @@
 </ol>
 <h3 id="install-via-contributions-manager">Install via Contributions Manager</h3>
 <p>Installing via the Contributions Manager is not yet currently available.</p>
-<h2 id="code">Code</h2>
+<h2 id="find-an-object">Find an object</h2>
 <p>In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like <a href="https://www.blender.org/">Blender</a>).</p>
 <p>To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.</p>
 <p>[picture of box]</p>
+<p>In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].</p>
+<p>[picture of measuring]</p>
+<h2 id="write-code">Write code</h2>
 <ol>
-<li>In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].</li>
 <li>
 <p>Create a new Processing sketch and import the Shape Mapper library, as well as the Processing <a href="https://processing.org/tutorials/pshape">PShape</a> class:</p>
 <div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>import spacefiller.shapemapper.ShapeMapper;
@@ -573,7 +593,7 @@
 </span></code></pre></div>
 </li>
 </ol>
-<h2 id="calibration">Calibration</h2>
+<h2 id="map-object">Map object</h2>
 <p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
 <ol>
 <li>Connect your computer to a projector and point the projector at the object you're mapping.</li>
@@ -684,13 +704,13 @@
         
         
           
-          <a href="how-to-paper-folding.html" class="md-footer__link md-footer__link--next" aria-label="Next: Tutorial: How to map a paper-folded object">
+          <a href="tutorial-paper-folding.html" class="md-footer__link md-footer__link--next" aria-label="Next: Tutorial: Map a paper-folded object">
             <div class="md-footer__title">
               <span class="md-footer__direction">
                 Next
               </span>
               <div class="md-ellipsis">
-                Tutorial: How to map a paper-folded object
+                Tutorial: Map a paper-folded object
               </div>
             </div>
             <div class="md-footer__button md-icon">

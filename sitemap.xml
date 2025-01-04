@@ -5,10 +5,6 @@
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/getting-started.html</loc>
-         <lastmod>2025-01-04</lastmod>
-    </url>
-    <url>
          <loc>https://alexdmiller.github.io/shape-mapper/how-to-multiple-objects.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
@@ -17,7 +13,11 @@
          <lastmod>2025-01-04</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/how-to-paper-folding.html</loc>
+         <loc>https://alexdmiller.github.io/shape-mapper/tutorial-getting-started.html</loc>
+         <lastmod>2025-01-04</lastmod>
+    </url>
+    <url>
+         <loc>https://alexdmiller.github.io/shape-mapper/tutorial-paper-folding.html</loc>
          <lastmod>2025-01-04</lastmod>
     </url>
 </urlset>
