@@ -1,4 +1,4 @@
-site_name: Processing Library Template
+site_name: Shape Mapper
 site_url: "https://alexdmiller.github.io/shape-mapper/"
 
 copyright: MIT Licence.
@@ -15,29 +15,12 @@ nav:
 
 theme:
   name: material
+  scheme: slate
+  palette:
+    primary: black
   features:
     - content.code.copy
     - content.code.select
     - content.code.highlight
     - content.code.annotate
     - navigation.footer
-  palette:
-    # Palette toggle for automatic mode
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
-
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default 
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
