@@ -90,6 +90,7 @@ repositories {
 
 dependencies {
     compileOnly(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
+//    implementation(group = "com.github.micycle1", name = "processing-core-4", version = "4.3.1")
 
     // opencv
     implementation(group = "org.bytedeco", name = "opencv-platform", version = "4.9.0-$javaCvVersion")
