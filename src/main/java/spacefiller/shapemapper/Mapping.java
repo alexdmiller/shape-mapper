@@ -52,8 +52,7 @@ public class Mapping implements Serializable {
 
   public void remove(PVector from) {
     this.points.remove(from);
-    transform = CalibrationUtils.calibrate(
-        this.points, parentGraphics.width, parentGraphics.height);
+    computeTransform();
   }
 
   public Set<PVector> getMappedPoints() {
@@ -143,5 +142,6 @@ public class Mapping implements Serializable {
 
   public void clear() {
     points.clear();
+    computeTransform();
   }
 }

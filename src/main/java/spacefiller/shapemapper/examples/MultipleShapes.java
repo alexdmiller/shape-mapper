@@ -45,12 +45,12 @@ public class MultipleShapes extends PApplet {
 
       for (PShape child : shape.getChildren()) {
         fill(255 * sin(frameCount / 50f + i / 4f));
+        noStroke();
         shape(child);
         i++;
       }
 
       ms.endMapping();
-
       i++;
     }
   }

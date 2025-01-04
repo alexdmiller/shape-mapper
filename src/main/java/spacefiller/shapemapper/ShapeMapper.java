@@ -156,10 +156,8 @@ public class ShapeMapper {
     for (MappedShape ms : shapes) {
       for (Mapping m : ms.getMappings()) {
         m.clear();
-        m.computeTransform();
       }
     }
-
 
     saveCalibration();
   }
@@ -227,7 +225,6 @@ public class ShapeMapper {
     showGui = true;
   }
 
-
   // Make these constants and move to top
   int GUI_WIDTH = 400;
   int GUI_ROW_HEIGHT = 50;
@@ -264,7 +261,6 @@ public class ShapeMapper {
       camera.reset();
     }
   }
-
 
   public void mouseEvent(MouseEvent event) {
     MappedShape shape = getCurrentShape();
@@ -321,32 +317,38 @@ public class ShapeMapper {
         if (event.getKeyCode() == 9) { // tab
           calibrateMode = (calibrateMode == CalibrateMode.SELECT_POINT) ? CalibrateMode.MAP_POINT : CalibrateMode.SELECT_POINT;
           resetCamera();
-        } else if (event.getKey() == 'm') {
+        } else if (event.getKey() == 'm' && canMaskShapes()) {
           calibrateMode = CalibrateMode.MASK_FACES;
           resetCamera();
-        } else if (event.getKeyCode() == 37) { // left
-          currentShapeIndex = (currentShapeIndex + 1) % shapes.size();
-          currentMappingIndex = 0;
-          selectedVertex = null;
-          resetCamera();
-        } else if (event.getKeyCode() == 39) { // right
+        } else if (event.getKeyCode() == 37 && canNavigateShapes()) { // left
           currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
           currentMappingIndex = 0;
           selectedVertex = null;
           resetCamera();
-        } else if (event.getKeyCode() == 38) { // up
+        } else if (event.getKeyCode() == 39 && canNavigateShapes()) { // right
+          currentShapeIndex = ((currentShapeIndex + 1) + shapes.size()) % shapes.size();
+          currentMappingIndex = 0;
+          selectedVertex = null;
+          resetCamera();
+        } else if (event.getKeyCode() == 38 && canNavigateMappings()) { // up
           int totalMappings = getCurrentShape().getNumMappings();
           currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
           //selectedVertex = null;
           resetCamera();
-        } else if (event.getKeyCode() == 40) { // down
+        } else if (event.getKeyCode() == 40 && canNavigateMappings()) { // down
           int totalMappings = getCurrentShape().getNumMappings();
           currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
           //selectedVertex = null;
           resetCamera();
-        } else if (event.getKey() == 'c') {
-          clearCalibrations();
+        } else if (event.getKeyCode() == 8) {
+          if (event.isControlDown()) {
+            clearCalibrations();
+          } else if (canDeletePoint()) {
+            getCurrentMapping().remove(selectedVertex);
+            saveCalibration();
+          }
         }
+//        System.out.println(event.getKeyCode())
       }
     }
   }
@@ -631,7 +633,13 @@ public class ShapeMapper {
   }
 
   private void drawTextOptions(String[] options, int selected) {
+    drawTextOptions(options, selected, true);
+  }
+
+  private void drawTextOptions(String[] options, int selected, boolean enabled) {
     PGraphics3D g = parentGraphics;
+
+    int alpha = enabled ? 255 : 50;
 
     g.fill(255);
     g.textSize(FONT_SIZE);
@@ -643,7 +651,7 @@ public class ShapeMapper {
 
       if (i == selected) {
         g.noStroke();
-        g.fill(HIGHLIGHT);
+        g.fill(HIGHLIGHT, alpha);
         g.rect(
             PADDING - SELECTION_PADDING,
             GUI_ROW_HEIGHT / 2 - FONT_SIZE / 2 - SELECTION_PADDING,
@@ -651,7 +659,7 @@ public class ShapeMapper {
             FONT_SIZE + SELECTION_PADDING * 2);
       }
 
-      g.fill(FONT_COLOR);
+      g.fill(FONT_COLOR, alpha);
       g.text(options[i], PADDING, GUI_ROW_HEIGHT / 2);
       g.translate(textWidth + PADDING, 0);
     }
@@ -660,14 +668,18 @@ public class ShapeMapper {
   }
 
   private void drawKeyHint(String hint) {
+    drawKeyHint(hint, true);
+  }
+
+  private void drawKeyHint(String hint, boolean enabled) {
+    int alpha = enabled ? 255 : 50;
+
     PGraphics3D g = parentGraphics;
 
-    g.fill(SECONDARY_FONT_COLOR);
+    g.fill(SECONDARY_FONT_COLOR, alpha);
     g.textAlign(RIGHT, CENTER);
     g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
   }
-
-
 
   public void drawGUI() {
     if (!showGui) {
@@ -702,31 +714,63 @@ public class ShapeMapper {
 
       g.translate(0, GUI_ROW_HEIGHT);
       drawGuiRow();
-      drawTextOptions(new String[]{"Mask faces"}, calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1);
-      drawKeyHint("M");
+      drawTextOptions(
+          new String[]{"Mask faces"},
+          calibrateMode == CalibrateMode.MASK_FACES ? 0 : -1,
+          canMaskShapes());
+      drawKeyHint("M", canMaskShapes());
+
+      if (canNavigateShapes()) {
+        g.translate(0, GUI_ROW_HEIGHT);
+        drawGuiRow();
+        String[] modelNames = Stream.concat(Stream.of("Shapes:"), shapes.stream().map(MappedShape::getName)).toArray(String[]::new);
+        drawTextOptions(modelNames, currentShapeIndex + 1);
+        drawKeyHint("← →");
+      }
+
+      if (canNavigateMappings()) {
+        g.translate(0, GUI_ROW_HEIGHT);
+        drawGuiRow();
+        String[] indices = Stream.concat(Stream.of("Mappings:"), IntStream.range(1, 1 + getCurrentShape().getNumMappings()).mapToObj(String::valueOf)).toArray(String[]::new);
+        drawTextOptions(indices, currentMappingIndex + 1);
+        drawKeyHint("↓  ↑");
+      }
 
       g.translate(0, GUI_ROW_HEIGHT);
       drawGuiRow();
-      String[] modelNames = Stream.concat(
-          Stream.of("Shapes:"),
-          shapes.stream().map(MappedShape::getName)
-      ).toArray(String[]::new);
-      drawTextOptions(modelNames, currentShapeIndex + 1);
-      drawKeyHint("← →");
+      drawTextOptions(
+          new String[]{"Delete point"},
+          -1,
+          canDeletePoint());
+      drawKeyHint("Del", canDeletePoint());
 
       g.translate(0, GUI_ROW_HEIGHT);
       drawGuiRow();
-      String[] indices = Stream.concat(
-          Stream.of("Mappings:"),
-          IntStream.range(1, 1 + getCurrentShape().getNumMappings())
-              .mapToObj(String::valueOf)
-      ).toArray(String[]::new);
-      drawTextOptions(indices, currentMappingIndex + 1);
-      drawKeyHint("↓  ↑");
+      drawTextOptions(
+          new String[]{"Clear calibration"},
+          -1,
+          true);
+      drawKeyHint("Ctrl + Del", true);
     }
 
     g.pop();
 
     parentGraphics.hint(ENABLE_DEPTH_TEST);
+  }
+
+  private boolean canMaskShapes() {
+    return getCurrentMapping().isReady();
+  }
+
+  private boolean canDeletePoint() {
+    return selectedVertex != null && getCurrentMapping().get(selectedVertex) != null;
+  }
+
+  private boolean canNavigateShapes() {
+    return shapes.size() > 1;
+  }
+
+  private boolean canNavigateMappings() {
+    return getCurrentShape().getNumMappings() > 1;
   }
 }
