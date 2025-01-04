@@ -249,9 +249,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#install-via-library-manager" class="md-nav__link">
+  <a href="#install-via-contributions-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      Install via Library Manager
+      Install via Contributions Manager
     </span>
   </a>
   
@@ -394,9 +394,9 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#install-via-library-manager" class="md-nav__link">
+  <a href="#install-via-contributions-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      Install via Library Manager
+      Install via Contributions Manager
     </span>
   </a>
   
@@ -449,90 +449,92 @@
 <li>Download the <code>shapemapper.pdex</code> file for the most recent release.</li>
 <li>Open the file to automatically install the library.</li>
 </ol>
-<h3 id="install-via-library-manager">Install via Library Manager</h3>
-<p>Installing via the Library Manager is not yet currently available.</p>
+<h3 id="install-via-contributions-manager">Install via Contributions Manager</h3>
+<p>Installing via the Contributions Manager is not yet currently available.</p>
 <h2 id="mapping-an-object">Mapping an object</h2>
 <p>In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like <a href="https://www.blender.org/">Blender</a>).</p>
 <p>To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.</p>
 <p>[picture of box]</p>
 <ol>
 <li>In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].</li>
-<li>Create a new Processing sketch and import the Shape Mapper library, as well as the Processing <a href="https://processing.org/tutorials/pshape">PShape</a> class:</li>
-</ol>
+<li>
+<p>Create a new Processing sketch and import the Shape Mapper library, as well as the Processing <a href="https://processing.org/tutorials/pshape">PShape</a> class:</p>
 <p><code>java
-   import spacefiller.shapemapper.ShapeMapper;
-   import processing.core.PShape;</code></p>
-<ol>
-<li>Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:</li>
-</ol>
+import spacefiller.shapemapper.ShapeMapper;
+import processing.core.PShape;</code></p>
+</li>
+<li>
+<p>Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:</p>
 <p><code>java
-   ShapeMapper mapper;
-   PShape shape;</code></p>
-<ol>
-<li>Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use <a href="https://processing.org/reference/fullScreen_.html"><code>fullScreen()</code></a>. It is required to use the <a href="https://processing.org/tutorials/p3d"><code>P3D</code> render mode</a>; Shape Mapper will not work without it.</li>
-</ol>
+ShapeMapper mapper;
+PShape shape;</code></p>
+</li>
+<li>
+<p>Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use <a href="https://processing.org/reference/fullScreen_.html"><code>fullScreen()</code></a>. It is required to use the <a href="https://processing.org/tutorials/p3d"><code>P3D</code> render mode</a>; Shape Mapper will not work without it.</p>
 <p>```java
-   void setup() {
-      fullScreen(P3D);</p>
-<pre><code>  // The size of our box is proportional to the physical measurements we made
-  shape = createShape(BOX, 100, 200, 300);
+void setup() {
+    fullScreen(P3D);</p>
+<pre><code>// The size of our box is proportional to the physical measurements we made
+shape = createShape(BOX, 100, 200, 300);
 
-  // Initialize the Shape Mapper library with our box
-  mapper = new ShapeMapper(this, shape);
+// Initialize the Shape Mapper library with our box
+mapper = new ShapeMapper(this, shape);
 </code></pre>
 <p>}
-   ```</p>
-<ol>
-<li>Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the <code>mapper.beginMapping()</code> and <code>mapper.endMapping()</code> lines.</li>
-</ol>
+```</p>
+</li>
+<li>
+<p>Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the <code>mapper.beginMapping()</code> and <code>mapper.endMapping()</code> lines.</p>
 <p>```java
-   void draw() {
-      background(0);</p>
-<pre><code>  mapper.beginMapping();
+void draw() {
+    background(0);</p>
+<pre><code>mapper.beginMapping();
 
-  // Disable the default shape style so that we can choose fill and stroke
-  // manually in the code
-  shape.disableStyle();
+// Disable the default shape style so that we can choose fill and stroke
+// manually in the code
+shape.disableStyle();
 
-  // Draw the shape
-  fill(0);
-  stroke(255);
-  shape(shape);
+// Draw the shape
+fill(0);
+stroke(255);
+shape(shape);
 
-  mapper.endMapping();
+mapper.endMapping();
 </code></pre>
 <p>}
-   ```</p>
-<ol>
-<li>Putting it all together, our sketch should look like this:</li>
-</ol>
+```</p>
+</li>
+<li>
+<p>Putting it all together, our sketch should look like this:</p>
 <p>```java
-   import spacefiller.shapemapper.ShapeMapper;
-   import processing.core.PShape;</p>
+import spacefiller.shapemapper.ShapeMapper;
+import processing.core.PShape;</p>
 <p>ShapeMapper mapper;
-   PShape shape;</p>
+PShape shape;</p>
 <p>void setup() {
-      fullScreen(P3D);
-      shape = createShape(BOX, 100, 200, 300);
-      mapper = new ShapeMapper(this, shape);
-   }</p>
+    fullScreen(P3D);
+    shape = createShape(BOX, 100, 200, 300);
+    mapper = new ShapeMapper(this, shape);
+}</p>
 <p>void draw() {
-      background(0);</p>
-<pre><code>  mapper.beginMapping();
+    background(0);</p>
+<pre><code>mapper.beginMapping();
 
-  // Disable the default shape style so that we can choose fill and stroke
-  // manually in the code
-  shape.disableStyle();
+// Disable the default shape style so that we can choose fill and stroke
+// manually in the code
+shape.disableStyle();
 
-  // Draw the shape
-  fill(0);
-  stroke(255);
-  shape(shape);
+// Draw the shape
+fill(0);
+stroke(255);
+shape(shape);
 
-  mapper.endMapping();
+mapper.endMapping();
 </code></pre>
 <p>}
-   ```</p>
+```</p>
+</li>
+</ol>
 <h2 id="creating-animations">Creating animations</h2>
 <p>TODO</p>
 <ol>
