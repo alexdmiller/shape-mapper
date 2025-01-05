@@ -299,9 +299,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-code" class="md-nav__link">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
     <span class="md-ellipsis">
-      Write code
+      Write the Processing sketch
     </span>
   </a>
   
@@ -452,9 +452,9 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-code" class="md-nav__link">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
     <span class="md-ellipsis">
-      Write code
+      Write the Processing sketch
     </span>
   </a>
   
@@ -486,8 +486,8 @@
 
 <h1 id="tutorial-map-a-paper-folded-object">Tutorial: Map a paper-folded object</h1>
 <p><img alt="An example of a projection mapped paper folded object" src="images/paper-folding-1.jpg" /></p>
-<p>Shape Mapper lends itself well to projection mapping objects fabricated from digital models. There are many ways to fabricate such a model, but paper craft is attractive because of the low cost of materials.</p>
-<p>In this tutorial, we'll show how to design a simple model with <a href="https://www.blender.org/">Blender</a>, build it using paper, and then projection map it with Shape Mapper.</p>
+<p>Shape Mapper lends itself well to projection mapping objects fabricated from digital models, for example 3D printing. Paper craft is attractive because of the low cost of materials.</p>
+<p>In this tutorial, we'll design a simple model with <a href="https://www.blender.org/">Blender</a>, build it using paper, and projection map it with Shape Mapper.</p>
 <p>Note: this tutorial assumes you have access to a printer, or even better, an automatic cutting machine such as a <a href="https://cricut.com/">Cricut</a>.</p>
 <h2 id="design-and-fabricate-a-model">Design and fabricate a model</h2>
 <ol>
@@ -550,11 +550,11 @@
 </li>
 <li>
 <p>Fold your model and adhere the tabs with glue or tape to create a 3D object.</p>
-<p><img alt="Folding the shape 1" src="paper-folding-9.jpg" /></p>
-<p><img alt="Folding the shape 2" src="paper-folding-10.jpg" /></p>
+<p><img alt="Folding the shape 1" src="images/paper-folding-9.jpg" /></p>
+<p><img alt="Folding the shape 2" src="images/paper-folding-10.jpg" /></p>
 </li>
 </ol>
-<h2 id="write-code">Write code</h2>
+<h2 id="write-the-processing-sketch">Write the Processing sketch</h2>
 <ol>
 <li>Install Shape Mapper (see <a href="tutorial-getting-started.html">Getting Started</a>).</li>
 <li>Create a Processing sketch and copy the <code>.obj</code> file you exported above into a <code>data/</code> folder in the sketch's folder.</li>
@@ -594,13 +594,12 @@
 </li>
 </ol>
 <h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
-<p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
 <ol>
 <li>Connect your computer to a projector and point the projector at the object.</li>
 <li>Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting <code>T</code>, or in the code using <code>mapper.hideGui()</code>.)</li>
 <li>
 <p>Hit <code>Space</code> to switch from <code>Render</code> mode to <code>Calibrate</code> mode. This will reveal the calibration GUI.</p>
-<p><img alt="Calibrating the shape" src="paper-folding-11.png" /></p>
+<p><img alt="Calibrating the shape" src="images/paper-folding-11.png" /></p>
 </li>
 <li>
 <p>Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:</p>
@@ -616,7 +615,7 @@
 <li>Hit <code>Tab</code> to switch back to point selection. Choose another point and repeat the process.</li>
 <li>
 <p>After mapping 6 points, a full calibration will be automatically estimated. Press <code>Space</code> so switch back to <code>Render</code> mode. In physical space, your object should now be successfully mapped.</p>
-<p><img alt="Projection mapped shape" src="paper-folding-12.gif" /></p>
+<p><img alt="Projection mapped shape" src="images/paper-folding-12.gif" /></p>
 </li>
 </ol>
 
