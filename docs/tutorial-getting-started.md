@@ -4,28 +4,26 @@
 
 ### Manual installation
 
-1. Ensure you have the latest version of [Processing](https://processing.org/) installed on your computer.
-1. Navigate to Shape Mapper's [Releases page](https://github.com/alexdmiller/shape-mapper/releases).
-1. Download the `shapemapper.pdex` file for the most recent release.
-1. Open the file to automatically install the library.
+1. Install [Processing](https://processing.org/) if you have not already.
+2. Navigate to Shape Mapper's [Releases page](https://github.com/alexdmiller/shape-mapper/releases).
+3. Download the `shapemapper.pdex` file for the most recent release.
+4. Open the file to automatically install the library.
 
 ### Install via Contributions Manager
 
-Installing via the Contributions Manager is not yet currently available.
+Installing via the Contributions Manager is not yet available.
 
 ## Find an object
 
-In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like [Blender](https://www.blender.org/)).
-
-To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.
+A box is an easy thing to model, so look around your space for something box shaped. We'll be using a cardboard box as an example.
 
 ![Photo of cardboard box](images/getting-started-1.jpg)
 
-In order to model our box in code, we'll need to measure the size of the physical box. The box pictured is 18.5" × 18.5" × 16.5".
+Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5" (this is relevant to our code in the next step).
 
 ![Person measures cardboard box](images/getting-started-2.jpg)
 
-## Write code
+## Write the Processing sketch
 
 1.  Create a new Processing sketch and import the Shape Mapper library, as well as the Processing [PShape](https://processing.org/tutorials/pshape) class:
 
@@ -56,9 +54,9 @@ In order to model our box in code, we'll need to measure the size of the physica
     }
     ```
 
-    Note that the size of our box is proportional to the measurements we took of the physical cardboard box. In this way, we're modeling the physical object in virtual space.
+    Note that the size of our box is proportional to the measurements we took of the physical cardboard box. We're modeling the physical object in virtual space by ensuring our virtual dimensions are proportional to our physical dimensions.
 
-4.  Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
+4.  Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
     ``` java
     void draw() {
@@ -116,45 +114,44 @@ In order to model our box in code, we'll need to measure the size of the physica
     }
     ```
 
-## Map object
+## Calibrate the projection mapping
 
 Now that we have the code for the sketch set up, we can calibrate our mapping.
 
 1.  Connect your computer to a projector and point the projector at the object you're mapping.
-1.  Run the sketch you wrote above. By default, the Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting `T`, or in the code using `mapper.hideGui()`.)
+2.  Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting `T`, or in the code using `mapper.hideGui()`.)
 
     ![Screen shot of the initial Shape Mapper GUI](images/getting-started-3.png)
 
-1.  Hit `Space` to switch from `Render` mode to `Calibrate` mode. This will reveal the calibration GUI.
+3.  Hit `Space` to switch from `Render` mode to `Calibrate` mode. This will reveal the calibration GUI.
 
     ![Screen shot of the initial Shape Mapper GUI](images/getting-started-4.png)
 
-2.  Your 3D model will appear in the center of the screen. We must now select a point to calibrate from this 3D model. You can navigate the model with the following controls:
+4.  Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:
     1.  Click + drag to orbit
     2.  Command + click + drag to pan
     3.  Scroll to zoom in and out
-3.  Click a point on your model to select it. We will now map this point to the corresponding point on the physical object.
-4.  Hit `Tab` to switch to mapping mode.
-5.  Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.
+5.  Click a point on your model to select it.
+6.  Hit `Tab` to switch to mapping mode.
+7.  Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.
 
     ![Calibrating the first point of the mapping](images/getting-started-5.gif)
 
-6.  Hit `Tab` to switch back to point selection. Choose another point and repeat the process.
-7.  After mapping 6 points, a full calibration will be automatically estimated. Press `Space` so switch back to `Render` mode. In physical space, your object should now be successfully mapped.
+8.  Hit `Tab` to switch back to point selection. Choose another point and repeat the process.
+9.  After mapping 6 points, a full calibration will be automatically estimated. Press `Space` so switch back to `Render` mode. In physical space, your object should now be successfully mapped.
 
     ![Calibrating the final point](images/getting-started-6.gif)
 
 ## Tips & tricks
 
+- You can adjust mapped points after placing them, or add more points, to refine your calibration.
 - If your model does not accurately represent your physical object, then the mapping will be misaligned.
-- You can adjust mapped points after placing them to tune your calibration.
-- You can add more than 6 points to refine your mapping.
-- To remove a point, click to select it and press `Delete`.
+- Press `Delete` to delete a selected point.
 - To completely clear all calibrations, press `Ctrl + Delete`.
 
 ## Creating animations
 
-Shape Mapper does not offer any animation or visual effect functionality; that is up for you to create with Processing code! One quick way to animate your mapped object is to use [`pointLight(...)`](https://processing.org/reference/pointLight_.html):
+Shape Mapper does not offer any included animation or visual effect functionality; that is up for you to create with Processing code! One quick way to animate your mapped object is to use [`pointLight(...)`](https://processing.org/reference/pointLight_.html):
 
 ``` java
 void draw() {
