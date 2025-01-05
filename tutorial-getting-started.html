@@ -311,18 +311,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-code" class="md-nav__link">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
     <span class="md-ellipsis">
-      Write code
+      Write the Processing sketch
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#map-object" class="md-nav__link">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
     <span class="md-ellipsis">
-      Map object
+      Calibrate the projection mapping
     </span>
   </a>
   
@@ -536,18 +536,18 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#write-code" class="md-nav__link">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
     <span class="md-ellipsis">
-      Write code
+      Write the Processing sketch
     </span>
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#map-object" class="md-nav__link">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
     <span class="md-ellipsis">
-      Map object
+      Calibrate the projection mapping
     </span>
   </a>
   
@@ -590,20 +590,19 @@
 <h2 id="installation">Installation</h2>
 <h3 id="manual-installation">Manual installation</h3>
 <ol>
-<li>Ensure you have the latest version of <a href="https://processing.org/">Processing</a> installed on your computer.</li>
+<li>Install <a href="https://processing.org/">Processing</a> if you have not already.</li>
 <li>Navigate to Shape Mapper's <a href="https://github.com/alexdmiller/shape-mapper/releases">Releases page</a>.</li>
 <li>Download the <code>shapemapper.pdex</code> file for the most recent release.</li>
 <li>Open the file to automatically install the library.</li>
 </ol>
 <h3 id="install-via-contributions-manager">Install via Contributions Manager</h3>
-<p>Installing via the Contributions Manager is not yet currently available.</p>
+<p>Installing via the Contributions Manager is not yet available.</p>
 <h2 id="find-an-object">Find an object</h2>
-<p>In order to use Shape Mapper, you must have a physical object that you want to projection map, and you must model that object virtually (whether through code or through 3D modeling software like <a href="https://www.blender.org/">Blender</a>).</p>
-<p>To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.</p>
+<p>A box is an easy thing to model, so look around your space for something box shaped. We'll be using a cardboard box as an example.</p>
 <p><img alt="Photo of cardboard box" src="images/getting-started-1.jpg" /></p>
-<p>In order to model our box in code, we'll need to measure the size of the physical box. The box pictured is 18.5" × 18.5" × 16.5".</p>
+<p>Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5" (this is relevant to our code in the next step).</p>
 <p><img alt="Person measures cardboard box" src="images/getting-started-2.jpg" /></p>
-<h2 id="write-code">Write code</h2>
+<h2 id="write-the-processing-sketch">Write the Processing sketch</h2>
 <ol>
 <li>
 <p>Create a new Processing sketch and import the Shape Mapper library, as well as the Processing <a href="https://processing.org/tutorials/pshape">PShape</a> class:</p>
@@ -630,10 +629,10 @@
 </span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="p">);</span>
 </span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">}</span>
 </span></code></pre></div>
-<p>Note that the size of our box is proportional to the measurements we took of the physical cardboard box. In this way, we're modeling the physical object in virtual space.</p>
+<p>Note that the size of our box is proportional to the measurements we took of the physical cardboard box. We're modeling the physical object in virtual space by ensuring our virtual dimensions are proportional to our physical dimensions.</p>
 </li>
 <li>
-<p>Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the <code>mapper.beginMapping()</code> and <code>mapper.endMapping()</code> lines.</p>
+<p>Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the <code>mapper.beginMapping()</code> and <code>mapper.endMapping()</code> lines.</p>
 <div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
@@ -689,12 +688,12 @@
 </span></code></pre></div>
 </li>
 </ol>
-<h2 id="map-object">Map object</h2>
+<h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
 <p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
 <ol>
 <li>Connect your computer to a projector and point the projector at the object you're mapping.</li>
 <li>
-<p>Run the sketch you wrote above. By default, the Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting <code>T</code>, or in the code using <code>mapper.hideGui()</code>.)</p>
+<p>Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting <code>T</code>, or in the code using <code>mapper.hideGui()</code>.)</p>
 <p><img alt="Screen shot of the initial Shape Mapper GUI" src="images/getting-started-3.png" /></p>
 </li>
 <li>
@@ -702,14 +701,14 @@
 <p><img alt="Screen shot of the initial Shape Mapper GUI" src="images/getting-started-4.png" /></p>
 </li>
 <li>
-<p>Your 3D model will appear in the center of the screen. We must now select a point to calibrate from this 3D model. You can navigate the model with the following controls:</p>
+<p>Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:</p>
 <ol>
 <li>Click + drag to orbit</li>
 <li>Command + click + drag to pan</li>
 <li>Scroll to zoom in and out</li>
 </ol>
 </li>
-<li>Click a point on your model to select it. We will now map this point to the corresponding point on the physical object.</li>
+<li>Click a point on your model to select it.</li>
 <li>Hit <code>Tab</code> to switch to mapping mode.</li>
 <li>
 <p>Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.</p>
@@ -725,14 +724,13 @@
 </ol>
 <h2 id="tips-tricks">Tips &amp; tricks</h2>
 <ul>
+<li>You can adjust mapped points after placing them, or add more points, to refine your calibration.</li>
 <li>If your model does not accurately represent your physical object, then the mapping will be misaligned.</li>
-<li>You can adjust mapped points after placing them to tune your calibration.</li>
-<li>You can add more than 6 points to refine your mapping.</li>
-<li>To remove a point, click to select it and press <code>Delete</code>.</li>
+<li>Press <code>Delete</code> to delete a selected point.</li>
 <li>To completely clear all calibrations, press <code>Ctrl + Delete</code>.</li>
 </ul>
 <h2 id="creating-animations">Creating animations</h2>
-<p>Shape Mapper does not offer any animation or visual effect functionality; that is up for you to create with Processing code! One quick way to animate your mapped object is to use <a href="https://processing.org/reference/pointLight_.html"><code>pointLight(...)</code></a>:</p>
+<p>Shape Mapper does not offer any included animation or visual effect functionality; that is up for you to create with Processing code! One quick way to animate your mapped object is to use <a href="https://processing.org/reference/pointLight_.html"><code>pointLight(...)</code></a>:</p>
 <div class="language-java highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">    </span><span class="n">mapper</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
