@@ -492,41 +492,67 @@
 <h2 id="design-and-fabricate-a-model">Design and fabricate a model</h2>
 <ol>
 <li>Download and install <a href="https://www.blender.org/">Blender</a>.</li>
-<li>Install the Export Paper Model add-on for Blender.<ol>
+<li>
+<p>Install the Export Paper Model add-on for Blender.</p>
+<ol>
 <li>Within Blender, navigate to Edit &gt; Preferences &gt; Add-ons.</li>
 <li>Select the "Community" tab if it is not already selected.</li>
 <li>Search for "Export Paper Model".</li>
-<li>Click the checkbox next to the name of the add-on to install it.
-    <img alt="Adding a Blender add-on" src="images/paper-folding-2.png" /></li>
+<li>
+<p>Click the checkbox next to the name of the add-on to install it.</p>
+<p><img alt="Adding a Blender add-on" src="images/paper-folding-2.png" /></p>
+</li>
 </ol>
 </li>
-<li>Delete the default cube in the Blender scene by selecting it with the mouse, and then pressing <code>X</code> followed by <code>D</code>.
-    <img alt="Deleting default cube" src="images/paper-folding-3.png" /></li>
-<li>Press <code>Shift + A</code> to activate the "Add" menu.</li>
-<li>Navigate to Mesh &gt; Ico Sphere to add it to the scene.
-    <img alt="Add menu" src="images/paper-folding-4.png" /></li>
-<li>In the lower left hand corner, the "Add Ico Sphere" options will appear. Click these and set the subdivisions to 1.
-    <img alt="Set Ico Sphere subdivisions" src="images/paper-folding-5.png" /></li>
-<li>Adjust the size of your paper model to fit the dimensions of your paper.<ol>
+<li>
+<p>Delete the default cube in the Blender scene by selecting it with the mouse, and then pressing <code>X</code> followed by <code>D</code>.</p>
+<p><img alt="Deleting default cube" src="images/paper-folding-3.png" /></p>
+</li>
+<li>
+<p>Press <code>Shift + A</code> to activate the "Add" menu.</p>
+</li>
+<li>
+<p>Navigate to Mesh &gt; Ico Sphere to add it to the scene.</p>
+<p><img alt="Add menu" src="images/paper-folding-4.png" /></p>
+</li>
+<li>
+<p>In the lower left hand corner, the "Add Ico Sphere" options will appear. Click these and set the subdivisions to 1.</p>
+<p><img alt="Set Ico Sphere subdivisions" src="images/paper-folding-5.png" /></p>
+</li>
+<li>
+<p>Adjust the size of your paper model to fit the dimensions of your paper.</p>
+<ol>
 <li>Select the newly created Ico Sphere.</li>
-<li>In the upper right hand corner of the scene view, there is a small arrow. Click this to reveal the context menu.
-    <img alt="Open context menu" src="images/paper-folding-6.gif" /></li>
-<li>Click the "Paper" tab.</li>
-<li>Check the "Automatic Scale" and "Limit Island Size" checkbox, and select the size of paper you're using.
-    <img alt="Paper folding configuration" src="images/paper-folding-7.png" /></li>
+<li>
+<p>In the upper right hand corner of the scene view, there is a small arrow. Click this to reveal the context menu.</p>
+<p><img alt="Open context menu" src="images/paper-folding-6.gif" /></p>
+</li>
+<li>
+<p>Click the "Paper" tab.</p>
+</li>
+<li>
+<p>Check the "Automatic Scale" and "Limit Island Size" checkbox, and select the size of paper you're using.</p>
+<p><img alt="Paper folding configuration" src="images/paper-folding-7.png" /></p>
+</li>
 </ol>
 </li>
-<li>Go to File &gt; Export &gt; Paper Model.<ol>
+<li>
+<p>Go to File &gt; Export &gt; Paper Model.</p>
+<ol>
 <li>If you are printing the paper model, export the model as PDF.</li>
 <li>If you are using a cutting machine, you likely need to export as SVG to import the template to your cutting machine's software. Preparing the template for your cutting machine is outside of the scope of this tutorial.</li>
 </ol>
 </li>
 <li>Go to File &gt; Export &gt; Wavefront (.obj). We'll use this file when we start writing code.</li>
-<li>Print and cut out your model, or use a cutting machine to automatically cut it out.
-    <img alt="Cutting out the shape" src="images/paper-folding-8.gif" /></li>
-<li>Fold your model and adhere the tabs with glue or tape to create a 3D object.
-    <img alt="Folding the shape" src="paper-folding-9.jpg" />
-    <img alt="Folding the shape" src="paper-folding-10.jpg" /></li>
+<li>
+<p>Print and cut out your model, or use a cutting machine to automatically cut it out.</p>
+<p><img alt="Cutting out the shape" src="images/paper-folding-8.gif" /></p>
+</li>
+<li>
+<p>Fold your model and adhere the tabs with glue or tape to create a 3D object.</p>
+<p><img alt="Folding the shape 1" src="paper-folding-9.jpg" /></p>
+<p><img alt="Folding the shape 2" src="paper-folding-10.jpg" /></p>
+</li>
 </ol>
 <h2 id="write-code">Write code</h2>
 <ol>
@@ -565,9 +591,9 @@
 </span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="n">mapper</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">}</span>
 </span></code></pre></div>
-<h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
 </li>
 </ol>
+<h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
 <p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
 <ol>
 <li>Connect your computer to a projector and point the projector at the object.</li>
