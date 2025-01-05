@@ -10,18 +10,18 @@ void setup() {
 }
 
 void draw() {
-  background(0);  
-
+  background(0);
   mapper.beginMapping();
-  noLights();
   pointLight(
-    0,
-    255,
-    255,
-    sin(frameCount / 10f) * 500,
-    cos(frameCount / 10f) * 500,
-    sin(frameCount / 10f) * 500);  
-  noStroke();
-  shape(myShape);
+    255, 0, 0,
+    sin(frameCount / 10f) * 400,
+    cos(frameCount / 10f) * 400,
+    sin(frameCount / 10f) * 400);
+  pointLight(
+    0, 0, 255,
+    cos(frameCount / 10f) * 400,
+    sin(frameCount / 10f) * 400,
+    sin(frameCount / 10f) * 400);
+  shape(shape);
   mapper.endMapping();
 }

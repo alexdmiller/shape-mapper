@@ -4,12 +4,12 @@ import processing.core.PApplet;
 import processing.core.PShape;
 import spacefiller.shapemapper.ShapeMapper;
 
-public class SimpleModelLoading extends PApplet {
+public class BasicModelLoading extends PApplet {
   ShapeMapper mapper;
   PShape shape;
 
   public static void main(String[] args) {
-    main(SimpleModelLoading.class);
+    main(BasicModelLoading.class);
   }
 
   @Override
