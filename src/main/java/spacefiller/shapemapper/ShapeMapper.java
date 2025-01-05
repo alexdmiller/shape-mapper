@@ -320,22 +320,22 @@ public class ShapeMapper {
         } else if (event.getKey() == 'm' && canMaskShapes()) {
           calibrateMode = CalibrateMode.MASK_FACES;
           resetCamera();
-        } else if (event.getKeyCode() == 37 && canNavigateShapes()) { // left
+        } else if (event.getKeyCode() == 38 && canNavigateShapes()) { // up
           currentShapeIndex = ((currentShapeIndex - 1) + shapes.size()) % shapes.size();
           currentMappingIndex = 0;
           selectedVertex = null;
           resetCamera();
-        } else if (event.getKeyCode() == 39 && canNavigateShapes()) { // right
+        } else if (event.getKeyCode() == 40 && canNavigateShapes()) { // down
           currentShapeIndex = ((currentShapeIndex + 1) + shapes.size()) % shapes.size();
           currentMappingIndex = 0;
           selectedVertex = null;
           resetCamera();
-        } else if (event.getKeyCode() == 38 && canNavigateMappings()) { // up
+        } else if (event.getKeyCode() == 37 && canNavigateMappings()) { // left
           int totalMappings = getCurrentShape().getNumMappings();
           currentMappingIndex = (currentMappingIndex + 1) % totalMappings;
           //selectedVertex = null;
           resetCamera();
-        } else if (event.getKeyCode() == 40 && canNavigateMappings()) { // down
+        } else if (event.getKeyCode() == 39 && canNavigateMappings()) { // right
           int totalMappings = getCurrentShape().getNumMappings();
           currentMappingIndex = ((currentMappingIndex - 1) + totalMappings) % totalMappings;
           //selectedVertex = null;
@@ -720,22 +720,6 @@ public class ShapeMapper {
           canMaskShapes());
       drawKeyHint("M", canMaskShapes());
 
-      if (canNavigateShapes()) {
-        g.translate(0, GUI_ROW_HEIGHT);
-        drawGuiRow();
-        String[] modelNames = Stream.concat(Stream.of("Shapes:"), shapes.stream().map(MappedShape::getName)).toArray(String[]::new);
-        drawTextOptions(modelNames, currentShapeIndex + 1);
-        drawKeyHint("← →");
-      }
-
-      if (canNavigateMappings()) {
-        g.translate(0, GUI_ROW_HEIGHT);
-        drawGuiRow();
-        String[] indices = Stream.concat(Stream.of("Mappings:"), IntStream.range(1, 1 + getCurrentShape().getNumMappings()).mapToObj(String::valueOf)).toArray(String[]::new);
-        drawTextOptions(indices, currentMappingIndex + 1);
-        drawKeyHint("↓  ↑");
-      }
-
       g.translate(0, GUI_ROW_HEIGHT);
       drawGuiRow();
       drawTextOptions(
@@ -751,6 +735,32 @@ public class ShapeMapper {
           -1,
           true);
       drawKeyHint("Ctrl + Del", true);
+
+      g.translate(0, PADDING);
+
+      if (canNavigateShapes() || canNavigateMappings()) {
+        g.translate(0, GUI_ROW_HEIGHT);
+        drawGuiRow();
+        drawTextOptions(new String[] {"Shapes"}, -1);
+        if (canNavigateShapes()) {
+          drawKeyHint("↓  ↑");
+        }
+
+        for (int i = 0; i < shapes.size(); i++) {
+          MappedShape ms = shapes.get(i);
+          boolean selected = currentShapeIndex == i;
+          g.translate(0, GUI_ROW_HEIGHT);
+          drawGuiRow();
+          String[] indices = new String[] {ms.getName()};
+          if (ms.getNumMappings() > 1) {
+            indices = Stream.concat(Stream.of(ms.getName()), IntStream.range(1, 1 + getCurrentShape().getNumMappings()).mapToObj(String::valueOf)).toArray(String[]::new);
+          }
+          drawTextOptions(indices, selected ? currentMappingIndex + 1 : -1, selected);
+          if (selected && canNavigateMappings()) {
+            drawKeyHint("← →");
+          }
+        }
+      }
     }
 
     g.pop();
