@@ -25,11 +25,10 @@ Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5"
 
 ## Write the Processing sketch
 
-1.  Create a new Processing sketch and import the Shape Mapper library, as well as the Processing [PShape](https://processing.org/tutorials/pshape) class:
+1.  Create a new Processing sketch and import the Shape Mapper library:
 
     ```
     import spacefiller.shapemapper.ShapeMapper;
-    import processing.core.PShape;
     ```
 
 2.  Create two top level variables to store the Shape Mapper library object and the shape that we'll be mapping:
@@ -39,24 +38,29 @@ Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5"
     PShape shape;
     ```
 
-3.  Write a setup function that initializes the shape and the Shape Mapper library. When initializing the screen size, it is recommended to use [`fullScreen()`](https://processing.org/reference/fullScreen_.html). It is required to use the [`P3D` render mode](https://processing.org/tutorials/p3d); Shape Mapper will not work without it.
+3.  Add a `setup` function and initializing the screen size. it is recommended to use [`fullScreen()`](https://processing.org/reference/fullScreen_.html). It is required to use the [`P3D` render mode](https://processing.org/tutorials/p3d); Shape Mapper will not work without it.
 
     ``` java
     void setup() {
         fullScreen(P3D);
-
-        // The size of our box is proportional to the physical measurements we made
-        int scale = 10;
-        shape = createShape(BOX, 18.5 * scale, 18.5 * scale, 16.5 * scale);
-
-        // Initialize the Shape Mapper library with our box
-        mapper = new ShapeMapper(this, shape);
     }
     ```
 
-    Note that the size of our box is proportional to the measurements we took of the physical cardboard box. We're modeling the physical object in virtual space by ensuring our virtual dimensions are proportional to our physical dimensions.
+4.  In our `setup` function, initialize our shape. The size of our `PShape` box needs to be proportional to the measurements we took of the physical cardboard box (18.5" × 18.5" × 16.5"). We're modeling the physical object in virtual space by ensuring our virtual dimensions are proportional to our physical dimensions.
 
-4.  Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
+    ``` java
+    // The size of our box is proportional to the physical measurements we made
+    int scale = 10;
+    shape = createShape(BOX, 18.5 * scale, 18.5 * scale, 16.5 * scale);
+    ```
+
+5.  Lastly in our `setup` function, initialize the Shape Mapper library, passing the shape we just created:
+
+    ``` java
+    mapper = new ShapeMapper(this, shape);
+    ```
+
+5.  Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
     ``` java
     void draw() {
@@ -77,11 +81,10 @@ Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5"
     }
     ```
 
-5.  Putting it all together, our sketch should look like this:
+6.  Putting it all together, our sketch should look like this:
 
     ``` java
     import spacefiller.shapemapper.ShapeMapper;
-    import processing.core.PShape;
 
     ShapeMapper mapper;
     PShape shape;
