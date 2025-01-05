@@ -72,3 +72,5 @@ Shape Mapper is heavily inspired by and based on the [mapamok](https://github.co
 Thanks to Raphaël de Courville ([@SableRaf](https://github.com/SableRaf)) and Claudine Chen ([@mingness](https://github.com/mingness)) for their help & support with Processing library development.
 
 For camera control, Shape Mapper uses the [Peasycam library](https://mrfeinberg.com/peasycam/) by [Jonathan Feinberg](https://mrfeinberg.com).
+
+This library was initially developed at [Gradient](https://www.gradientretreat.com/). Thanks to Avi for the week of focus.
