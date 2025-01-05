@@ -1,5 +1,7 @@
 # Tutorial: Map a paper-folded object
 
+![An example of a projection mapped paper folded object](images/paper-folding-1.jpg)
+
 Shape Mapper lends itself well to projection mapping objects fabricated from digital models. There are many ways to fabricate such a model, but paper craft is attractive because of the low cost of materials.
 
 In this tutorial, we'll show how to design a simple model with [Blender](https://www.blender.org/), build it using paper, and then projection map it with Shape Mapper.
@@ -14,21 +16,30 @@ Note: this tutorial assumes you have access to a printer, or even better, an aut
     2.  Select the "Community" tab if it is not already selected.
     3.  Search for "Export Paper Model".
     4.  Click the checkbox next to the name of the add-on to install it.
+        ![Adding a Blender add-on](images/paper-folding-2.png)
 3.  Delete the default cube in the Blender scene by selecting it with the mouse, and then pressing `X` followed by `D`.
+    ![Deleting default cube](images/paper-folding-3.png)
 4.  Press `Shift + A` to activate the "Add" menu.
 5.  Navigate to Mesh > Ico Sphere to add it to the scene.
+    ![Add menu](images/paper-folding-4.png)
 6.  In the lower left hand corner, the "Add Ico Sphere" options will appear. Click these and set the subdivisions to 1.
+    ![Set Ico Sphere subdivisions](images/paper-folding-5.png)
 7.  Adjust the size of your paper model to fit the dimensions of your paper.
     1.  Select the newly created Ico Sphere.
     2.  In the upper right hand corner of the scene view, there is a small arrow. Click this to reveal the context menu.
+        ![Open context menu](images/paper-folding-6.gif)
     3.  Click the "Paper" tab.
     4.  Check the "Automatic Scale" and "Limit Island Size" checkbox, and select the size of paper you're using.
+        ![Paper folding configuration](images/paper-folding-7.png)
 8.  Go to File > Export > Paper Model.
     1.  If you are printing the paper model, export the model as PDF.
     2.  If you are using a cutting machine, you likely need to export as SVG to import the template to your cutting machine's software. Preparing the template for your cutting machine is outside of the scope of this tutorial.
 9.  Go to File > Export > Wavefront (.obj). We'll use this file when we start writing code.
 10. Print and cut out your model, or use a cutting machine to automatically cut it out.
+    ![Cutting out the shape](images/paper-folding-8.gif)
 11. Fold your model and adhere the tabs with glue or tape to create a 3D object.
+    ![Folding the shape](paper-folding-9.jpg)
+    ![Folding the shape](paper-folding-10.jpg)
 
 ## Write code
 
@@ -77,7 +88,7 @@ Now that we have the code for the sketch set up, we can calibrate our mapping.
 2.  Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting `T`, or in the code using `mapper.hideGui()`.)
 3.  Hit `Space` to switch from `Render` mode to `Calibrate` mode. This will reveal the calibration GUI.
 
-    <img>
+    ![Calibrating the shape](paper-folding-11.png)
 
 4.  Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:
     1.  Click + drag to orbit
@@ -89,8 +100,4 @@ Now that we have the code for the sketch set up, we can calibrate our mapping.
 8.  Hit `Tab` to switch back to point selection. Choose another point and repeat the process.
 9.  After mapping 6 points, a full calibration will be automatically estimated. Press `Space` so switch back to `Render` mode. In physical space, your object should now be successfully mapped.
 
-    <img>
-
-## Examples
-
-TODO
+    ![Projection mapped shape](paper-folding-12.gif)
