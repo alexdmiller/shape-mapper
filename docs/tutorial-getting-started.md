@@ -19,11 +19,11 @@ In order to use Shape Mapper, you must have a physical object that you want to p
 
 To get started quickly, we can use a box-shaped object. In this example, we'll be using a cardboard box, but a book or boxy piece of furniture could also work.
 
-[picture of box]
+![Photo of cardboard box](images/getting-started-1.jpg)
 
-In order to model our box in code, we'll need to measure the size of the physical box. Our box is [measurements].
+In order to model our box in code, we'll need to measure the size of the physical box. The box pictured is 18.5" × 18.5" × 16.5".
 
-[picture of measuring]
+![Person measures cardboard box](images/getting-started-2.jpg)
 
 ## Write code
 
@@ -48,12 +48,15 @@ In order to model our box in code, we'll need to measure the size of the physica
         fullScreen(P3D);
 
         // The size of our box is proportional to the physical measurements we made
-        shape = createShape(BOX, 100, 200, 300);
+        int scale = 10;
+        shape = createShape(BOX, 18.5 * scale, 18.5 * scale, 16.5 * scale);
 
         // Initialize the Shape Mapper library with our box
         mapper = new ShapeMapper(this, shape);
     }
     ```
+
+    Note that the size of our box is proportional to the measurements we took of the physical cardboard box. In this way, we're modeling the physical object in virtual space.
 
 4.  Next, we'll write a simple draw function that renders an outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
@@ -87,7 +90,11 @@ In order to model our box in code, we'll need to measure the size of the physica
 
     void setup() {
         fullScreen(P3D);
-        shape = createShape(BOX, 100, 200, 300);
+        
+        // The size of our box is proportional to the physical measurements we made
+        int scale = 10;
+        shape = createShape(BOX, 18.5 * scale, 18.5 * scale, 16.5 * scale);
+
         mapper = new ShapeMapper(this, shape);
     }
 
@@ -116,11 +123,11 @@ Now that we have the code for the sketch set up, we can calibrate our mapping.
 1.  Connect your computer to a projector and point the projector at the object you're mapping.
 1.  Run the sketch you wrote above. By default, the Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting `T`, or in the code using `mapper.hideGui()`.)
 
-    ![Screen shot of the initial Shape Mapper GUI](images/getting-started-1.png)
+    ![Screen shot of the initial Shape Mapper GUI](images/getting-started-3.png)
 
 1.  Hit `Space` to switch from `Render` mode to `Calibrate` mode. This will reveal the calibration GUI.
 
-    ![Screen shot of the initial Shape Mapper GUI](images/getting-started-2.png)
+    ![Screen shot of the initial Shape Mapper GUI](images/getting-started-4.png)
 
 2.  Your 3D model will appear in the center of the screen. We must now select a point to calibrate from this 3D model. You can navigate the model with the following controls:
     1.  Click + drag to orbit
@@ -130,12 +137,12 @@ Now that we have the code for the sketch set up, we can calibrate our mapping.
 4.  Hit `Tab` to switch to mapping mode.
 5.  Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.
 
-    TODO: image
+    ![Calibrating the first point of the mapping](images/getting-started-5.gif)
 
 6.  Hit `Tab` to switch back to point selection. Choose another point and repeat the process.
 7.  After mapping 6 points, a full calibration will be automatically estimated. Press `Space` so switch back to `Render` mode. In physical space, your object should now be successfully mapped.
 
-    TODO: image
+    ![Calibrating the final point](images/getting-started-6.gif)
 
 ## Tips & tricks
 
@@ -171,4 +178,8 @@ void draw() {
 }
 ```
 
-TODO: image
+![Calibrating the final point](images/getting-started-7.gif)
+
+A more advanced technique is to use [shaders](https://processing.org/reference/PShader.html) to create animations. This is out of scope for this tutorial, but some examples of this technique are shown below.
+
+<div style="padding:100% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/1044018259?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="Cardboard box projection mapping"></iframe></div><script src="https://player.vimeo.com/api/player.js"></script>
