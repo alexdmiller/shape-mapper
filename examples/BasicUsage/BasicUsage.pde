@@ -22,6 +22,6 @@ void draw() {
     cos(frameCount / 10f) * 400,
     sin(frameCount / 10f) * 400,
     sin(frameCount / 10f) * 400);
-  shape(shape);
+  shape(myShape);
   mapper.endMapping();
 }
