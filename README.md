@@ -34,6 +34,14 @@ void draw() {
 
 Find more examples [in the repository](examples/), packaged within the library, or on the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
+## 🪛  Installation
+
+[Click here to install v0.1.2](pde://github.com/alexdmiller/shape-mapper/releases/download/v0.1.2/shapemapper.pdex). (Requires at least [Processing 4.2](processing.org/)).
+
+## 📜  Documentation
+
+Go to the [documentation site](https://alexdmiller.github.io/shape-mapper/).
+
 ## 💪  Use cases
 
 [Projection mapping](https://en.wikipedia.org/wiki/Projection_mapping) is the process of calibrating a digital projection to align with a three dimensional surface. The Shape Mapper library is useful if you have a 3D model of the object you want to projection map. Some example workflows:
@@ -58,10 +66,6 @@ Shape Mapper does not (yet) support:
 
 - Blending between projectors
 - Built in projection mapping effects (all effects must be drawn by the user with code)
-
-## 📜  Documentation
-
-Go to the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
 ## 🙏  Credits & Acknowledgements
 

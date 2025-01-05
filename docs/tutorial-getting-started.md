@@ -2,16 +2,8 @@
 
 ## Installation
 
-### Manual installation
-
-1. Install [Processing](https://processing.org/) if you have not already.
-2. Navigate to Shape Mapper's [Releases page](https://github.com/alexdmiller/shape-mapper/releases).
-3. Download the `shapemapper.pdex` file for the most recent release.
-4. Open the file to automatically install the library.
-
-### Install via Contributions Manager
-
-Installing via the Contributions Manager is not yet available.
+1. Download and install [Processing](https://processing.org/).
+2. [Click here to install Shape Mapper v0.1.2](pde://github.com/alexdmiller/shape-mapper/releases/download/v0.1.2/shapemapper.pdex). (Requires at least [Processing 4.2](processing.org/)).
 
 ## Find an object
 
@@ -60,7 +52,7 @@ Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5"
     mapper = new ShapeMapper(this, shape);
     ```
 
-5.  Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
+6.  Write a draw function that renders the outline of the box. To map our rendered geometry to the physical box, we'll need to sandwich the drawing code within the `mapper.beginMapping()` and `mapper.endMapping()` lines.
 
     ``` java
     void draw() {
@@ -81,7 +73,7 @@ Measure the size of the physical box. Our example box is 18.5" × 18.5" × 16.5"
     }
     ```
 
-6.  Putting it all together, our sketch should look like this:
+7.  Putting it all together, our sketch should look like this:
 
     ``` java
     import spacefiller.shapemapper.ShapeMapper;
