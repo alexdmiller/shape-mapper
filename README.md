@@ -6,8 +6,7 @@ Shape Mapper is a [Processing](processing.org/) library for projection mapping.
 
 <img width="700" alt="getting-started-2" src="https://github.com/user-attachments/assets/0595fd10-d813-4704-8645-975ee4f563a4" />
 
-
-## Example code
+## 👩‍💻  Example code
 
 Here is a minimal example showing what the library interface looks like:
 
@@ -35,7 +34,7 @@ void draw() {
 
 Find more examples [in the repository](examples/), packaged within the library, or on the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
-## Use cases
+## 💪  Use cases
 
 [Projection mapping](https://en.wikipedia.org/wiki/Projection_mapping) is the process of calibrating a digital projection to align with a three dimensional surface. The Shape Mapper library is useful if you have a 3D model of the object you want to projection map. Some example workflows:
 
@@ -45,26 +44,26 @@ Find more examples [in the repository](examples/), packaged within the library, 
 
 If you do not have a 3D model of the object you are trying to projection map, or you are not able to create a model in code, this library will probably not be useful to you. It is still very much possible to projection map your object, though! Check out the [Keystone](https://github.com/davidbouchard/keystone) library for Processing, or software such as MadMapper, Resolume or TouchDesigner for alternative projection mapping solutions.
 
-## Features
+## ✨  Features
 
-- Calibrate your projection by manually aligning at least 6 points; the mapping for the rest of the object will be automatically estimated.
-- Supports mapping multiple shapes (i.e. if you have two or more separate objects).
-- Supports multiple mappings per shape (i.e. if you have two or more projectors).
-- Calibrations are saved to disk.
-- Supports face masking, which allows you to avoid projecting twice onto the same face if using more than one projector.
+- 🧮 Calibrate your projection by manually aligning at least 6 points; the mapping for the rest of the object will be automatically estimated.
+- 🗺 Supports mapping multiple shapes at once (i.e. if you have two or more separate objects).
+- 📽 Supports multiple mappings per shape (i.e. if you have two or more projectors).
+- 💾 Calibrations are saved to disk.
+- 🎭 Supports face masking, which allows you to avoid projecting twice onto the same face if using more than one projector.
 
-## Non-features
+## 🤷‍♂️  Non-features
 
 Shape Mapper does not (yet) support:
 
 - Blending between projectors
 - Built in projection mapping effects (all effects must be drawn by the user with code)
 
-## Documentation
+## 📜  Documentation
 
 Go to the [documentation site](https://alexdmiller.github.io/shape-mapper/).
 
-## Credits & Acknowledgements
+## 🙏  Credits & Acknowledgements
 
 Shape Mapper is by [Alex Miller](https://alexmiller.cv/).
 
