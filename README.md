@@ -36,7 +36,9 @@ Find more examples [in the repository](examples/), packaged within the library, 
 
 ## 🪛  Installation
 
-[Click here to install v0.1.2](pde://github.com/alexdmiller/shape-mapper/releases/download/v0.1.2/shapemapper.pdex). (Requires at least [Processing 4.2](processing.org/)).
+1.  Ensure you have the most recent version of [Processing](https://processing.org) installed.
+1.  [Download Shape Mapper v0.1.2](https//github.com/alexdmiller/shape-mapper/releases/download/v0.1.2/shapemapper.pdex).
+2.  Open file on your computer; the library will be automatically installed.
 
 ## 📜  Documentation
 
