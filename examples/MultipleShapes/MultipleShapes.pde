@@ -11,6 +11,7 @@ MappedShape mappedSphere;
 void setup() {
   fullScreen(P3D);
   box = createShape(BOX, 150);
+  sphereDetail(8);
   sphere = createShape(SPHERE, 150);
 
   mapper = new ShapeMapper(this);

@@ -11,11 +11,12 @@ MappedShape mappedSphere;
 void setup() {
   fullScreen(P3D);
   box = createShape(BOX, 150);
+  sphereDetail(8);
   sphere = createShape(SPHERE, 150);
 
   mapper = new ShapeMapper(this);
-  mappedBox = mapper.addShape("box", box);
-  mappedSphere = mapper.addShape("sphere", sphere);
+  mappedBox = mapper.addShape("box", box, 2);
+  mappedSphere = mapper.addShape("sphere", sphere, 2);
 }
 
 void draw() {
