@@ -253,6 +253,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Map a paper-folded object
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="tutorial-paper-folding.html" class="md-nav__link md-nav__link--active">
         
   
@@ -262,6 +273,52 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#design-and-fabricate-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design and fabricate a model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#write-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrate the projection mapping
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -379,6 +436,41 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#design-and-fabricate-a-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      Design and fabricate a model
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#write-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrate the projection mapping
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -393,7 +485,114 @@
 
 
 <h1 id="tutorial-map-a-paper-folded-object">Tutorial: Map a paper-folded object</h1>
-<p>TODO</p>
+<p><img alt="An example of a projection mapped paper folded object" src="images/paper-folding-1.jpg" /></p>
+<p>Shape Mapper lends itself well to projection mapping objects fabricated from digital models. There are many ways to fabricate such a model, but paper craft is attractive because of the low cost of materials.</p>
+<p>In this tutorial, we'll show how to design a simple model with <a href="https://www.blender.org/">Blender</a>, build it using paper, and then projection map it with Shape Mapper.</p>
+<p>Note: this tutorial assumes you have access to a printer, or even better, an automatic cutting machine such as a <a href="https://cricut.com/">Cricut</a>.</p>
+<h2 id="design-and-fabricate-a-model">Design and fabricate a model</h2>
+<ol>
+<li>Download and install <a href="https://www.blender.org/">Blender</a>.</li>
+<li>Install the Export Paper Model add-on for Blender.<ol>
+<li>Within Blender, navigate to Edit &gt; Preferences &gt; Add-ons.</li>
+<li>Select the "Community" tab if it is not already selected.</li>
+<li>Search for "Export Paper Model".</li>
+<li>Click the checkbox next to the name of the add-on to install it.
+    <img alt="Adding a Blender add-on" src="images/paper-folding-2.png" /></li>
+</ol>
+</li>
+<li>Delete the default cube in the Blender scene by selecting it with the mouse, and then pressing <code>X</code> followed by <code>D</code>.
+    <img alt="Deleting default cube" src="images/paper-folding-3.png" /></li>
+<li>Press <code>Shift + A</code> to activate the "Add" menu.</li>
+<li>Navigate to Mesh &gt; Ico Sphere to add it to the scene.
+    <img alt="Add menu" src="images/paper-folding-4.png" /></li>
+<li>In the lower left hand corner, the "Add Ico Sphere" options will appear. Click these and set the subdivisions to 1.
+    <img alt="Set Ico Sphere subdivisions" src="images/paper-folding-5.png" /></li>
+<li>Adjust the size of your paper model to fit the dimensions of your paper.<ol>
+<li>Select the newly created Ico Sphere.</li>
+<li>In the upper right hand corner of the scene view, there is a small arrow. Click this to reveal the context menu.
+    <img alt="Open context menu" src="images/paper-folding-6.gif" /></li>
+<li>Click the "Paper" tab.</li>
+<li>Check the "Automatic Scale" and "Limit Island Size" checkbox, and select the size of paper you're using.
+    <img alt="Paper folding configuration" src="images/paper-folding-7.png" /></li>
+</ol>
+</li>
+<li>Go to File &gt; Export &gt; Paper Model.<ol>
+<li>If you are printing the paper model, export the model as PDF.</li>
+<li>If you are using a cutting machine, you likely need to export as SVG to import the template to your cutting machine's software. Preparing the template for your cutting machine is outside of the scope of this tutorial.</li>
+</ol>
+</li>
+<li>Go to File &gt; Export &gt; Wavefront (.obj). We'll use this file when we start writing code.</li>
+<li>Print and cut out your model, or use a cutting machine to automatically cut it out.
+    <img alt="Cutting out the shape" src="images/paper-folding-8.gif" /></li>
+<li>Fold your model and adhere the tabs with glue or tape to create a 3D object.
+    <img alt="Folding the shape" src="paper-folding-9.jpg" />
+    <img alt="Folding the shape" src="paper-folding-10.jpg" /></li>
+</ol>
+<h2 id="write-code">Write code</h2>
+<ol>
+<li>Install Shape Mapper (see <a href="tutorial-getting-started.html">Getting Started</a>).</li>
+<li>Create a Processing sketch and copy the <code>.obj</code> file you exported above into a <code>data/</code> folder in the sketch's folder.</li>
+<li>
+<p>Import and initialize the Shape Mapper library, and load the <code>.obj</code> file:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.ShapeMapper</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">ShapeMapper</span><span class="w"> </span><span class="n">mapper</span><span class="p">;</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">PShape</span><span class="w"> </span><span class="n">myShape</span><span class="p">;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="n">fullScreen</span><span class="p">(</span><span class="n">P3D</span><span class="p">);</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="n">myShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">loadShape</span><span class="p">(</span><span class="s">&quot;icosahedron.obj&quot;</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">myShape</span><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+<li>
+<p>Write a draw function that renders the shape. To map our rendered geometry to the physical object, we'll need to sandwich the drawing code within the <code>mapper.beginMapping()</code> and <code>mapper.endMapping()</code> lines.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="n">mapper</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="n">noLights</span><span class="p">();</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="n">pointLight</span><span class="p">(</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="mi">0</span><span class="p">,</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="mi">255</span><span class="p">,</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="mi">255</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="n">cos</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="n">sin</span><span class="p">(</span><span class="n">frameCount</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">10</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">500</span><span class="p">);</span><span class="w">  </span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">  </span><span class="n">noStroke</span><span class="p">();</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="n">shape</span><span class="p">(</span><span class="n">myShape</span><span class="p">);</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="n">mapper</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
+</li>
+</ol>
+<p>Now that we have the code for the sketch set up, we can calibrate our mapping.</p>
+<ol>
+<li>Connect your computer to a projector and point the projector at the object.</li>
+<li>Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting <code>T</code>, or in the code using <code>mapper.hideGui()</code>.)</li>
+<li>
+<p>Hit <code>Space</code> to switch from <code>Render</code> mode to <code>Calibrate</code> mode. This will reveal the calibration GUI.</p>
+<p><img alt="Calibrating the shape" src="paper-folding-11.png" /></p>
+</li>
+<li>
+<p>Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:</p>
+<ol>
+<li>Click + drag to orbit</li>
+<li>Command + click + drag to pan</li>
+<li>Scroll to zoom in and out</li>
+</ol>
+</li>
+<li>Click a point on your model to select it.</li>
+<li>Hit <code>Tab</code> to switch to mapping mode.</li>
+<li>Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.</li>
+<li>Hit <code>Tab</code> to switch back to point selection. Choose another point and repeat the process.</li>
+<li>
+<p>After mapping 6 points, a full calibration will be automatically estimated. Press <code>Space</code> so switch back to <code>Render</code> mode. In physical space, your object should now be successfully mapped.</p>
+<p><img alt="Projection mapped shape" src="paper-folding-12.gif" /></p>
+</li>
+</ol>
 
 
 
