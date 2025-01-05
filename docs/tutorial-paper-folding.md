@@ -2,9 +2,9 @@
 
 ![An example of a projection mapped paper folded object](images/paper-folding-1.jpg)
 
-Shape Mapper lends itself well to projection mapping objects fabricated from digital models. There are many ways to fabricate such a model, but paper craft is attractive because of the low cost of materials.
+Shape Mapper lends itself well to projection mapping objects fabricated from digital models, for example 3D printing. Paper craft is attractive because of the low cost of materials.
 
-In this tutorial, we'll show how to design a simple model with [Blender](https://www.blender.org/), build it using paper, and then projection map it with Shape Mapper.
+In this tutorial, we'll design a simple model with [Blender](https://www.blender.org/), build it using paper, and projection map it with Shape Mapper.
 
 Note: this tutorial assumes you have access to a printer, or even better, an automatic cutting machine such as a [Cricut](https://cricut.com/).
 
@@ -53,11 +53,11 @@ Note: this tutorial assumes you have access to a printer, or even better, an aut
 
 11. Fold your model and adhere the tabs with glue or tape to create a 3D object.
 
-    ![Folding the shape 1](paper-folding-9.jpg)
+    ![Folding the shape 1](images/paper-folding-9.jpg)
 
-    ![Folding the shape 2](paper-folding-10.jpg)
+    ![Folding the shape 2](images/paper-folding-10.jpg)
 
-## Write code
+## Write the Processing sketch
 
 1.  Install Shape Mapper (see [Getting Started](tutorial-getting-started.md)).
 2.  Create a Processing sketch and copy the `.obj` file you exported above into a `data/` folder in the sketch's folder.
@@ -99,13 +99,11 @@ Note: this tutorial assumes you have access to a printer, or even better, an aut
 
 ## Calibrate the projection mapping
 
-Now that we have the code for the sketch set up, we can calibrate our mapping.
-
 1.  Connect your computer to a projector and point the projector at the object.
 2.  Run the sketch. The Shape Mapper GUI will appear in the upper left hand portion of the screen. (Note: you can hide this GUI by hitting `T`, or in the code using `mapper.hideGui()`.)
 3.  Hit `Space` to switch from `Render` mode to `Calibrate` mode. This will reveal the calibration GUI.
 
-    ![Calibrating the shape](paper-folding-11.png)
+    ![Calibrating the shape](images/paper-folding-11.png)
 
 4.  Your 3D model will appear in the center of the screen. You can navigate the model with the following controls:
     1.  Click + drag to orbit
@@ -117,4 +115,4 @@ Now that we have the code for the sketch set up, we can calibrate our mapping.
 8.  Hit `Tab` to switch back to point selection. Choose another point and repeat the process.
 9.  After mapping 6 points, a full calibration will be automatically estimated. Press `Space` so switch back to `Render` mode. In physical space, your object should now be successfully mapped.
 
-    ![Projection mapped shape](paper-folding-12.gif)
+    ![Projection mapped shape](images/paper-folding-12.gif)
