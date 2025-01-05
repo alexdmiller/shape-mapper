@@ -16,30 +16,46 @@ Note: this tutorial assumes you have access to a printer, or even better, an aut
     2.  Select the "Community" tab if it is not already selected.
     3.  Search for "Export Paper Model".
     4.  Click the checkbox next to the name of the add-on to install it.
+
         ![Adding a Blender add-on](images/paper-folding-2.png)
+
 3.  Delete the default cube in the Blender scene by selecting it with the mouse, and then pressing `X` followed by `D`.
+
     ![Deleting default cube](images/paper-folding-3.png)
+
 4.  Press `Shift + A` to activate the "Add" menu.
 5.  Navigate to Mesh > Ico Sphere to add it to the scene.
+
     ![Add menu](images/paper-folding-4.png)
+
 6.  In the lower left hand corner, the "Add Ico Sphere" options will appear. Click these and set the subdivisions to 1.
+
     ![Set Ico Sphere subdivisions](images/paper-folding-5.png)
+
 7.  Adjust the size of your paper model to fit the dimensions of your paper.
     1.  Select the newly created Ico Sphere.
     2.  In the upper right hand corner of the scene view, there is a small arrow. Click this to reveal the context menu.
+
         ![Open context menu](images/paper-folding-6.gif)
+
     3.  Click the "Paper" tab.
     4.  Check the "Automatic Scale" and "Limit Island Size" checkbox, and select the size of paper you're using.
+
         ![Paper folding configuration](images/paper-folding-7.png)
+
 8.  Go to File > Export > Paper Model.
     1.  If you are printing the paper model, export the model as PDF.
     2.  If you are using a cutting machine, you likely need to export as SVG to import the template to your cutting machine's software. Preparing the template for your cutting machine is outside of the scope of this tutorial.
 9.  Go to File > Export > Wavefront (.obj). We'll use this file when we start writing code.
 10. Print and cut out your model, or use a cutting machine to automatically cut it out.
+
     ![Cutting out the shape](images/paper-folding-8.gif)
+
 11. Fold your model and adhere the tabs with glue or tape to create a 3D object.
-    ![Folding the shape](paper-folding-9.jpg)
-    ![Folding the shape](paper-folding-10.jpg)
+
+    ![Folding the shape 1](paper-folding-9.jpg)
+
+    ![Folding the shape 2](paper-folding-10.jpg)
 
 ## Write code
 
@@ -80,6 +96,7 @@ Note: this tutorial assumes you have access to a printer, or even better, an aut
       mapper.endMapping();
     }
     ```
+
 ## Calibrate the projection mapping
 
 Now that we have the code for the sketch set up, we can calibrate our mapping.
