@@ -14,8 +14,7 @@ nav:
   - How-tos:
     - 'Map multiple objects': how-to-multiple-objects.md
     - 'Use multiple projectors': how-to-multiple-projectors.md
-  - Reference:
-    - ShapeMapper: /javadoc/spacefiller/shapemapper/ShapeMapper.html
+  - API Reference:  /shape-mapper/javadoc/spacefiller/shapemapper/package-summary.html
 
 markdown_extensions:
   - pymdownx.highlight:

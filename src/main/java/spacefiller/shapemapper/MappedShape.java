@@ -12,6 +12,11 @@ import java.util.List;
 
 import static spacefiller.shapemapper.utils.GeometryUtils.getClosestPointOnShape;
 
+/**
+ * A mapped shape represents a shape and all attached mappings. If the user is only
+ * mapping with a single projector, then there will only ever be a single attached mapping
+ * per MappedShape.
+ */
 public class MappedShape implements Serializable {
   private transient PApplet parent;
   private transient PGraphics3D parentGraphics;

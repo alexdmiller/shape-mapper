@@ -15,6 +15,15 @@ import java.util.Set;
 
 import static spacefiller.shapemapper.utils.GeometryUtils.getClosestPointByMappedPoint;
 
+/**
+ * Represents a specific mapping of a shape via a projector. Each shape + projector
+ * combination will have a separate Mapping.
+ *
+ * <p>
+ * The mapping stores a set of points from model space mapped to a set of points in
+ * projection space. It is from this mapping that the estimated projection is computed.
+ * </p>
+ */
 public class Mapping implements Serializable {
   private transient PGraphics3D parentGraphics;
   private transient PApplet parent;

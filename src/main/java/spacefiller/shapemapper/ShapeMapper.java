@@ -22,6 +22,10 @@ import java.util.stream.Stream;
 import static processing.core.PConstants.*;
 import static spacefiller.shapemapper.utils.GeometryUtils.*;
 
+/**
+ * Top level class for the Shape Mapper library. Allows configuration of
+ * mapped shapes and control over the Shape Mapper GUI.
+ */
 public class ShapeMapper {
   private static final float UI_CIRCLE_RADIUS = 20;
 
@@ -36,7 +40,7 @@ public class ShapeMapper {
   private PApplet parent;
 
   private PGraphics3D parentGraphics;
-  public PGraphics3D shapeCanvas;
+  private PGraphics3D shapeCanvas;
   private PGraphics3D projectionCanvas;
 
   private List<MappedShape> shapes;
@@ -67,10 +71,22 @@ public class ShapeMapper {
   private static final int FONT_COLOR = 0xffffffff;
   private static final int SECONDARY_FONT_COLOR = 0xff999999;
 
+  /**
+   * Initialize the library with no starting shape. Shapes can be subsequently added
+   * via {@link ShapeMapper#addShape(PShape)}.
+   * @param parent
+   */
   public ShapeMapper(PApplet parent) {
     this(parent, null);
   }
 
+  /**
+   * Initialize the library with a single shape. The shape will have a single mapping
+   * automatically attached. If you want to create more than one mapping, use
+   * {@link ShapeMapper#ShapeMapper(PApplet)} followed by {@link ShapeMapper#addShape(String, PShape, int)}.
+   * @param parent
+   * @param shape
+   */
   public ShapeMapper(PApplet parent, PShape shape) {
     try {
       this.parent = parent;
@@ -109,35 +125,36 @@ public class ShapeMapper {
     }
   }
 
-  public MappedShape getModel(String name) {
-    for (MappedShape m : shapes) {
-      if (m.getName().equals(name)) {
-        return m;
-      }
-    }
-    return null;
-  }
-
-  public MappedShape getPreviouslySavedShape(String name) {
-    for (MappedShape m : previouslySavedShapes) {
-      if (m.getName().equals(name)) {
-        return m;
-      }
-    }
-    return null;
-  }
-
+  /**
+   * Add the passed shape with the default name and attaching 1 mapping.
+   * @param shape
+   * @return
+   */
   public MappedShape addShape(PShape shape) {
     return addShape("default", shape);
   }
 
+  /**
+   * Add the passed shape, assigning it the passed name, and attaching 1 mapping.
+   * @param name
+   * @param shape
+   * @return
+   */
   public MappedShape addShape(String name, PShape shape) {
     // By default, each model starts with one mapping
     return addShape(name, shape, 1);
   }
 
+  /**
+   * Add the passed shape, assigning it the passed name, and attaching the provided
+   * number of mappings. These mappings can then be calibrated at runtime.
+   * @param name
+   * @param shape
+   * @param mappings
+   * @return
+   */
   public MappedShape addShape(String name, PShape shape, int mappings) {
-    if (getModel(name) != null) {
+    if (getShape(name) != null) {
       System.out.println("ShapeMapper: Could not add model with name '" + name + "'.");
       System.out.println("ShapeMapper: The model already exists, and model names must be unique.");
       throw new RuntimeException();
@@ -166,6 +183,31 @@ public class ShapeMapper {
     return wrappedShape;
   }
 
+  /**
+   * @param name
+   * @return Shape with the passed name, if it exists.
+   */
+  public MappedShape getShape(String name) {
+    for (MappedShape m : shapes) {
+      if (m.getName().equals(name)) {
+        return m;
+      }
+    }
+    return null;
+  }
+
+  private MappedShape getPreviouslySavedShape(String name) {
+    for (MappedShape m : previouslySavedShapes) {
+      if (m.getName().equals(name)) {
+        return m;
+      }
+    }
+    return null;
+  }
+
+  /**
+   * Clear all calibration data from memory and disk.
+   */
   public void clearCalibrations() {
     for (MappedShape ms : shapes) {
       for (Mapping m : ms.getMappings()) {
@@ -192,14 +234,24 @@ public class ShapeMapper {
     }
   }
 
+  /**
+   * Switch to calibration mode. Reveals the GUI and enabled key event listening.
+   */
   public void calibrateMode() {
     this.mode = Mode.CALIBRATE;
   }
 
+  /**
+   * Switch to render mode. Disables GUI.
+   */
   public void renderMode() {
     this.mode = Mode.RENDER;
   }
 
+  /**
+   * Returns all the shapes currently managed by library.
+   * @return
+   */
   public Iterable<MappedShape> getShapes() {
     return shapes;
   }
@@ -231,14 +283,33 @@ public class ShapeMapper {
     }
   }
 
+  /**
+   * Hide the library GUI.
+   */
   public void hideGui() {
     showGui = false;
   }
 
+  /**
+   * Show the library GUI.
+   */
   public void showGui() {
     showGui = true;
   }
 
+  /**
+   * Apply the estimated projection mapping. Any calls to Processing graphics functions after
+   * a call to {@link #beginMapping()} will be transformed according to the projection mapping.
+   * Note that you must also call {@link #endMapping()} after.
+   *
+   * <p>
+   * This version of {@link #beginMapping()} only works if you are mapping a single shape
+   * with a single projector. If you are mapping multiple shapes, then you must call
+   * {@link MappedShape#beginMapping()} on each mapped shape individually. If you are
+   * mapping with multiple projectors, you must call {@link Mapping#beginMapping()} on each
+   * mapping separately. See example code packaged with the library or how-to docs for examples.
+   * </p>
+   */
   public void beginMapping() {
     if (shapes.size() != 1) {
       System.out.println("ShapeMapper: Cannot call ShapeMapper.beginMapping() when you have more than one shape.");
@@ -248,6 +319,9 @@ public class ShapeMapper {
     shapes.get(0).beginMapping();
   }
 
+  /**
+   * Stop applying the estimated projection mappping.
+   */
   public void endMapping() {
     if (shapes.size() != 1) {
       return;
@@ -264,6 +338,9 @@ public class ShapeMapper {
     }
   }
 
+  /**
+   * @hidden
+   */
   public void mouseEvent(MouseEvent event) {
     MappedShape shape = getCurrentShape();
     Mapping mapping = getCurrentMapping();
@@ -306,6 +383,9 @@ public class ShapeMapper {
     }
   }
 
+  /**
+   * @hidden
+   */
   public void keyEvent(KeyEvent event) {
     if (event.getAction() == KeyEvent.PRESS) {
       if (event.getKey() == 't') {
@@ -355,6 +435,9 @@ public class ShapeMapper {
     }
   }
 
+  /**
+   * @hidden
+   */
   public void draw() {
     MappedShape currentShape = getCurrentShape();
     Mapping currentMapping = getCurrentMapping();
@@ -543,7 +626,7 @@ public class ShapeMapper {
       throw e;
     }
 
-    drawGUI();
+    drawGui();
   }
 
   private void drawShape(PShape shape, PGraphics3D canvas, boolean highlight) {
@@ -683,7 +766,7 @@ public class ShapeMapper {
     g.text(hint, GUI_WIDTH - PADDING, GUI_ROW_HEIGHT / 2);
   }
 
-  public void drawGUI() {
+  private void drawGui() {
     if (!showGui) {
       return;
     }
