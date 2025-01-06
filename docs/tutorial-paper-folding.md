@@ -1,4 +1,4 @@
-# Tutorial: Map a paper-folded object
+# Mapping a paper-folded object
 
 ![An example of a projection mapped paper folded object](images/paper-folding-1.jpg)
 

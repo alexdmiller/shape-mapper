@@ -1,6 +1,6 @@
-# How-to: Use multiple projectors
+# Using multiple projectors
 
-If you want to projection map a physical object from more than one angle, you'll need to use two or more projectors. Shape Mapper supports calibrating more than one projector.
+If you want to projection map a physical object from more than one angle, you'll need to use more than one projector. Shape Mapper supports calibrating mappings of a single shape across multiple projectors.
 
 ## Hardware considerations
 
@@ -10,7 +10,7 @@ If you can connect multiple projectors to your computer directly, great! If not,
 
 Starting from the code in the [Getting Started tutorial](tutorial-getting-started.md), we need to make a couple of modifications.
 
-1.  In addition to importing the main `ShapeMapper` class, you'll also need to import two other classes:
+1.  In addition to importing the main `ShapeMapper` class, you'll also need to import two other classes, `MappedShape` and `Mapping`:
 
     ``` java
     import spacefiller.shapemapper.ShapeMapper;
@@ -18,7 +18,7 @@ Starting from the code in the [Getting Started tutorial](tutorial-getting-starte
     import spacefiller.shapemapper.Mapping;
     ```
 
-2.  We'll need to store a reference to a [MappedShape](/shape-mapper/javadoc/spacefiller/shapemapper/MappedShape.html) in the top level of our sketch.
+2.  We'll need to store a reference to a `MappedShape` in the top level of our sketch.
 
     ``` java
     MappedShape mappedShape;
@@ -32,9 +32,9 @@ Starting from the code in the [Getting Started tutorial](tutorial-getting-starte
     mappedShape = mapper.addShape("box", myShape, 2);
     ```
 
-    This alternate way of initializing your shape has two important differences:
+    This alternate way of initializing the library has two important differences:
 
-    1.  The third parameter of `addShape()` specifies the number of mappings you would like to initialize, which corresponds to the number of projectors you have.
+    1.  The third parameter of `addShape()` specifies the number of mappings to create, which corresponds to the number of projectors you have.
     2.  `addShape()` returns a `MappedShape`, which you can store for use in your `draw()` function.
 
 4.  Now modify the draw function with this code:

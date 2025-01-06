@@ -8,12 +8,11 @@ plugins:
 
 nav:
   - Home: index.md
+  - 'Getting started': tutorial-getting-started.md
   - Tutorials:
-    - 'Getting started': tutorial-getting-started.md
-    - 'Map a paper-folded object': tutorial-paper-folding.md
-  - How-tos:
-    - 'Map multiple objects': how-to-multiple-objects.md
-    - 'Use multiple projectors': how-to-multiple-projectors.md
+    - 'Mapping a paper-folded object': tutorial-paper-folding.md
+    - 'Mapping multiple objects': how-to-multiple-objects.md
+    - 'Using multiple projectors': how-to-multiple-projectors.md
   - API Reference:  /shape-mapper/javadoc/spacefiller/shapemapper/package-summary.html
 
 markdown_extensions:
