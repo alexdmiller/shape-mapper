@@ -13,7 +13,8 @@ nav:
     - 'Mapping a paper-folded object': tutorial-paper-folding.md
     - 'Mapping multiple objects': how-to-multiple-objects.md
     - 'Using multiple projectors': how-to-multiple-projectors.md
-  - API Reference:  /shape-mapper/javadoc/spacefiller/shapemapper/package-summary.html
+  - API reference:  /shape-mapper/javadoc/spacefiller/shapemapper/package-summary.html
+  - Source code: https://github.com/alexdmiller/shape-mapper
 
 markdown_extensions:
   - pymdownx.highlight:
