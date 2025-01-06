@@ -335,6 +335,17 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Use multiple projectors
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="how-to-multiple-projectors.html" class="md-nav__link md-nav__link--active">
         
   
@@ -344,6 +355,61 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write the Processing sketch
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrate the projection mapping
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#face-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Face masking
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -397,6 +463,50 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#hardware-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hardware considerations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#write-the-processing-sketch" class="md-nav__link">
+    <span class="md-ellipsis">
+      Write the Processing sketch
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#calibrate-the-projection-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      Calibrate the projection mapping
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#face-masking" class="md-nav__link">
+    <span class="md-ellipsis">
+      Face masking
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -411,17 +521,110 @@
 
 
 <h1 id="how-to-use-multiple-projectors">How-to: Use multiple projectors</h1>
-<p>TODO</p>
-<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">myShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createShape</span><span class="p">(</span><span class="n">BOX</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">);</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
-</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">mappedShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapper</span><span class="p">.</span><span class="na">addShape</span><span class="p">(</span><span class="s">&quot;box&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">myShape</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+<p>If you want to projection map a physical object from more than one angle, you'll need to use two or more projectors. Shape Mapper supports calibrating more than one projector.</p>
+<h2 id="hardware-considerations">Hardware considerations</h2>
+<p>If you can connect multiple projectors to your computer directly, great! If not, you'll need a video wall controller like <a href="https://www.amazon.com/gp/product/B0949RH44N/ref=ppx_yo_dt_b_search_asin_title?ie=UTF8&amp;psc=1">this one</a>.</p>
+<h2 id="write-the-processing-sketch">Write the Processing sketch</h2>
+<p>Starting from the code in the <a href="tutorial-getting-started.html">Getting Started tutorial</a>, we need to make a couple of modifications.</p>
+<ol>
+<li>
+<p>In addition to importing the main <code>ShapeMapper</code> class, you'll also need to import two other classes:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.ShapeMapper</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.MappedShape</span><span class="p">;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.Mapping</span><span class="p">;</span>
 </span></code></pre></div>
-<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Mapping</span><span class="w"> </span><span class="n">mapping</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">mappedShape</span><span class="p">.</span><span class="na">getMappings</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
-</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="n">mapping</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="n">shape</span><span class="p">(</span><span class="n">myShape</span><span class="p">);</span>
-</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="n">mapping</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
-</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="p">}</span>
+</li>
+<li>
+<p>We'll need to store a reference to a <a href="/shape-mapper/javadoc/spacefiller/shapemapper/MappedShape.html">MappedShape</a> in the top level of our sketch.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">MappedShape</span><span class="w"> </span><span class="n">mappedShape</span><span class="p">;</span>
 </span></code></pre></div>
+</li>
+<li>
+<p>Modify the setup function to add a shape with the <a href="https://alexdmiller.github.io/shape-mapper/javadoc/spacefiller/shapemapper/ShapeMapper.html#addShape(java.lang.String,processing.core.PShape,int)"><code>addShape(...)</code></a> method.</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">myShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createShape</span><span class="p">(</span><span class="n">BOX</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">);</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="n">mappedShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapper</span><span class="p">.</span><span class="na">addShape</span><span class="p">(</span><span class="s">&quot;box&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">myShape</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+</span></code></pre></div>
+<p>This alternate way of initializing your shape has two important differences:</p>
+<ol>
+<li>The third parameter of <code>addShape()</code> specifies the number of mappings you would like to initialize, which corresponds to the number of projectors you have.</li>
+<li><code>addShape()</code> returns a <code>MappedShape</code>, which you can store for use in your <code>draw()</code> function.</li>
+</ol>
+</li>
+<li>
+<p>Now modify the draw function with this code:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Mapping</span><span class="w"> </span><span class="n">mapping</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">mappedShape</span><span class="p">.</span><span class="na">getMappings</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="n">mapping</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="n">shape</span><span class="p">(</span><span class="n">myShape</span><span class="p">);</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="n">mapping</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>This will loop through the list of mappings and draws a separate perspective for each projector.</p>
+</li>
+<li>
+<p>Putting it all together:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.ShapeMapper</span><span class="p">;</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.MappedShape</span><span class="p">;</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.Mapping</span><span class="p">;</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">ShapeMapper</span><span class="w"> </span><span class="n">mapper</span><span class="p">;</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">PShape</span><span class="w"> </span><span class="n">myShape</span><span class="p">;</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="n">MappedShape</span><span class="w"> </span><span class="n">mappedShape</span><span class="p">;</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="n">fullScreen</span><span class="p">(</span><span class="n">P3D</span><span class="p">);</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="n">myShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createShape</span><span class="p">(</span><span class="n">BOX</span><span class="p">,</span><span class="w"> </span><span class="mi">150</span><span class="p">);</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">  </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="n">mappedShape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mapper</span><span class="p">.</span><span class="na">addShape</span><span class="p">(</span><span class="s">&quot;box&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">myShape</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">);</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">}</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">  </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span><span class="w">  </span>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Mapping</span><span class="w"> </span><span class="n">mapping</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">mappedShape</span><span class="p">.</span><span class="na">getMappings</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">    </span><span class="n">mapping</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span><span class="n">shape</span><span class="p">(</span><span class="n">myShape</span><span class="p">);</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">    </span><span class="n">mapping</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="p">}</span>
+</span></code></pre></div>
+</li>
+</ol>
+<h2 id="calibrate-the-projection-mapping">Calibrate the projection mapping</h2>
+<ol>
+<li>Run the sketch.</li>
+<li>Hit <code>Space</code> to switch from <code>Render</code> mode to <code>Calibrate</code> mode.</li>
+<li>Click a point on your model to select it.</li>
+<li>Hit <code>Tab</code> to switch to mapping mode.</li>
+<li>
+<p>Look at your object in physical space and move your mouse so that the crosshairs are centered on the corresponding vertex of the physical object. Click to create a point in the projected space.</p>
+<p><img alt="Calibrating the first point of the mapping" src="images/getting-started-5.gif" /></p>
+</li>
+<li>
+<p>Hit <code>Tab</code> to switch back to point selection. Choose another point and repeat the process.</p>
+</li>
+<li>After mapping 6 points, a full calibration will be automatically estimated.</li>
+<li>Now press <code>Right →</code> to switch to the next mapping.</li>
+<li>Repeat steps 3-7 on your second projector.</li>
+</ol>
+<h2 id="face-masking">Face masking</h2>
+<p>If you have a face of your physical object which both projectors are mapping, you can mask out the face on one of the mappings to avoid drawing it twice.</p>
+<ol>
+<li>Face masking requires that your geometry be structured in a specific way. Your top level <code>PShape</code> must be a parent of child <code>PShape</code>s which represent the faces. If you export an <code>.obj</code> file from Blender and import it into Processing, this is the default representation.</li>
+<li>Once you have calibrated your mappings, switch to face masking mode.<ol>
+<li>Press <code>Space</code> to switch to <code>Calibrate</code> mode.</li>
+<li>Press <code>M</code> to enable <code>Mask faces</code>.</li>
+</ol>
+</li>
+<li>Press <code>← Left</code> or <code>Right →</code> to choose the mapping you want to mask.</li>
+<li>
+<p>Click a face to toggle it on or off.</p>
+<p><img alt="Toggling a face" src="images/mask-faces.gif" /></p>
+</li>
+<li>
+<p>Now press <code>Space</code> to switch back to <code>Render</code> mode. The faces you have selected should be masked out.</p>
+</li>
+</ol>
 
 
 
