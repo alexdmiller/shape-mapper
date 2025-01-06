@@ -5,13 +5,6 @@ copyright: MIT Licence.
 
 plugins:
   - offline
-  - mkdocstrings:
-      handlers:
-        java:
-          setup_commands:
-            - import java.util.*
-          selection:
-            docstring_style: javadoc
 
 nav:
   - Home: index.md
