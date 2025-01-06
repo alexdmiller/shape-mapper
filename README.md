@@ -79,4 +79,6 @@ Thanks to Raphaël de Courville ([@SableRaf](https://github.com/SableRaf)) and C
 
 For camera control, Shape Mapper uses the [Peasycam library](https://mrfeinberg.com/peasycam/) by [Jonathan Feinberg](https://mrfeinberg.com).
 
+For estimating the projection mapping matrix, Shape Mapper uses [OpenCV](https://opencv.org/).
+
 This library was initially developed at [Gradient](https://www.gradientretreat.com/). Thanks to Avi for the week of focus.
