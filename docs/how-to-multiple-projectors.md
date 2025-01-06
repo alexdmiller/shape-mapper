@@ -24,7 +24,7 @@ Starting from the code in the [Getting Started tutorial](tutorial-getting-starte
     MappedShape mappedShape;
     ```
 
-3.  Modify the setup function to add a shape with the [`addShape(...)`](https://alexdmiller.github.io/shape-mapper/javadoc/spacefiller/shapemapper/ShapeMapper.html#addShape(java.lang.String,processing.core.PShape,int)) method.
+3.  Modify the setup function to add a shape with the [`addShape(...)`](/javadoc/spacefiller/shapemapper/ShapeMapper.html#addShape(java.lang.String,processing.core.PShape,int)) method.
 
     ``` java
     myShape = createShape(BOX, 150);

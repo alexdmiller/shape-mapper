@@ -5,7 +5,6 @@ Shape Mapper is a [Processing](https://processing.org/) library for projection m
 ![shape-mapper-clip](https://github.com/user-attachments/assets/9a1c0ce3-ff4e-42ab-b20c-06ef966df57a)
 ![cardboard](https://github.com/user-attachments/assets/59ac0c9a-4bd5-48f1-9ce9-d2512b451caa)
 
-> [!WARNING]  
 > Shape Mapper is currently in beta. The library has been used for production installations, but has not yet been tested by the wider community, and some changes may occur based on feedback.
 
 ## 👩‍💻  Example code

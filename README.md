@@ -1,5 +1,7 @@
 # Shape Mapper
 
+**[shapemapper.dev/](https://shapemapper.dev/)**
+
 Shape Mapper is a [Processing](processing.org/) library for projection mapping.
 
 ![shape-mapper-clip](https://github.com/user-attachments/assets/9a1c0ce3-ff4e-42ab-b20c-06ef966df57a)
@@ -36,7 +38,7 @@ void draw() {
 }
 ```
 
-Find more examples [in the repository](examples/), packaged within the library, or on the [documentation site](https://alexdmiller.github.io/shape-mapper/).
+Find more examples [in the repository](examples/), packaged within the library, or on the [documentation site](https://shapemapper.dev/).
 
 ## 🪛  Installation
 
@@ -46,7 +48,7 @@ Find more examples [in the repository](examples/), packaged within the library, 
 
 ## 📜  Documentation
 
-Go to the [documentation site](https://alexdmiller.github.io/shape-mapper/).
+Go to the [documentation site](https://shapemapper.dev/).
 
 ## 💪  Use cases
 
