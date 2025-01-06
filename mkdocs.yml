@@ -5,6 +5,7 @@ copyright: MIT Licence.
 
 plugins:
   - offline
+  - mkdocstrings
 
 nav:
   - Home: index.md
