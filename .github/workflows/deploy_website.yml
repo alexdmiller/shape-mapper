@@ -20,7 +20,7 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install mkdocs-material mkdocs-autodoc mkdocstrings[java]
+        run: pip install mkdocs-material mkdocs-autodoc mkdocstrings[java] mkdocstrings-handlers
 
       - name: Build website
         run: mkdocs build
