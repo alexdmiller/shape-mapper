@@ -6,13 +6,14 @@ import processing.core.PShape;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
 import spacefiller.peasy.CameraState;
+import spacefiller.shapemapper.utils.CalibrationUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static spacefiller.shapemapper.GeometryUtils.getClosestPointByMappedPoint;
+import static spacefiller.shapemapper.utils.GeometryUtils.getClosestPointByMappedPoint;
 
 public class Mapping implements Serializable {
   private transient PGraphics3D parentGraphics;

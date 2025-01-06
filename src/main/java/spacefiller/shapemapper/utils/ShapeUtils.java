@@ -1,4 +1,4 @@
-package spacefiller.shapemapper;
+package spacefiller.shapemapper.utils;
 
 import processing.core.PApplet;
 import processing.core.PShape;

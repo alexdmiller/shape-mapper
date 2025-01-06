@@ -7,6 +7,9 @@ import processing.event.KeyEvent;
 import processing.event.MouseEvent;
 import processing.opengl.PGraphics3D;
 import processing.opengl.PShader;
+import spacefiller.shapemapper.utils.GeometryUtils;
+import spacefiller.shapemapper.utils.IOUtils;
+import spacefiller.shapemapper.utils.ShapeUtils;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -17,7 +20,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static processing.core.PConstants.*;
-import static spacefiller.shapemapper.GeometryUtils.*;
+import static spacefiller.shapemapper.utils.GeometryUtils.*;
 
 public class ShapeMapper {
   private static final float UI_CIRCLE_RADIUS = 20;
@@ -48,10 +51,21 @@ public class ShapeMapper {
 
   private PVector selectedVertex;
 
-  PShader shapeRenderShader;
-  PShader normalShader;
+  private PShader shapeRenderShader;
+  private PShader normalShader;
 
   private int recentlyHoveredSubshapeIndex;
+
+  private static final int GUI_WIDTH = 400;
+  private static final int GUI_ROW_HEIGHT = 50;
+  private static final int PADDING = 20;
+  private static final int SELECTION_PADDING = 5;
+  private static final int FONT_SIZE = 18;
+  private static final int BACKGROUND = 0x0;
+  private static final int BORDER = 0xff333333;
+  private static final int HIGHLIGHT = 0xff333333;
+  private static final int FONT_COLOR = 0xffffffff;
+  private static final int SECONDARY_FONT_COLOR = 0xff999999;
 
   public ShapeMapper(PApplet parent) {
     this(parent, null);
@@ -224,18 +238,6 @@ public class ShapeMapper {
   public void showGui() {
     showGui = true;
   }
-
-  // Make these constants and move to top
-  int GUI_WIDTH = 400;
-  int GUI_ROW_HEIGHT = 50;
-  int PADDING = 20;
-  int SELECTION_PADDING = 5;
-  int FONT_SIZE = 18;
-  int BACKGROUND = 0x0;
-  int BORDER = 0xff333333;
-  int HIGHLIGHT = 0xff333333;
-  int FONT_COLOR = 0xffffffff;
-  int SECONDARY_FONT_COLOR = 0xff999999;
 
   public void beginMapping() {
     if (shapes.size() != 1) {

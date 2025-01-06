@@ -1,4 +1,6 @@
-package spacefiller.shapemapper;
+package spacefiller.shapemapper.utils;
+
+import spacefiller.shapemapper.ShapeMapper;
 
 import java.io.BufferedReader;
 import java.io.InputStream;

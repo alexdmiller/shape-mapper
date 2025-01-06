@@ -4,12 +4,13 @@ import processing.core.PApplet;
 import processing.core.PShape;
 import processing.core.PVector;
 import processing.opengl.PGraphics3D;
+import spacefiller.shapemapper.utils.ShapeUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import static spacefiller.shapemapper.GeometryUtils.getClosestPointOnShape;
+import static spacefiller.shapemapper.utils.GeometryUtils.getClosestPointOnShape;
 
 public class MappedShape implements Serializable {
   private transient PApplet parent;

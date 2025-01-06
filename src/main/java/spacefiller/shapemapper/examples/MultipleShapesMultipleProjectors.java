@@ -2,9 +2,6 @@ package spacefiller.shapemapper.examples;
 
 import processing.core.PApplet;
 import processing.core.PShape;
-import processing.core.PVector;
-import processing.opengl.PGraphics3D;
-import spacefiller.shapemapper.GeometryUtils;
 import spacefiller.shapemapper.MappedShape;
 import spacefiller.shapemapper.Mapping;
 import spacefiller.shapemapper.ShapeMapper;

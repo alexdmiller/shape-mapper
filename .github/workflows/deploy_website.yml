@@ -36,7 +36,7 @@ jobs:
       - name: Deploy JavaDoc
         uses: MathieuSoysal/Javadoc-publisher.yml@v2.5.0
         with:
-          javadoc-branch: javadoc
+          javadoc-branch: gh-pages
           java-version: 17
           target-folder: javadoc
           project: gradle

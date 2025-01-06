@@ -126,6 +126,12 @@ tasks.test {
     useJUnitPlatform()
 }
 
+tasks.javadoc {
+    exclude("spacefiller/peasy")
+    exclude("spacefiller/shapemapper/examples")
+    exclude("spacefiller/shapemapper/utils")
+}
+
 // ===========================
 // Tasks for releasing library
 // ===========================

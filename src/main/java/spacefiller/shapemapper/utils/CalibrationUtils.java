@@ -1,4 +1,4 @@
-package spacefiller.shapemapper;
+package spacefiller.shapemapper.utils;
 
 import org.bytedeco.javacpp.Loader;
 import org.bytedeco.opencv.opencv_java;
@@ -6,6 +6,7 @@ import org.opencv.calib3d.Calib3d;
 import org.opencv.core.*;
 import processing.core.PMatrix3D;
 import processing.core.PVector;
+import spacefiller.shapemapper.GraphicsTransform;
 
 import java.util.ArrayList;
 import java.util.List;
