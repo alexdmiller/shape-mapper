@@ -210,9 +210,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#example-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      👩‍💻 Example code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#use-cases" class="md-nav__link">
     <span class="md-ellipsis">
-      Use cases
+      💪 Use cases
     </span>
   </a>
   
@@ -221,7 +230,7 @@
         <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
-      Features
+      ✨ Features
     </span>
   </a>
   
@@ -230,7 +239,16 @@
         <li class="md-nav__item">
   <a href="#non-features" class="md-nav__link">
     <span class="md-ellipsis">
-      Non-features
+      🤷‍♂️ Non-features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits-acknowledgements" class="md-nav__link">
+    <span class="md-ellipsis">
+      🙏 Credits &amp; Acknowledgements
     </span>
   </a>
   
@@ -380,7 +398,27 @@
         
   
   <span class="md-ellipsis">
-    API Reference
+    API reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://github.com/alexdmiller/shape-mapper" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Source code
   </span>
   
 
@@ -416,9 +454,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#example-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      👩‍💻 Example code
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#use-cases" class="md-nav__link">
     <span class="md-ellipsis">
-      Use cases
+      💪 Use cases
     </span>
   </a>
   
@@ -427,7 +474,7 @@
         <li class="md-nav__item">
   <a href="#features" class="md-nav__link">
     <span class="md-ellipsis">
-      Features
+      ✨ Features
     </span>
   </a>
   
@@ -436,7 +483,16 @@
         <li class="md-nav__item">
   <a href="#non-features" class="md-nav__link">
     <span class="md-ellipsis">
-      Non-features
+      🤷‍♂️ Non-features
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#credits-acknowledgements" class="md-nav__link">
+    <span class="md-ellipsis">
+      🙏 Credits &amp; Acknowledgements
     </span>
   </a>
   
@@ -459,8 +515,35 @@
 
 <h1 id="shape-mapper">Shape Mapper</h1>
 <p>Shape Mapper is a <a href="https://processing.org/">Processing</a> library for projection mapping.</p>
-<p><img alt="output" src="https://github.com/user-attachments/assets/af2e75f6-b4d0-4e52-bb8e-f2c5d644a5bc" /></p>
-<h2 id="use-cases">Use cases</h2>
+<p><img alt="shape-mapper-clip" src="https://github.com/user-attachments/assets/9a1c0ce3-ff4e-42ab-b20c-06ef966df57a" />
+<img alt="cardboard" src="https://github.com/user-attachments/assets/59ac0c9a-4bd5-48f1-9ce9-d2512b451caa" /></p>
+<blockquote>
+<p>[!WARNING]<br />
+Shape Mapper is currently in beta. The library has been used for production installations, but has not yet been tested by the wider community, and some changes may occur based on feedback.</p>
+</blockquote>
+<h2 id="example-code">👩‍💻  Example code</h2>
+<p>Here is a minimal example showing what the library interface looks like:</p>
+<div class="language-java highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span><span class="w"> </span><span class="nn">spacefiller.shapemapper.ShapeMapper</span><span class="p">;</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">processing.core.PShape</span><span class="p">;</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">ShapeMapper</span><span class="w"> </span><span class="n">mapper</span><span class="p">;</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">PShape</span><span class="w"> </span><span class="n">shape</span><span class="p">;</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="kt">void</span><span class="w"> </span><span class="nf">setup</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="n">fullScreen</span><span class="p">(</span><span class="n">P3D</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="n">shape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">createShape</span><span class="p">(</span><span class="n">BOX</span><span class="p">,</span><span class="w"> </span><span class="mi">100</span><span class="p">,</span><span class="w"> </span><span class="mi">200</span><span class="p">,</span><span class="w"> </span><span class="mi">300</span><span class="p">);</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="n">mapper</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ShapeMapper</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="w"> </span><span class="n">shape</span><span class="p">);</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="p">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="kt">void</span><span class="w"> </span><span class="nf">draw</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">  </span><span class="n">background</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">  </span><span class="n">mapper</span><span class="p">.</span><span class="na">beginMapping</span><span class="p">();</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="n">shape</span><span class="p">(</span><span class="n">shape</span><span class="p">);</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">  </span><span class="n">mapper</span><span class="p">.</span><span class="na">endMapping</span><span class="p">();</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="use-cases">💪  Use cases</h2>
 <p><a href="https://en.wikipedia.org/wiki/Projection_mapping">Projection mapping</a> is the process of calibrating a digital projection to align with a three dimensional surface. The Shape Mapper library is useful if you have a 3D model of the object you want to projection map. Some example workflows:</p>
 <ul>
 <li>Create a model using 3D software such as <a href="https://www.blender.org/">Blender</a>, fabricate it with a 3D printer, and projection map it using Shape Mapper.</li>
@@ -468,20 +551,27 @@
 <li>Use Processing code to model a physical object, then projection map it using Shape Mapper (works well for simple primitives such as cubes).</li>
 </ul>
 <p>If you do not have a 3D model of the object you are trying to projection map, or you are not able to create a model in code, this library will probably not be useful to you. It is still very much possible to projection map your object, though! Check out the <a href="https://github.com/davidbouchard/keystone">Keystone</a> library for Processing, or software such as MadMapper, Resolume or TouchDesigner for alternative projection mapping solutions.</p>
-<h2 id="features">Features</h2>
+<h2 id="features">✨  Features</h2>
 <ul>
-<li>Calibrate your projection by manually aligning at least 6 points; the mapping for the rest of the object will be automatically estimated.</li>
-<li>Supports mapping multiple shapes (i.e. if you have two or more separate objects).</li>
-<li>Supports multiple mappings per shape (i.e. if you have two or more projectors).</li>
-<li>Calibrations are saved to disk.</li>
-<li>Supports face masking, which allows you to avoid projecting twice onto the same face if using more than one projector.</li>
+<li>🧮 Calibrate your projection by manually aligning at least 6 points; the mapping for the rest of the object will be automatically estimated.</li>
+<li>🗺 Supports mapping multiple shapes at once (i.e. if you have two or more separate objects).</li>
+<li>📽 Supports multiple mappings per shape (i.e. if you have two or more projectors).</li>
+<li>💾 Calibrations are saved to disk.</li>
+<li>🎭 Supports face masking, which allows you to avoid projecting twice onto the same face if using more than one projector.</li>
 </ul>
-<h2 id="non-features">Non-features</h2>
+<h2 id="non-features">🤷‍♂️  Non-features</h2>
 <p>Shape Mapper does not (yet) support:</p>
 <ul>
 <li>Blending between projectors</li>
 <li>Built in projection mapping effects (all effects must be drawn by the user with code)</li>
 </ul>
+<h2 id="credits-acknowledgements">🙏  Credits &amp; Acknowledgements</h2>
+<p>Shape Mapper is by <a href="https://alexmiller.cv/">Alex Miller</a> (x: <a href="https://x.com/spacefillerart">@spacefillerart</a>, ig: <a href="https://www.instagram.com/space.filler.art/">@space.filler.art</a>, bs: <a href="https://bsky.app/profile/spacefiller.bsky.social">@spacefiller</a>).</p>
+<p>Shape Mapper is heavily inspired by and based on the <a href="https://github.com/YCAMInterlab/mapamok">mapamok</a> library for <a href="https://openframeworks.cc/">openFrameworks</a>, originally developed by <a href="https://kylemcdonald.net/">Kyle McDonald</a> as part of ProCamToolkit, co-developed by <a href="https://www.ycam.jp/en/aboutus/interlab/">YCAM Interlab</a>. It expands on the feature set of mapamok with multi-shape and multi-projection support.</p>
+<p>Thanks to Raphaël de Courville (<a href="https://github.com/SableRaf">@SableRaf</a>) and Claudine Chen (<a href="https://github.com/mingness">@mingness</a>) for their help &amp; support with Processing library development.</p>
+<p>For camera control, Shape Mapper uses the <a href="https://mrfeinberg.com/peasycam/">Peasycam library</a> by <a href="https://mrfeinberg.com">Jonathan Feinberg</a>.</p>
+<p>For estimating the projection mapping matrix, Shape Mapper uses <a href="https://opencv.org/">OpenCV</a>.</p>
+<p>This library was initially developed at <a href="https://www.gradientretreat.com/">Gradient</a>. Thanks to Avi for the week of focus.</p>
 
 
 
