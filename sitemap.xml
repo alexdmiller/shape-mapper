@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/index.html</loc>
+         <loc>https://shapemapper.dev/index.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/how-to-multiple-objects.html</loc>
+         <loc>https://shapemapper.dev/how-to-multiple-objects.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/how-to-multiple-projectors.html</loc>
+         <loc>https://shapemapper.dev/how-to-multiple-projectors.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/reference.html</loc>
+         <loc>https://shapemapper.dev/reference.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/tutorial-getting-started.html</loc>
+         <loc>https://shapemapper.dev/tutorial-getting-started.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
     <url>
-         <loc>https://alexdmiller.github.io/shape-mapper/tutorial-paper-folding.html</loc>
+         <loc>https://shapemapper.dev/tutorial-paper-folding.html</loc>
          <lastmod>2025-01-06</lastmod>
     </url>
 </urlset>
