@@ -2,7 +2,8 @@
 
 Shape Mapper is a [Processing](processing.org/) library for projection mapping.
 
-![output](https://github.com/user-attachments/assets/af2e75f6-b4d0-4e52-bb8e-f2c5d644a5bc)
+![shape-mapper-clip](https://github.com/user-attachments/assets/9a1c0ce3-ff4e-42ab-b20c-06ef966df57a)
+![cardboard](https://github.com/user-attachments/assets/59ac0c9a-4bd5-48f1-9ce9-d2512b451caa)
 
 <img width="700" alt="getting-started-2" src="https://github.com/user-attachments/assets/0595fd10-d813-4704-8645-975ee4f563a4" />
 
@@ -74,7 +75,7 @@ Shape Mapper does not (yet) support:
 
 ## 🙏  Credits & Acknowledgements
 
-Shape Mapper is by [Alex Miller](https://alexmiller.cv/).
+Shape Mapper is by [Alex Miller](https://alexmiller.cv/) (x: [@spacefillerart](https://x.com/spacefillerart), ig: [@space.filler.art](https://www.instagram.com/space.filler.art/), bs: [@spacefiller](https://bsky.app/profile/spacefiller.bsky.social)).
 
 Shape Mapper is heavily inspired by and based on the [mapamok](https://github.com/YCAMInterlab/mapamok) library for [openFrameworks](https://openframeworks.cc/), originally developed by [Kyle McDonald](https://kylemcdonald.net/) as part of ProCamToolkit, co-developed by [YCAM Interlab](https://www.ycam.jp/en/aboutus/interlab/). It expands on the feature set of mapamok with multi-shape and multi-projection support.
 
