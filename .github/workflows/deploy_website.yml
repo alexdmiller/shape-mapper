@@ -20,7 +20,7 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install mkdocs-material mkdocs-autodoc mkdocstrings[java] mkdocstrings-handlers
+        run: pip install mkdocs-material
 
       - name: Build website
         run: mkdocs build
@@ -32,3 +32,11 @@ jobs:
           branch: gh-pages
           clean-exclude: pr-preview
           force: false
+
+      - name: Deploy JavaDoc
+        uses: MathieuSoysal/Javadoc-publisher.yml@v2.5.0
+        with:
+          javadoc-branch: javadoc
+          java-version: 17
+          target-folder: javadoc
+          project: gradle
