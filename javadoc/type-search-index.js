@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"spacefiller.shapemapper","l":"GraphicsTransform"},{"p":"spacefiller.shapemapper","l":"MappedShape"},{"p":"spacefiller.shapemapper","l":"Mapping"},{"p":"spacefiller.shapemapper","l":"ShapeMapper"}];updateSearchResults();
