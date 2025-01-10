@@ -3,7 +3,7 @@
 ## Installation
 
 1. Download and install [Processing](https://processing.org/).
-2. [Click here to install Shape Mapper v0.1.4](pde://github.com/alexdmiller/shape-mapper/releases/download/v0.1.4/shapemapper.pdex). (Requires at least [Processing 4.2](processing.org/)).
+2. [Click here to install Shape Mapper v0.1.5](pde://github.com/alexdmiller/shape-mapper/releases/download/v0.1.5/shapemapper.pdex). (Requires at least [Processing 4.2](processing.org/)).
 
 ## Find an object
 
